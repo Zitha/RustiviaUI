@@ -1,0 +1,87 @@
+﻿@model IntroductionMVC5.Models.PettyCash.Payment
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($('#paymentType option:selected').text() == 'Loan') {
+            $("#accountSection").show();
+        } else {
+            $("#accountSection").hide();
+        }
+        
+        $('#paymentType').change(function () {
+            if ($('#paymentType option:selected').text() == 'Loan') {
+                $("#accountSection").show();
+            } else {
+                $("#accountSection").hide();
+                $('#paymentType option:selected').text().clear();
+            }
+        });
+    });
+</script>
+
+
+<ul class="nav nav-tabs" style="margin-bottom: 15px;margin-top: 10px" id="myTab">
+    <li class="active" style="background-color: skyblue">
+        <a href="#home" data-toggle="tab">Daily Petty Cash Entries</a>
+    </li>
+    <li class="disabled" style="background-color: skyblue">
+        <a>Petty Cash Account</a>
+    </li>
+</ul>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="home">
+        <h2>Edit payment</h2>
+        @using (Html.BeginForm("EditPayment", "PettyCash", FormMethod.Post))
+        {
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.Id)
+            <fieldset>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Date)
+                    @Html.TextBoxFor(model => model.Date, new { @readonly = "readonly", @class = "form-control", @type = "text", Value = @Model.Date.ToString("d") })
+                    @Html.ValidationMessageFor(model => model.Date)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PaymentType.Type)
+                    @Html.DropDownList("PaymentType.Id", (SelectList)ViewBag.paymentTypes, string.Empty, new { @id = "paymentType", @class = "form-control", @style = "width: 10px;" })
+                    @Html.ValidationMessageFor(model => model.PaymentType.Type)
+                </div>
+                <div class="form-group" id="accountSection">
+                    <label>Account</label>
+                    @Html.DropDownList("Account.Id", (SelectList)ViewBag.Accounts, string.Empty, new { @id = "account", @class = "form-control", @style = "width: 10px;" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description)
+                    @Html.TextBoxFor(model => model.Description, new { @class = "form-control", @type = "text" })
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PastelNo)
+                    @Html.TextBoxFor(model => model.PastelNo, new { @class = "form-control", @type = "text" })
+                    @Html.ValidationMessageFor(model => model.PastelNo)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AutoGenNumber)
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AutoGenNumber, new { @readonly = "readonly", @class = "form-control", @type = "text" })
+                    @Html.ValidationMessageFor(model => model.AutoGenNumber)
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Amount)
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @type = "text" })
+                    @Html.ValidationMessageFor(model => model.Amount)
+                </div>
+                <p>
+                    <button value="Create" class="btn btn-primary" onclick=" location.href='@Url.Action("EditPayment", "PettyCash")' ">Save</button>
+                    <input type="button" class="btn btn-primary" value="back" onclick=" location.href='@Url.Action("Index", "PettyCash")' " />
+                </p>
+            </fieldset>
+        }
+    </div>
+    <div class="tab-pane fade" id="profile">
+        @*  @{Html.RenderPartial("_Accounts", Model.Accounts);}*@
+    </div>
+</div>
+

@@ -1,0 +1,155 @@
+﻿@using IntroductionMVC5.Models.PettyCash
+@using IntroductionMVC5.Web.Utils.PagedList
+@model IntroductionMVC5.Web.ViewModel.PettyCashViewModel
+
+@{
+    ViewBag.Title = "Account History";
+}
+
+<script>
+    $(document).on("click", ".Open-editInvoiceModal", function () {
+        var postId = $(this).data('id');
+        //$("#dvEditInvoice").load('@Url.Action("EditInvoice", "Employee")?id=' + postId);
+        $("#id").val(postId);
+    });
+</script>
+
+<h2>Account History Of <a style="color: #F6855E;">@Model.PettyCashAccount.Name</a> </h2>
+
+<div id="ajaxResponse">
+    @Html.Pager(Model.DailyActiviList.PageSize, Model.DailyActiviList.PageNumber, Model.DailyActiviList.TotalItemCount, new { @class = "pagination" })
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr class="info">
+            <th>
+                Date
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Ref No
+            </th>
+            <th>
+                Cleared?
+            </th>
+            <th>
+                Amount
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model.DailyActiviList)
+    {
+        <tr class="active">
+            @if (item.GetType() == typeof(Payment))
+            {
+                var payment = (Payment)item;
+                <td class="success">
+                    @Html.DisplayFor(modelItem => payment.Date)
+                </td>
+                <td class="success">
+                    @Html.DisplayFor(modelItem => payment.PaymentType.Type)
+                </td>
+                <td class="success">
+                    @Html.DisplayFor(modelItem => payment.Description)
+                </td>
+                <td class="success">
+                    @Html.DisplayFor(modelItem => payment.AutoGenNumber)
+                </td>
+                if (payment.IsCleared)
+                {
+                    <td class="success">
+                        <span style="color: green" class="glyphicon glyphicon-ok"></span>
+                    </td>
+                }
+                else
+                {
+                    <td class="success">
+                        <span style="color: red" class="glyphicon glyphicon-remove"></span>
+                        @* <input type="button" id="button" class="btn btn-default  btn-xs btn-success" value="Clear Entry" onclick=" location.href='@Url.Action("ClearPayment", "PettyCash", new { id = payment.Id })    ' " />*@
+                        <a class="Open-editInvoiceModal btn btn-default  btn-xs btn-success" style="margin-left: 10%" data-id="@payment.Id" data-toggle="modal" data-target="#clearPayment">Clear Entry</a>
+
+                    </td>
+                }
+                <td class="success">
+                    @String.Format("R {0}", payment.Amount)
+                </td>
+            }
+            @if (item.GetType() == typeof(Receipt))
+            {
+                var receipt = (Receipt)item;
+                <td class="danger">
+                    @Html.DisplayFor(modelItem => receipt.Date)
+                </td>
+                <td class="danger">
+                    @Html.DisplayFor(modelItem => receipt.Type)
+                </td>
+                <td class="danger">
+                    @Html.DisplayFor(modelItem => receipt.ExtraInfo)
+                </td>
+                <td class="danger">
+                    @Html.DisplayFor(modelItem => receipt.AutoGenNumber)
+                </td>
+                <td class="danger"></td>
+                <td class="danger">
+                    @String.Format("R -{0}", receipt.Amount)
+                </td>
+            }
+        </tr>
+    }
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+            <strong>
+                Balance
+            </strong>
+        </td>
+        <td class="warning">
+            @String.Format("R {0}", Model.PettyCashAccount.Balance)
+        </td>
+    </tr>
+
+</table>
+<div class="modal fade" id="clearPayment" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body" style="align-content: center">
+                <div>
+                    <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Clear Payment</h3>
+                </div>
+                @using (Html.BeginForm("ClearPayment", "PettyCash", FormMethod.Post))
+                {
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <strong><label>Pastel Number</label></strong>
+                        </div>
+                        <div class="col-lg-4">
+                            <input type="text" class="form-control" required name="pastelNumber" placeholder="Pastel Number" />
+                           
+                        </div>
+                        <div hidden="hidden">
+                            <input type="text" class="form-control" id="id" name="id" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <p>
+                            <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary btn-sm" value="Save">Save</button>
+                        </p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

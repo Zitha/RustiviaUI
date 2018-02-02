@@ -1,0 +1,52 @@
+﻿@*
+    Iván Loire - www.iloire.com
+    Please readme README file for license terms.
+
+    ASP.NET MVC3 ACME Invocing app (demo app for training purposes)
+*@
+
+@model IEnumerable<IntroductionMVC5.Models.Integrator.Purchase>
+<table class="table table-bordered">
+    <thead>
+        <tr class="info">
+            <th>
+                Product
+            </th>
+            <th>
+                Date In
+            </th>
+            <th>
+                Supplier Name
+            </th>
+            <th>
+                Nett Mass
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tr class="active">
+            <td nowrap="nowrap">
+                @string.Format("{0}", item.WeighBridgeInfo.Product)
+            </td>
+            <td nowrap="nowrap">
+                @string.Format("{0}", item.WeighBridgeInfo.DateIn.ToString("yyyy-MM-dd"))
+            </td>
+            <td>
+                @string.Format("{0}", item.Driver.SupplierInfo.SupplierName)
+            </td>
+            <td nowrap="nowrap">
+                @string.Format("{0} KG", item.WeighBridgeInfo.NettMass)
+            </td>
+        </tr>
+    }
+    <tr class="success">
+        <td>Total</td>
+        <td></td>
+        <td></td>
+        <td>
+            @String.Format("{0}KG", Model.Sum(s => s.WeighBridgeInfo.NettMass))
+        </td>
+    </tr>
+</table>

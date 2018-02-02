@@ -1,0 +1,30 @@
+﻿@model IEnumerable<IntroductionMVC5.Models.Integrator.Container>
+
+<div style="margin-top: 10px;width: 100%">
+    <div class="row">
+        <div class="col-lg-2">
+            <h4>
+                Select Year and Month
+            </h4>
+        </div>
+        <div class="col-lg-4">
+            @using (Html.BeginForm("ContainerReport", "Customer"))
+            {
+                <div class="row">
+                    @Html.DropDownList("Year", (SelectList)ViewBag.Years, string.Empty, new { @class = "form-control", @style = "width: 2px;margin-bottom: 2px;", @onchange = "form.submit();" })
+                </div>
+                <div class="row">
+                    @Html.DropDownList("Month", (SelectList)ViewBag.Month, string.Empty, new { @class = "form-control", @style = "width: 10%;", @onchange = "form.submit();" })
+                </div>
+            }
+        </div>
+        <div class="col-lg-6">
+            <div class="alert alert-dismissable alert-info" style="width: 70%">
+                Container Report for <strong>@ViewBag.SelectedYear</strong> <strong>@ViewBag.SelectedMonth</strong>
+            </div>
+        </div>
+    </div>
+    <div>
+        @{Html.RenderPartial("_ContainerReportList", Model);}
+    </div>
+</div>

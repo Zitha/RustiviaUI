@@ -1,0 +1,45 @@
+﻿@*
+    Iván Loire - www.iloire.com
+    Please readme README file for license terms.
+
+    ASP.NET MVC3 ACME Invocing app (demo app for training purposes)
+*@
+
+@model IntroductionMVC5.Web.Models.WeeklyProductSummary
+<table class="table table-bordered">
+    <thead>
+        <tr class="info">
+            <th></th>
+            <th>
+                A GRADE
+            </th>
+            <th>
+                BLUE STEEL
+            </th>
+            <th>
+                SUB GRADE
+            </th>
+            <th>
+                GENERAL STEEL
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model.Agrade)
+    {
+        <tr class="active">
+            <td nowrap="nowrap">
+                @string.Format("{0}", item.WeighBridgeInfo.DateIn.ToString("yyyy-MM-dd"))
+            </td>
+            <td nowrap="nowrap">
+                @*                @Html.DisplayFor(modelItem => item.WeighBridgeInfo.DateIn)*@
+            </td>
+            <td>
+                @*                @String.Format("{0}", item.Driver.SupplierInfo.SupplierName)*@
+            </td>
+            <td nowrap="nowrap">
+                @*                @String.Format("{0} KG", item.WeighBridgeInfo.NettMass)*@
+            </td>
+        </tr>
+    }
+</table>

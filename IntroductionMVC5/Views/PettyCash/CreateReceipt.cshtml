@@ -1,0 +1,105 @@
+﻿@model IntroductionMVC5.Models.PettyCash.Receipt
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#LoanSecion").hide();
+        $("#SaleSection").hide();
+        $("#BankSection").hide();
+        $("#AmountSection").hide();
+
+        $('#ReceiptGroup').click(function () {
+            if ($("#Loan").is(":checked")) {
+                $("#LoanSecion").show();
+                $("#AmountSection").show();
+                $("#SaleSection").hide();
+                $("#BankSection").hide();
+            }
+            if ($("#Sale").is(":checked")) {
+                $("#LoanSecion").hide();
+                $("#SaleSection").show();
+                $("#AmountSection").show();
+                $("#BankSection").hide();
+            }
+            if ($("#Bank").is(":checked")) {
+                $("#LoanSecion").hide();
+                $("#SaleSection").hide();
+                $("#BankSection").show();
+                $("#AmountSection").show();
+            }
+        });
+        $('.datepicker').datepicker();
+    });
+</script>
+<style>
+    .datepicker {
+        z-index: 1151;
+    }
+</style>
+<div class="form-group">
+    <p id="ReceiptGroup">
+        @Html.RadioButtonFor(m => m.Type, "Loan", new { @style = "margin-left: 20px", @name = "group1", @id = "Loan" })<label style="margin-right: 10px">Loan</label>
+        @Html.RadioButtonFor(m => m.Type, "Sale", new { @style = "margin-left: 20px", @name = "group1", @id = "Sale" })<label>Sale</label>
+        @Html.RadioButtonFor(m => m.Type, "Bank", new { @style = "margin-left: 20px", @name = "group1", @id = "Bank" })<label>Bank</label><br />
+    </p>
+</div>
+<fieldset>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Date)
+        @Html.TextBoxFor(model => model.Date, new { @class = "datepicker", @type = "text" })
+        @Html.ValidationMessageFor(model => model.Date)
+    </div>
+    <div id="LoanSecion">
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            From Account
+        </div>
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            @Html.DropDownList("Account.Id", (SelectList)ViewBag.Accounts, string.Empty, new { @class = "form-control", @style = "width: 10px;" })
+        </div>
+    </div>
+    <div class="form-group" id="SaleSection">
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            Invoice number
+        </div>
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            @Html.TextBoxFor(m => m.Reference, new { @style = "  color: #5E5B54; font-weight: bold; margin: 5px; padding-left: 2px", @class = "form-control", @type = "text" })
+        </div>
+    </div>
+    <div class="form-group" id="BankSection">
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            Bank
+        </div>
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            @Html.DropDownList("Bank", (SelectList)ViewBag.Banks, string.Empty, new { @class = "form-control" })
+        </div>
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            Cheque number or Card number
+        </div>
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            @Html.TextBox("ChequeOrCard", "",new { @style = "  color: #5E5B54; font-weight: bold; margin: 5px; padding-left: 2px", @class = "form-control", @type = "text" })
+        </div>
+    </div>
+    <div class="form-group" id="AmountSection">
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            Description
+        </div>
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            @Html.TextBoxFor(m => m.ExtraInfo, new { @style = "  color: #5E5B54; font-weight: bold; margin: 5px; padding-left: 2px", @class = "form-control", @type = "text" })
+        </div>
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            Pastel No
+        </div>
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            @Html.TextBoxFor(m => m.PastelNo, new { @style = "  color: #5E5B54; font-weight: bold; margin: 5px; padding-left: 2px", @class = "form-control", @type = "text" })
+        </div>
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            Amount
+        </div>
+        <div class="form-group" style="color: #5E5B54; font-size: large;">
+            @Html.TextBoxFor(m => m.Amount, new { @style = "  color: #5E5B54; font-weight: bold; margin: 5px; padding-left: 2px", @class = "form-control", @type = "text" })
+        </div>
+    </div>
+    <p>
+        <button value="Create" class="btn btn-primary" onclick=" location.href='@Url.Action("CreateReceipt", "PettyCash")' ">Save</button>
+        <input type="button" class="btn btn-primary" data-dismiss="modal" value=" close" />
+    </p>
+</fieldset>

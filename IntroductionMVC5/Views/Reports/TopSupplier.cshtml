@@ -1,0 +1,26 @@
+﻿@model List<IGrouping<string, IntroductionMVC5.Models.Integrator.Purchase>>
+
+<table class="table table-bordered">
+    <thead>
+        <tr class="info">
+            <th>
+                Supplier Name
+            </th>
+            <th>
+                Total Nett Mass
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tr class="active">
+            <td nowrap="nowrap">
+                @String.Format("{0}", item.Key)
+            </td>
+            <td nowrap="nowrap">
+                @String.Format("{0} KG", Model.Sum(s => s.Sum(d => d.WeighBridgeInfo.NettMass)))
+            </td>
+        </tr>
+    }
+</table>

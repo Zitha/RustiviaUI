@@ -1,0 +1,99 @@
+﻿@model IntroductionMVC5.Models.ArsloTrading.ArsloProfoma
+
+@{
+    ViewBag.Title = "Profoma Details";
+}
+
+<h2>Profoma Details</h2>
+
+<div class="row">
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            <label>Profoma Number</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProfomaNumber)
+        </dd>
+
+        <dt>
+            <label>UCR Number</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UCRNumber)
+        </dd>
+
+        <dt>
+            <label>Date</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+
+        <dt>
+            <label>Status</label>
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+        <dt>
+            <label>Amount</label>
+        </dt>
+
+        <dd>
+          R  @Html.DisplayFor(model => model.Amount)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Location)
+        </dt>
+
+        <dd>
+            <input type="button" class="btn btn-primary btn-xs" onclick=" location.href='@Url.Action("GetPdf", "Arslo", new { fileName = Model.Location})'" value="Download Profoma" />
+        </dd>
+
+    </dl>
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table table-bordered" style="margin-top:2%">
+                <thead>
+                    <tr class="info">
+                        <th>
+                            Invoice Number
+                        </th>
+                        <th>
+                            Total Price
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+
+                @foreach (var item in Model.Invoices)
+                {
+                    <tr class="active">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Reference)
+                        </td>
+                        <td>
+                            R @Html.DisplayFor(modelItem => item.TotalPrice)
+                        </td>
+                        <td>
+                            <input type="button" class="btn btn-primary btn-xs" onclick=" location.href='@Url.Action("GetPdf", "Arslo", new { fileName = item.InvoiceLocation })'" value="Download" />
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="button" class="btn btn-primary" onclick=" location.href='@Url.Action("Index", "Arslo")'" value="Back" />
+            </div>
+        </div>
+    </div>
+</div>

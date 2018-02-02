@@ -1,0 +1,30 @@
+﻿@model IntroductionMVC5.Models.PettyCash.Account
+
+@{
+    ViewBag.Title = "title";
+}
+
+@using (Html.BeginForm("CreateAccount", "PettyCash", FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @type = "text" })
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Balance)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Balance, new { @class = "form-control", @type = "text" })
+            @Html.ValidationMessageFor(model => model.Balance)
+        </div>
+        <p>
+            <button value="Create" class="btn btn-primary" onclick=" location.href='@Url.Action("Create", "Transporter")' ">Save</button>
+            <input type="button" class="btn btn-primary" data-dismiss="modal" value=" close" />
+        </p>
+    </fieldset>
+}

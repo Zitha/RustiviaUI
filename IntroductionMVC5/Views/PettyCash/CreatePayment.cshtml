@@ -1,0 +1,59 @@
+﻿@model IntroductionMVC5.Models.PettyCash.Payment
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#accountSection").hide();
+
+        $('#paymentType').change(function () {
+            if ($('#paymentType option:selected').text() == 'Loan') {
+                $("#accountSection").show();
+            }
+            else {
+                $("#accountSection").hide();
+                $('#paymentType option:selected').text().clear();
+            }
+        });
+    });
+</script>
+@using (Html.BeginForm("CreatePayment", "PettyCash", FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date)
+            @Html.TextBoxFor(model => model.Date, new { @class = "datepicker", @type = "text" })
+            @Html.ValidationMessageFor(model => model.Date)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PaymentType.Type)
+            @Html.DropDownList("PaymentType.Id", (SelectList)ViewBag.paymentTypes, string.Empty, new { @id = "paymentType", @class = "form-control", @style = "width: 10px;" })
+            @Html.ValidationMessageFor(model => model.PaymentType.Type)
+        </div>
+        <div class="form-group" id="accountSection">
+            <label>Account</label>
+            @Html.DropDownList("Account.Id", (SelectList)ViewBag.Accounts, string.Empty, new { @id = "account", @class = "form-control", @style = "width: 10px;" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description)
+            @Html.TextBoxFor(model => model.Description, new { @class = "form-control", @type = "text" })
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PastelNo)
+            @Html.TextBoxFor(model => model.PastelNo, new { @class = "form-control", @type = "text" })
+            @Html.ValidationMessageFor(model => model.PastelNo)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @type = "text" })
+            @Html.ValidationMessageFor(model => model.Amount)
+        </div>
+        <p>
+            <button value="Create" class="btn btn-primary" onclick=" location.href='@Url.Action("CreatePayment", "PettyCash")' ">Save</button>
+            <input type="button" class="btn btn-primary" data-dismiss="modal" value=" close" />
+        </p>
+    </fieldset>
+}

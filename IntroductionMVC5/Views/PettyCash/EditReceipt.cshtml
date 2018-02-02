@@ -1,0 +1,121 @@
+﻿@model IntroductionMVC5.Models.PettyCash.Receipt
+
+@{
+    ViewBag.Title = "Edit Receipt";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($('#receiptType option:selected').text() == 'Loan') {
+            $("#LoanSecion").show();
+            $("#SaleSection").hide();
+            $("#BankSection").hide();
+        }
+        else if ($('#receiptType option:selected').text() == 'Bank') {
+            $("#LoanSecion").hide();
+            $("#SaleSection").hide();
+            $("#BankSection").show();
+            $("#saleReference").attr("disabled", "disabled");
+            $("#bankReference").removeAttr("disabled");
+        }
+        else if ($('#receiptType option:selected').text() == 'Sale') {
+            $("#LoanSecion").hide();
+            $("#SaleSection").show();
+            $("#BankSection").hide();
+            $("#bankReference").attr("disabled", "disabled");
+            $("#saleReference").removeAttr("disabled");
+        }
+
+        $('#receiptType').change(function () {
+            if ($('#receiptType option:selected').text() == 'Loan') {
+                $("#LoanSecion").show();
+                $("#SaleSection").hide();
+                $("#BankSection").hide();
+            }
+            if ($('#receiptType option:selected').text() == 'Bank') {
+                $("#LoanSecion").hide();
+                $("#SaleSection").hide();
+                $("#BankSection").show();
+            }
+            if ($('#receiptType option:selected').text() == 'Sale') {
+                $("#LoanSecion").hide();
+                $("#SaleSection").show();
+                $("#BankSection").hide();
+            }
+        });
+        $('.datepicker').datepicker();
+    });
+</script>
+
+
+@using (Html.BeginForm())
+{
+    <fieldset style="margin-top: 10px">
+        @Html.HiddenFor(model => model.Id)
+        <div class="row">
+            <div class="col-lg-4">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Type)
+                    @Html.DropDownList("Type", (SelectList)ViewBag.ReceiptType, string.Empty, new { @id = "receiptType", @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Type)
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group" id="LoanSecion">
+                    <label>Loan</label>
+                    @Html.DropDownList("Account.Id", (SelectList)ViewBag.Accounts, string.Empty, new { @id = "account", @class = "form-control" })
+                </div>
+                <div class="form-group" id="BankSection">
+                    <div>
+                        <label>Bank</label>
+                        @Html.DropDownList("Reference", (SelectList)ViewBag.Banks, string.Empty, new { @class = "form-control", @id = "bankReference" })
+                    </div>
+                    <div>
+                        <label>Cheque number or Card number</label>
+                        @Html.TextBoxFor(model => model.ExtraInfo, new { @class = "form-control", @type = "text" })
+                        @Html.ValidationMessageFor(model => model.ExtraInfo)
+                    </div>
+                </div>
+                <div class="form-group" id="SaleSection">
+                    <div>
+                        <label>Invoice number</label>
+                        @Html.TextBoxFor(model => model.Reference, new { @class = "form-control", @type = "text", @id = "saleReference" })
+                        @Html.ValidationMessageFor(model => model.Reference)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Date)<br />
+                    @Html.TextBoxFor(model => model.Date, new { @class = "datepicker", @type = "text" })
+                    @Html.ValidationMessageFor(model => model.Date)
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PastelNo)
+                    @Html.TextBoxFor(model => model.PastelNo, new { @class = "form-control", @type = "text" })
+                    @Html.ValidationMessageFor(model => model.PastelNo)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Amount)
+                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @type = "text" })
+                    @Html.ValidationMessageFor(model => model.Amount)
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <p>
+                <button class="btn btn-primary" value="Back" onclick=" location.href='@Url.Action("EditReceipt", "PettyCash")' ">Save</button>
+                <input class="btn btn-primary" type="button" onclick=" location.href='@Url.Action("Search", "PettyCash", new { date = Model.Date })' " value=" back" />
+            </p>
+        </div>
+    </fieldset>
+}

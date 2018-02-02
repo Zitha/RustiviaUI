@@ -1,0 +1,54 @@
+﻿@using IntroductionMVC5.Web.Utils.PagedList
+@model IPagedList<IntroductionMVC5.Models.Integrator.Purchase>
+
+<div id="DeletedDiv">
+    <h3>Deleted weighBridge</h3>
+    @Html.Pager(Model.PageSize, Model.PageNumber, Model.TotalItemCount, new { @class = "pagination" })
+    <table style="border-bottom: 1px solid #8A8575; margin-bottom: 5px; width:90%" class="table table-bordered">
+        <thead>
+            <tr class="info">
+                <th scope="col">
+                    WB number
+                </th>
+                <th scope="col">
+                    Nett weight
+                </th>
+                <th scope="col">
+                    Supplier
+                </th>
+                <th scope="col">
+                    Full name
+                </th>
+                <th scope="col">
+                    Date in
+                </th>
+                <th scope="col">
+                    Comments
+                </th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr class="active">
+                <td style="margin-right: 150px">
+                    @Html.ActionLink(string.Format("{0}", item.WeighBridgeInfo.Id), "WeighBridgePrint", new { id = item.WeighBridgeInfo.Id }, new { @style = "  color: #F6855E;" })
+                </td>
+                <td style="margin-right: 150px;">
+                    @string.Format("{0} KG", item.WeighBridgeInfo.NettMass)
+                </td>
+                <td style="margin-right: 150px;">
+                    @String.Format("{0}", item.Driver.SupplierInfo.SupplierName)
+                </td>
+                <td style="margin-right: 150px;">
+                    @Html.ActionLink(string.Format("{0} {1}", @item.Driver.Surname, @item.Driver.Firstname), "GetPdf", new { FileName = item.Driver.IdLocation }, new { @style = "  color: #F6855E;" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => item.WeighBridgeInfo.DateIn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelitem => item.WeighBridgeInfo.Comments)
+                </td>
+            </tr>
+        }
+    </table>
+</div>

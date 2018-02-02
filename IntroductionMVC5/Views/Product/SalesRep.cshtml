@@ -1,0 +1,43 @@
+﻿@model List<IntroductionMVC5.Web.ViewModel.SalesRepViewModel>
+
+@{
+    ViewBag.Title = "Sales Rep";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="margin-top: 10px">
+    <input style="margin-top: 10px" class="btn btn-primary" type="button" onclick=" location.href='@Url.Action("SalesReps", "Supplier")' "  value=" back" />
+</div>
+<h1>
+    @string.Format("{0}", @Model.FirstOrDefault() != null ? @Model.FirstOrDefault().ApplicationUser.UserName : "")
+</h1>
+<div>
+    <table class="table table-bordered" style="margin-bottom: 20px; margin-top: 10px">
+        <thead>
+            <tr class="info">
+                <th>
+                    @string.Format("Supplier Name")
+                </th>
+                <th>
+                    @string.Format("Tel No")
+                </th>
+                <th>
+                    @string.Format("Total Net")
+                </th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr class="active">
+                <td style="margin-right: 150px">
+                    @string.Format("{0}", item.Supplier.SupplierName)
+                </td>
+                <td style="margin-right: 150px">
+                    @string.Format("{0}", item.Supplier.TellNumber)
+                </td>
+                <td style="margin-right: 150px">
+                    @string.Format("{0} KG", item.Purchases.Sum(d => d.WeighBridgeInfo.NettMass))
+                </td>
+            </tr>
+        }
+    </table>
+</div>

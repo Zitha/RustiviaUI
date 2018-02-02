@@ -1,0 +1,60 @@
+﻿@model IntroductionMVC5.Models.ArsloTrading.ArsloCustomer
+
+@{
+    ViewBag.Title = "Create Customer";
+    //Layout = "~/Views/Shared/_ArsloLayout.cshtml";
+}
+
+<h2>Create Customer</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="row">
+            <div class="col-xs-2">
+                <label style="margin-top:5%">Customer Name</label>
+            </div>
+            <div class="col-xs-9">
+                @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control", @type = "text" })
+                @Html.ValidationMessageFor(model => model.CustomerName)
+            </div>
+        </div>
+        <div class="row" style="margin-top:2%">
+            <div class="col-xs-2">
+                <label style="margin-top:5%">Address</label>
+            </div>
+            <div class="col-xs-9">
+                @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @type = "text", @rows = "5" })
+                @Html.ValidationMessageFor(model => model.Address)
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:2%">
+            <div class="col-xs-2">
+                <label style="margin-top:5%">Tell Number</label>
+            </div>
+            <div class="col-xs-9">
+                @Html.TextBoxFor(model => model.TellNumber, new { @class = "form-control", @type = "text" })
+                @Html.ValidationMessageFor(model => model.TellNumber)
+            </div>
+        </div>
+       
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.TellNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TellNumber, new { @class = "form-control", @type = "text" })
+                @Html.ValidationMessageFor(model => model.TellNumber)
+            </div>
+        </div>*@
+        <div class="form-group" style="margin-top:2%">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" class="btn btn-primary" onclick=" location.href='@Url.Action("Index", "Arslo")'" value="Back" />
+                <button value="Create" class="btn btn-primary" onclick=" location.href='@Url.Action("CreateCustomer", "Arslo")'">Create</button>
+            </div>
+        </div>
+    </div>
+}

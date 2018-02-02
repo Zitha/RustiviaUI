@@ -1,0 +1,121 @@
+﻿@using IntroductionMVC5.Web.Controllers
+@model IntroductionMVC5.Web.ViewModel.UprocessedSalesViewModel
+
+<ul class="nav nav-tabs" style="margin-bottom: 15px;margin-top: 10px" id="myTab">
+    <li class="active" style="background-color: skyblue">
+        <a href="#home" data-toggle="tab">Container Sales</a>
+    </li>
+    <li class="" style="background-color: skyblue">
+        <a href="#profile" data-toggle="tab">Local Sales</a>
+    </li>
+</ul>
+<div id="myTabContent" class="tab-content">
+    <div class="tab-pane fade active in" id="home" style="width: 1200px">
+        <h2>Container Sales</h2>
+        <div id="UnProcessedDiv">
+            <table style="border-bottom: 1px solid #8A8575; margin-bottom: 5px; width:100%" class="table table-bordered">
+                <thead>
+                    <tr class="info">
+                        <th>
+                            WB number
+                        </th>
+                        <th>
+                            Container number
+                        </th>
+                        <th>
+                            Nett mass
+                        </th>
+                        <th>
+                            Booking Reference
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model.Containers)
+                {
+                <tr class="active">
+                    <td>
+                        @Html.ActionLink(string.Format("{0}", item.WeighBridgeInfo.Id), "WeighBridgePrint", new { id = item.WeighBridgeInfo.Id }, new { @style = "  color: #F6855E;" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelitem => item.ContainerNumber)
+                    </td>
+                    <td>
+                        @string.Format("{0} KG", item.WeighBridgeInfo.NettMass)
+                    </td>
+                    <td>
+                        @string.Format("{0}", item.Booking.Reference)
+                    </td>
+                    <td>
+                        @string.Format("{0}", item.WeighBridgeInfo.DateIn.ToString("yyyy-MM-dd"))
+                    </td>
+                    <td>
+                        <input class="btn btn-warning btn-xs" style="font-size: small;font-weight: lighter; " type="button" onclick=" location.href='@Url.Action("Process", "Container", new { id = item.WeighBridgeInfo.Id })    ' " value=" process" />
+                        @*                        @if (HomeController.CanEdit)*@
+                        @*                        {*@
+                        <input class="btn btn-danger btn-xs" style="font-size: small;font-weight: lighter; " type="button" onclick=" location.href='@Url.Action("Delete", "Container", new { id = item.WeighBridgeInfo.Id })    ' " value=" delete" />
+                        @*                        }*@
+                    </td>
+                </tr>
+                }
+            </table>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="profile">
+        <h2>Local Sales</h2>
+        <div>
+            <table style="border-bottom: 1px solid #8A8575; margin-bottom: 5px; width:100%" class="table table-bordered">
+                <thead>
+                    <tr class="info">
+                        <th>
+                            WB number
+                        </th>
+                        <th>
+                            Product
+                        </th>
+                        <th>
+                            Nett mass
+                        </th>
+                        <th>
+                            Cusotmer
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model.Sales)
+                {
+                    <tr class="active">
+                        <td>
+                            @Html.ActionLink(string.Format("{0}", item.WeighBridgeInfo.Id), "WeighBridgePrint", new { id = item.WeighBridgeInfo.Id }, new { @style = "  color: #F6855E;" })
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelitem => item.WeighBridgeInfo.Product)
+                        </td>
+                        <td>
+                            @string.Format("{0} KG", item.WeighBridgeInfo.NettMass)
+                        </td>
+                        <td>
+                            @string.Format("{0}", item.Customer.CustomerName)
+                        </td>
+                        <td>
+                            @string.Format("{0}", item.WeighBridgeInfo.DateIn.ToString("yyyy-MM-dd"))
+                        </td>
+                        <td>
+                            <input class="btn btn-warning btn-xs" style="font-size: small;font-weight: lighter; " type="button" onclick=" location.href='@Url.Action("Process", "Container", new { id = item.WeighBridgeInfo.Id })    ' " value=" process" />
+                            @*                        @if (HomeController.CanEdit)*@
+                            @*                        {*@
+                            <input class="btn btn-danger btn-xs" style="font-size: small;font-weight: lighter; " type="button" onclick=" location.href='@Url.Action("Delete", "Container", new { id = item.WeighBridgeInfo.Id })    ' " value=" delete" />
+                            @*                        }*@
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+

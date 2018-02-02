@@ -1,0 +1,242 @@
+﻿@*@{
+    Layout = "~/Views/Shared/_ArsloLayout.cshtml"; }*@
+@model IntroductionMVC5.Web.ViewModel.ArsloViewModel
+@{
+    ViewBag.Title = "Arslo Trading";
+}
+
+<script>
+    $(document).ready(function () {
+        // store the currently selected tab in the hash value
+        $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
+            var id = $(e.target).attr("href").substr(1);
+            window.location.hash = id;
+        });
+
+        // on load of the page: switch to the currently selected tab
+        var hash = window.location.hash;
+        $('#myTab a[href="' + hash + '"]').tab('show');
+    });
+</script>
+
+
+<div class="row">
+    <ul class="nav nav-tabs" style="margin-bottom: 15px;margin-top: 10px" id="myTab">
+        <li class="active" style="background-color: skyblue">
+            <a href="#home" data-toggle="tab">Arslo Customers</a>
+        </li>
+        <li class="" style="background-color: skyblue">
+            <a href="#profile" data-toggle="tab">Profoma</a>
+        </li>
+        <li class="" style="background-color: skyblue">
+            <a href="#invoice" data-toggle="tab">Invoice</a>
+        </li>
+    </ul>
+
+    <div id="myTabContent" class="tab-content">
+        <div class="tab-pane fade active in" id="home" style="width: 1200px">
+            <h2>Arslo Customers</h2>
+            <div class="row">
+                <table style="border-bottom: 1px solid #5D5A53; float: left; width: 100%;">
+                    <tr>
+                        <td style="width: 50%">
+                            <input type="submit" class="btn btn-primary btn-sm" value="Add Customer" onclick=" location.href='@Url.Action("CreateCustomer", "Arslo")    ' " />
+                        </td>
+                        <td style="margin: 5px; text-align: right; width: 100%;">
+                            @{ Html.RenderPartial("_NameSearch", "Customer");}
+                        </td>
+                    </tr>
+                </table>
+
+                <h3>All Customers</h3>
+                <script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>
+                <div data-bind="template: {name:'customer', foreach:customers}" id="album-list" style="width: 100%">
+                </div>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="info">
+                            <th>
+                                Customer Name
+                            </th>
+                            <th>
+                                Phone Nunber
+                            </th>
+                            <th>
+                                Address
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    @foreach (var item in Model.Customers)
+                    {
+                        <tr class="active">
+                            <td>
+                                <strong>
+                                    @Html.DisplayFor(modelItem => item.CustomerName)
+                                </strong>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TellNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-info btn-xs" value="Details" onclick=" location.href='@Url.Action("CustomerDetails", "Arslo", new { customerId = item.Id }) ' " />
+                                <input type="button" class="btn btn-info btn-xs" value="Edit" onclick=" location.href='@Url.Action("EditCustomerDetails", "Arslo", new { customerId = item.Id }) ' " />
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="profile" style="width: 1200px">
+            <h2>Profomas</h2>
+            <div class="row">
+
+                <table style="border-bottom: 1px solid #5D5A53; float: left; width: 100%;">
+                    <tr>
+                        <td style="width: 50%">
+                            <input type="submit" class="btn btn-primary btn-sm" value="Add Proma" onclick=" location.href='@Url.Action("AddProfoma", "Arslo")    ' " />
+                        </td>
+                    </tr>
+                </table>
+
+                <div data-bind="template: {name:'customer', foreach:customers}" id="album-list" style="width: 100%">
+                </div>
+
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="info">
+                            <td>
+                                Cutomer
+                            </td>
+                            <th>
+                                Profoma Number
+                            </th>
+                            <th>
+                                UCR Number
+                            </th>
+                            <th>
+                                Created Date
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    @foreach (var item in Model.Profomas)
+                    {
+                        <tr class="active">
+                            <td>
+                                <strong>
+                                    @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                                </strong>
+                            </td>
+                            <td>
+                                <strong>
+                                    @Html.DisplayFor(modelItem => item.ProfomaNumber)
+                                </strong>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UCRNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Date)
+                            </td>
+                            <td style="color:red">
+                                <strong>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </strong>
+                            </td>
+                            <td>
+                                <input type="button" class="btn btn-info btn-xs" value="Edit" onclick=" location.href='@Url.Action("EditProfoma", "Arslo", new { id = item.Id }) ' " />
+                                <input type="button" class="btn btn-info btn-xs" value="Details" onclick=" location.href='@Url.Action("ProfomaDetails", "Arslo", new { id = item.Id }) ' " />
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+            </div>
+        </div>
+
+        <div id="invoice" class="tab-pane fade">
+            <h2>Invoices</h2>
+
+
+            <table style="border-bottom: 1px solid #5D5A53; float: left; width: 100%;">
+                <tr>
+                    <td style="width: 50%">
+                        <input type="submit" class="btn btn-primary btn-sm" value="Generate Invoice" onclick=" location.href='@Url.Action("GenerateInvoice", "Arslo",new { isNew = true})    ' " />
+                    </td>
+                </tr>
+            </table>
+
+            <div data-bind="template: {name:'customer', foreach:customers}" id="album-list" style="width: 100%">
+            </div>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="info">
+                        <td>
+                            Cutomer
+                        </td>
+                        <th>
+                            Invoice Reference
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            POL
+                        </th>
+                        <th>
+                            POD
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+
+                @foreach (var item in Model.Invoices)
+                {
+                    <tr class="active">
+                        <td>
+                            <strong>
+                                @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                            </strong>
+                        </td>
+                        <td>
+                            <strong>
+                                @Html.DisplayFor(modelItem => item.Reference)
+                            </strong>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PointOfLoading)
+                        </td>
+                        <td style="color:red">
+                            @Html.DisplayFor(modelItem => item.PointOfDelivery)
+                        </td>
+                        <td>
+                            <a class="btn btn-info btn-xs" onclick=" location.href='@Url.Action("InvoiceDetails", "Arslo", new { id = item.Id }) ' ">
+                                <i class="glyphicon glyphicon-download"></i> View Invoice
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    </div>
+</div>
+

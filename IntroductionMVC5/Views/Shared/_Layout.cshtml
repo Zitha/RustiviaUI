@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title Rustivia Integrator</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Rustivia Integration", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                @if (Request.IsAuthenticated)
+                {
+                    <ul class="nav navbar-nav">
+                        @if (HttpContext.Current.User.IsInRole("Rustivia") || HttpContext.Current.User.IsInRole("Admin"))
+                        {
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Supplier Zone<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Action("Index", "Supplier")">Suppliers</a></li>
+                                    <li><a href="@Url.Action("Index", "Driver")">Drivers</a></li>
+                                    <li><a href="@Url.Action("Index", "Truck")">Trucks</a></li>
+                                    @if (HttpContext.Current.User.IsInRole("Admin"))
+                                    {
+                                        <li><a href="@Url.Action("SalesReps", "Supplier")">Sales Rep</a></li>
+                                    }
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Customer Zone<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Action("Index", "Customer")">Customers</a></li>
+                                    <li><a href="@Url.Action("ContainerReport", "Customer")">Container report</a></li>
+                                    <li><a href="@Url.Action("Index", "Transporter")">Transporters</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Purchase<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Action("UnProcessed", "WeighBridge")">Unprocessed</a></li>
+                                    <li><a href="@Url.Action("Processed", "WeighBridge")">Processed</a></li>
+                                    <li><a href="@Url.Action("Deleted", "WeighBridge")">Deleted</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sale<b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="@Url.Action("UnProcessed", "Container")">Unprocessed</a></li>
+                                    <li><a href="@Url.Action("Processed", "Container")">processed</a></li>
+                                    <li><a href="@Url.Action("Deleted", "Container")">Deleted</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="@Url.Action("Index", "PettyCash")">Petty Cash</a></li>
+                            <li><a href="@Url.Action("Index", "Reports")">Reports</a></li>
+                            <li><a href="@Url.Action("Index", "Product")">Products</a></li>
+                        }
+                        @if (HttpContext.Current.User.IsInRole("Arslo") || HttpContext.Current.User.IsInRole("Admin"))
+                        {
+                            <li><a href="@Url.Action("Index", "Arslo")">Arslo</a></li>
+                        }
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy;Developed by <a style="color:#F6855E;">Tusso Technologies</a></p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

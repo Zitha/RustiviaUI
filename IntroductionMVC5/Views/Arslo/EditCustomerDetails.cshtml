@@ -1,0 +1,51 @@
+﻿@model IntroductionMVC5.Models.ArsloTrading.ArsloCustomer
+
+@{
+    ViewBag.Title = "Edit Customer Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EditCustomerDetails</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>ArsloCustomer</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control", @type = "text" })
+                @Html.ValidationMessageFor(model => model.CustomerName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Address, new { @class = "form-control", @type = "text", @rows = "5" })
+                @Html.ValidationMessageFor(model => model.Address)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TellNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.TellNumber, new { @class = "form-control", @type = "text" })
+                @Html.ValidationMessageFor(model => model.TellNumber)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="button" class="btn btn-primary" onclick=" location.href='@Url.Action("Index", "Arslo")'" value="Back" />
+                <button value="Create" class="btn btn-primary" onclick=" location.href='@Url.Action("EditCustomerDetails", "Arslo")'">Edit</button>
+            </div>
+        </div>
+    </div>
+}
+

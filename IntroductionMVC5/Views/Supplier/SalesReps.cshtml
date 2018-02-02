@@ -1,0 +1,29 @@
+﻿@model System.Collections.Generic.List<IntroductionMVC5.Web.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Sales Reps";
+}
+
+<h3>Sales Reps</h3>
+<table class="table table-bordered" style="width: 50%">
+    <thead>
+        <tr class="info">
+            <th>
+                Name
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tr class="active">
+            <td>
+                <a href="@Url.Action("SalesRep", "Product", new { userId = item.Id })">
+                    <strong>
+                        @string.Format("{0}", item.UserName.ToUpper())
+                    </strong>
+                </a>
+            </td>
+        </tr>
+    }
+</table>

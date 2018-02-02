@@ -1,0 +1,20 @@
+﻿@model IntroductionMVC5.Models.Integrator.Transporter
+
+
+@using (Html.BeginForm("Create", "Transporter", FormMethod.Post))
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @type = "text" })
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+        <p>
+            <input type="button" class="btn btn-primary" data-dismiss="modal" value=" Close" />
+            <button value="Create" class="btn btn-primary" onclick=" location.href='@Url.Action("Create", "Transporter")' ">Save</button>
+        </p>
+    </fieldset>
+}

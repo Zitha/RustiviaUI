@@ -1,0 +1,59 @@
+﻿@using IntroductionMVC5.Models
+@using IntroductionMVC5.Models.Integrator
+@model List<IntroductionMVC5.Models.Integrator.Transporter>
+
+@{
+    ViewBag.Title = "Trucks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<table style="border-bottom: 1px solid #5D5A53; float: left; width: 100%; margin-top: 10px">
+    <tr>
+        <td style="width: 50%;">
+            <button class="btn btn-primary btn-default" data-toggle="modal" data-target="#myModal">
+                Add Transporter
+            </button>
+        </td>
+    </tr>
+</table>
+<h3>All Transporters</h3>
+<table class="table table-bordered" style=" width: 50%;">
+    <thead>
+        <tr class="info">
+            <th>
+                Transporter name
+            </th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model)
+    {
+        <tr class="active">
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+        </tr>
+    }
+</table>
+<!-- Button trigger modal -->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: lightblue">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Add Transporter</h4>
+            </div>
+            @using (Html.BeginForm("Create", "Transporter", FormMethod.Post))
+            {
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        @{ Html.RenderPartial("_CreateTransport", new Transporter()); }
+                    </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            }
+        </div>
+    </div>
+</div>

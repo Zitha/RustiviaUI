@@ -1,0 +1,225 @@
+﻿@*
+    Iván Loire - www.iloire.com
+    Please readme README file for license terms.
+
+    ASP.NET MVC3 ACME Invocing app (demo app for training purposes)
+*@
+@using IntroductionMVC5.Web.Models
+@using IntroductionMVC5.Web.Utils
+@model IntroductionMVC5.Models.Integrator.Purchase
+
+@{
+    ViewBag.Title = "WEIGHTBRIDGE TICKET NUMBER :" + "# " + Model.WeighBridgeInfo.Id;
+    Layout = "~/Views/Shared/_LayoutPrint.cshtml";
+}
+<table class="invoiceHeader">
+    <tr>
+        <td>
+            @* <img src="@Url.Content("~/Content/img/rustiviaLogo.png")" style="float:left;" />*@
+            @* <img src="~/Content/img/rustiviaLogo.png" style="float:left;" />*@
+        </td>
+        <td style="text-align:right; vertical-align: top;">
+            @if (@Model.Status == Statuses.Processed)
+            {
+                <p>
+                    <h2 style="color: green;margin-bottom: 0px;" align="left">PAID</h2>
+                    <h3 style="color: green;margin-bottom: 0px" align="left">@Model.PaymentType</h3>
+                    @*                    <h3 style="color: green; margin-bottom: 0px" align="left">@Model.PastelInfo.PastelNumber</h3>*@
+                    <h3 style="color: green; margin-bottom: 0px" align="left">@Model.PaymentReference</h3>
+                    @*                    <h3 style="color: green; margin-bottom: 0px" align="left">@Model.PastelInfo.Date.ToLongDateString()</h3>*@
+                </p>
+            }
+            @if (@Model.Status == Statuses.Deleted)
+            {
+                <p>
+                    <h2 style="color: red;margin-bottom: 0px;" align="left">Deleted</h2>
+                </p>
+            }
+        </td>
+    </tr>
+</table>
+<div class="from" style="border-bottom-width: 1px;border-bottom-color: black; border-bottom-style: solid">
+    <blockquote>
+        <p style="margin-bottom: 5px">
+            <strong>
+                Rustivia Metals CC
+            </strong>
+        </p>
+        <p style="margin-bottom: 5px">
+            54 Northreef
+        </p>
+        <p style="margin-bottom: 5px">
+            Activia Park
+        </p>
+        <p style="margin-bottom: 5px">
+            Germiston
+        </p>
+        <p style="margin-bottom: 5px">
+            South Africa
+        </p>
+        <p style="margin-bottom: 5px">
+            <b style="margin-right: 10px">(Tell  :)</b>011 828 9961<br />
+        </p>
+
+    </blockquote>
+</div>
+<table style="width: 320px">
+    <tr style="margin-bottom: 10px">
+        <td width="50%" style="margin-bottom: 10px; border-top-style:dotted;border-top-width: 1px;">
+            <strong>
+                WB number
+            </strong>
+        </td>
+        <td style="margin-bottom: 10px; border-top-style: dotted;border-top-width: 1px;">
+            @Model.WeighBridgeInfo.Id
+        </td>
+    </tr>
+    <tr style="margin-bottom: 10px">
+        <td width="50%">
+            <strong>
+                Truck Reg number
+            </strong>
+        </td>
+        <td>
+            @string.Format("{0}", @Model.Truck.TruckRegNumber)
+        </td>
+    </tr>
+
+    <tr style="margin-bottom: 10px">
+        <td width="50%">
+            <strong>
+                Date In
+            </strong>
+        </td>
+        <td>
+            @string.Format("{0}", @Model.WeighBridgeInfo.DateIn)
+        </td>
+    </tr>
+    <tr style="margin-bottom: 10px">
+        <td width="50%">
+            <strong>
+                Date Out
+            </strong>
+        </td>
+        <td>
+            @string.Format("{0}", @Model.WeighBridgeInfo.DateOut)
+        </td>
+    </tr>
+
+    <tr style="margin-bottom: 10px">
+        <td width="50%">
+            <strong>
+                Supplier name
+            </strong>
+        </td>
+        <td>
+            @Model.Driver.SupplierInfo.SupplierName
+        </td>
+    </tr>
+
+    <tr style="margin-bottom: 10px">
+        <td width="50%">
+            <strong>
+                Driver name
+            </strong>
+        </td>
+        <td>
+            @string.Format("{0} {1}", @Model.Driver.Firstname, @Model.Driver.Surname)
+        </td>
+    </tr>
+
+
+    <tr style="margin-bottom: 10px">
+        <td width="50%">
+            <strong>
+                Product
+            </strong>
+        </td>
+        <td>
+            @Model.WeighBridgeInfo.Product
+        </td>
+    </tr>
+
+    <tr>
+        <td width="50%" style="margin-bottom: 10px; border-bottom-style: dotted;border-bottom-width: 1px;">
+            <p>
+                <strong>
+                    Comments
+                </strong>
+            </p>
+
+        </td>
+        <td style=" border-bottom-style: dotted;border-bottom-width: 1px;">
+            <p>
+                @Model.WeighBridgeInfo.Comments
+            </p>
+        </td>
+    </tr>
+
+    <tr style="margin-bottom: 10px">
+        <td width="50%">
+            <strong>
+                First mass
+            </strong>
+        </td>
+        <td>
+            @string.Format("{0} KG", @Model.WeighBridgeInfo.FirstMass)
+        </td>
+    </tr>
+
+    <tr style="margin-bottom: 10px">
+        <td width="50%">
+            <strong>
+                Second mass
+            </strong>
+        </td>
+        <td>
+            @string.Format("{0} KG", @Model.WeighBridgeInfo.SecondMass)
+        </td>
+    </tr>
+    <tr>
+        <td width="50%" style=" border-bottom-style: dotted; border-bottom-width: 1px; border-top-style: dotted; border-top-width: 1px;">
+            <p>
+                <strong>
+                    Nett mass
+                </strong>
+            </p>
+
+        </td>
+        <td style="border-bottom-style: dotted; border-bottom-width: 1px; border-top-style: dotted; border-top-width: 1px;">
+            <p>
+                @string.Format("{0} KG", @Model.WeighBridgeInfo.NettMass)
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td width="50%">
+            <p>
+                <strong>
+                    Driver Signature
+                </strong>
+            </p>
+
+        </td>
+        <td style="border-bottom-style: solid; border-bottom-width: 1px; ">
+            <p>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td width="50%">
+            <p>
+            </p>
+
+        </td>
+        <td style="border-bottom-style: solid; border-bottom-width: 1px; ">
+            <p>
+                @*                <button id="button" value="Process" onclick=" location.href='@Url.Action("PrintInvoice", "WeighBridge")' ">Process</button>*@
+            </p>
+        </td>
+    </tr>
+</table>
+
+
+
+

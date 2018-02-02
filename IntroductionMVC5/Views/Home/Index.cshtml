@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var now = new Date();
+        var month = (now.getMonth() + 1);
+        var day = now.getDate();
+        if (month < 10)
+            month = "0" + month;
+        if (day < 10)
+            day = "0" + day;
+        var today = now.getFullYear() + '/' + month + '/' + day;
+        if (!$('#searchDate').val()) {
+            $('#searchDate').val(today);
+        }
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'yyyy/mm/dd',
+        }).on('changeDate', function (ev) {
+            $('.datepicker').datepicker('hide');
+        });
+    });
+</script>
+
+
+<table style="width:100%" class="dashboard">
+    <tr>
+        <td>
+            <div class="col-lg-2" style="align-content: center;">
+                <strong>Select date</strong>
+            </div>
+            <div class="col-lg-8">
+                @using (Html.BeginForm("Index", "Home", (string)ViewBag.SearchDate, FormMethod.Get))
+                {
+                    Html.RenderPartial("_DateSearch", (string)ViewBag.SearchDate);
+                }
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h3>Day purchase</h3>
+            @{Html.RenderAction("DailyPurchase", "Reports", (string)ViewBag.SearchDate);}
+            <h3>Week purchase</h3>
+            <div style="padding:20px;">
+                @{Html.RenderAction("ProductPurchase", "Reports", (string)ViewBag.SearchDate);}
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <h3>Monthly Purchase</h3>
+            <div style="padding:20px;">
+                @{Html.RenderAction("MonthlyReport", "Reports");}
+            </div>
+        </td>
+    </tr>
+</table>

@@ -1,0 +1,76 @@
+﻿@model IntroductionMVC5.Models.Integrator.Container
+
+@{
+    ViewBag.Title = "Edit Completed Container";
+}
+@using (Html.BeginForm())
+{
+    <fieldset style="margin-top: 10px">
+        @Html.HiddenFor(model => model.Id)
+        <legend style="margin-top: 20px">Conainter Number <a>@Model.ContainerNumber</a></legend>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ContainerNumber)
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.ContainerNumber, new { @class = "form-control", @type = "text", @readonly = "readOnly" })
+                    @Html.ValidationMessageFor(model => model.ContainerNumber)
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Booking number</label>
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.Booking.Reference, new { @class = "form-control", @type = "text", @readonly = "readOnly" })
+                    @Html.ValidationMessageFor(model => model.Booking.Reference)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Client</label>
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.Booking.Customer.CustomerName, new { @class = "form-control", @type = "text", @readonly = "readOnly" })
+                    @Html.ValidationMessageFor(model => model.Booking.Customer.CustomerName)
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Seal number</label>
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.Sealnumber, new { @class = "form-control", @type = "text", @readonly = "readOnly" })
+                    @Html.ValidationMessageFor(model => model.Sealnumber)
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Transpoter-1(Empty)</label>
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.Invoice1, new { @class = "form-control", @type = "text" })
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Transpoter-2(Crosshaul)</label>
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.Invoice2, new { @class = "form-control", @type = "text" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <p>
+                <button class="btn btn-primary" value="Save" onclick=" location.href='@Url.Action("EditCompletedContainer", "Customer")' ">Save</button>
+                <input class="btn btn-primary" value="Back" type="button" onclick=" location.href='@Url.Action("ContainerReport", "Customer", new {month = @Model.DateIn.Month})' " />
+            </p>
+        </div>
+    </fieldset>
+}
