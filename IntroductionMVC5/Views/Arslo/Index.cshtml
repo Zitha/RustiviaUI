@@ -1,5 +1,6 @@
 ﻿@*@{
     Layout = "~/Views/Shared/_ArsloLayout.cshtml"; }*@
+@using IntroductionMVC5.Models.ArsloTrading
 @model IntroductionMVC5.Web.ViewModel.ArsloViewModel
 @{
     ViewBag.Title = "Arslo Trading";
@@ -127,12 +128,16 @@
                             <th>
                                 Status
                             </th>
+                            <th>
+                                Paid Amount
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
 
                     @foreach (var item in Model.Profomas)
                     {
+                        var profoma = (ArsloProfoma)item;
                         <tr class="active">
                             <td>
                                 <strong>
@@ -148,11 +153,27 @@
                                 @Html.DisplayFor(modelItem => item.UCRNumber)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Date)
+                                @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
                             </td>
-                            <td style="color:red">
+                            @if (profoma.Status == "Paid")
+                            {
+                                <td style="color:green">
+                                    <strong>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </strong>
+                                </td>
+                            }
+                            else
+                            {
+                                <td style="color:red">
+                                    <strong>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </strong>
+                                </td>
+                            }
+                            <td>
                                 <strong>
-                                    @Html.DisplayFor(modelItem => item.Status)
+                                    @String.Format("R {0}", profoma.Invoices.Sum(s => s.TotalPrice))
                                 </strong>
                             </td>
                             <td>
@@ -184,9 +205,9 @@
             <table class="table table-bordered">
                 <thead>
                     <tr class="info">
-                        <td>
+                        <th>
                             Cutomer
-                        </td>
+                        </th>
                         <th>
                             Invoice Reference
                         </th>
@@ -198,6 +219,9 @@
                         </th>
                         <th>
                             POD
+                        </th>
+                        <th>
+                            Total
                         </th>
                         <th>
 
@@ -219,13 +243,16 @@
                             </strong>
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Date)
+                            @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.PointOfLoading)
                         </td>
-                        <td style="color:red">
+                        <td>
                             @Html.DisplayFor(modelItem => item.PointOfDelivery)
+                        </td>
+                        <td style="color:green">
+                            <strong>  R @Html.DisplayFor(modelItem => item.TotalPrice)</strong>
                         </td>
                         <td>
                             <a class="btn btn-info btn-xs" onclick=" location.href='@Url.Action("InvoiceDetails", "Arslo", new { id = item.Id }) ' ">

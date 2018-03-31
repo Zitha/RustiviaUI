@@ -66,6 +66,9 @@
                             Invoice Number
                         </th>
                         <th>
+                            Date
+                        </th>
+                        <th>
                             Total Price
                         </th>
                         <th>
@@ -79,6 +82,9 @@
                     <tr class="active">
                         <td>
                             @Html.DisplayFor(modelItem => item.Reference)
+                        </td>
+                        <td>
+                            @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
                         </td>
                         <td>
                             R @Html.DisplayFor(modelItem => item.TotalPrice)

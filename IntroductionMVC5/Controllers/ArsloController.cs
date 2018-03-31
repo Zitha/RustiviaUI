@@ -84,9 +84,20 @@ namespace IntroductionMVC5.Web.Controllers
             ViewBag.Customers = new SelectList(customers, "Id", "CustomerName");
             var profomas = GetAllProfomas();
             profomas = profomas.Where(p => p.Status != "Paid").ToList();
-            ViewBag.Profomas = new SelectList(profomas, "Id", "ProfomaNumber");
 
-            var invoiceNumber = string.Format("INV-Arslo-{0}-{1}", DateTime.Now.Year, profomas.Count + 1);
+            var stands =
+             profomas
+            .Select(s => new
+             {
+                Id = s.Id,
+                 Description = string.Format("{0} - {1}", s.ProfomaNumber, s.Customer.CustomerName)
+             })
+             .ToList();
+
+            ViewBag.Profomas = new SelectList(stands, "Id", "Description");
+
+            var invoices = GetAllInvoices();
+            var invoiceNumber = string.Format("INV-Arslo-{0}-{1}", DateTime.Now.Year, invoices.Count + 1);
 
             var newInvoice = new ArsloInvoice
             {
@@ -174,6 +185,7 @@ namespace IntroductionMVC5.Web.Controllers
             var bb = collection["itemCount"].Split(',')[0];
             int itemCount = bb != string.Empty ? Convert.ToInt32(bb) : 0;
             List<ArsloInvoiceItem> items = new List<ArsloInvoiceItem>();
+            decimal total = 0;
             for (int i = 0; i < itemCount; i++)
             {
                 if (collection["description" + i] != string.Empty
@@ -193,6 +205,7 @@ namespace IntroductionMVC5.Web.Controllers
                         Price = Convert.ToDecimal(collection["unitPrice" + i]),
                         TotalPrice = Convert.ToDecimal(collection["unitTotalPrice" + i])
                     };
+                    total = total + Convert.ToDecimal(collection["unitTotalPrice" + i]);
                     items.Add(item);
                 }
             }
@@ -202,6 +215,7 @@ namespace IntroductionMVC5.Web.Controllers
             arsloInvoice.Customer = arsloProfoma.Customer;
             arsloInvoice.Profoma = arsloProfoma;
             arsloInvoice.InvoiceItems = items;
+            arsloInvoice.TotalPrice = total;
             string invoiceLocation = arsloInvoiceGenerator.GenerateInvoice(arsloInvoice);
             arsloInvoice.InvoiceLocation = invoiceLocation;
             _unit.ArsloInvoices.Add(arsloInvoice);
