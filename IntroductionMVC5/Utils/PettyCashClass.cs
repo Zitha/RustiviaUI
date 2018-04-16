@@ -127,7 +127,7 @@ namespace IntroductionMVC5.Web.Utils
             List<PaymentType> paymentTypes = _unit.PaymentTypes.GetAll()
                 .OrderBy(p => p.Type).ToList();
 
-            payment.PaymentType = paymentTypes.FirstOrDefault(s => s.Id == payment.PaymentType.Id);
+            payment.PaymentType = paymentTypes.FirstOrDefault(s => s.Id == pymnt.PaymentType.Id);
             payment.Description = pymnt.Description;
             if (payment.PaymentType != null &&
                 (payment.Account != null &&
@@ -244,14 +244,15 @@ namespace IntroductionMVC5.Web.Utils
                                      == EntityFunctions.TruncateTime(searchDate));
 
 
-            List<Payment> payments = _unit.Payments.GetAll().Include(a => a.PaymentType).Where(p => EntityFunctions.TruncateTime(p.Date)
-                                                                        == EntityFunctions.TruncateTime(searchDate))
-                .ToList();
+            List<Payment> payments = _unit.Payments
+                .GetAll().Include(a => a.PaymentType)
+                .Where(p => EntityFunctions.TruncateTime(p.Date) == EntityFunctions.TruncateTime(searchDate)
+                && p.PaymentType != null).ToList();
 
 
-            List<Receipt> receipts = _unit.Receipts.GetAll().Where(p => EntityFunctions.TruncateTime(p.Date)
-                                                                        == EntityFunctions.TruncateTime(searchDate))
-                .ToList();
+            List<Receipt> receipts = _unit.Receipts
+                .GetAll().Where(p => EntityFunctions.TruncateTime(p.Date) == EntityFunctions.TruncateTime(searchDate)
+                && p.Type != null).ToList();
 
             List<IPettyCashEntry> dailyActivityList = payments.Cast<IPettyCashEntry>().ToList();
             dailyActivityList.AddRange(receipts);

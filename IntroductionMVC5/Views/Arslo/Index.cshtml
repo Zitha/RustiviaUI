@@ -177,8 +177,9 @@
                                 </strong>
                             </td>
                             <td>
-                                <input type="button" class="btn btn-info btn-xs" value="Edit" onclick=" location.href='@Url.Action("EditProfoma", "Arslo", new { id = item.Id }) ' " />
+                                <input type="button" class="btn btn-primary btn-xs" value="Edit" onclick=" location.href='@Url.Action("EditProfoma", "Arslo", new { id = item.Id }) ' " />
                                 <input type="button" class="btn btn-info btn-xs" value="Details" onclick=" location.href='@Url.Action("ProfomaDetails", "Arslo", new { id = item.Id }) ' " />
+                                <input type="button" class="btn btn-info btn-xs" value="Drawdown" onclick=" location.href='@Url.Action("DrawDownProfoma", "Arslo", new { id = item.Id }) ' " />
                             </td>
                         </tr>
                     }

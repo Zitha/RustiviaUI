@@ -88,10 +88,10 @@ namespace IntroductionMVC5.Web.Controllers
             var stands =
              profomas
             .Select(s => new
-             {
+            {
                 Id = s.Id,
-                 Description = string.Format("{0} - {1}", s.ProfomaNumber, s.Customer.CustomerName)
-             })
+                Description = string.Format("{0} - {1}", s.ProfomaNumber, s.Customer.CustomerName)
+            })
              .ToList();
 
             ViewBag.Profomas = new SelectList(stands, "Id", "Description");
@@ -315,7 +315,7 @@ namespace IntroductionMVC5.Web.Controllers
         {
             ViewBag.Status = new SelectList(new List<string> { "", "Paid", "Part Payment", "Pending Payment" });
 
-            var profoma = _unit.ArsloProfomas.GetAll().Include(iv => iv.Invoices).FirstOrDefault(pr => pr.Id == id);
+            var profoma = _unit.ArsloProfomas.GetAll().Include(dr => dr.ProfomaDrawDowns).Include(iv => iv.Invoices).FirstOrDefault(pr => pr.Id == id);
             return View(profoma);
         }
 
@@ -338,6 +338,40 @@ namespace IntroductionMVC5.Web.Controllers
             _unit.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public ActionResult DrawDownProfoma(int id)
+        {
+            var profoma = _unit.ArsloProfomas.GetAll().FirstOrDefault(pr => pr.Id == id);
+            ViewBag.Status = new SelectList(new List<string> { "", "Paid", "Part Payment", "Pending Payment" });
+            return View(profoma);
+        }
+
+        [HttpPost]
+        public ActionResult DrawDownProfoma(ArsloProfoma profoma, FormCollection collection)
+        {
+            var dbProfoma = _unit.ArsloProfomas.GetAll().Include(c => c.Customer)
+                .Include(dr => dr.ProfomaDrawDowns).FirstOrDefault(pr => pr.Id == profoma.Id);
+
+            if (collection["reference"] != string.Empty &&
+                collection["drawdownAmount"] != string.Empty)
+            {
+                var drawDown = new ArsloProfomaDrawDown
+                {
+                    Date = DateTime.Now,
+                    Amount = Convert.ToDecimal(collection["drawdownAmount"]),
+                    Reference = collection["reference"]
+                };
+
+                dbProfoma.Amount = dbProfoma.Amount - drawDown.Amount;
+                dbProfoma.ProfomaDrawDowns.Add(drawDown);
+                _unit.ArsloProfomas.Update(dbProfoma);
+                _unit.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return DrawDownProfoma(profoma.Id);
+        }
+
+
         private string MoveIdFile(ArsloProfoma profoma)
         {
             string idSourcePath = "Location";

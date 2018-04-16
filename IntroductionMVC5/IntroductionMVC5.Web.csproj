@@ -462,6 +462,7 @@
     <Content Include="Views\Arslo\CustomerDetails.cshtml" />
     <Content Include="Views\Arslo\EditCustomerDetails.cshtml" />
     <Content Include="Views\Reports\MonthlyReport.cshtml" />
+    <Content Include="Views\Arslo\DrawDownProfoma.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

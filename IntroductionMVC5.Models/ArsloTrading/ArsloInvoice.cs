@@ -16,5 +16,7 @@ namespace IntroductionMVC5.Models.ArsloTrading
         public string PointOfLoading { get; set; }
         public string PointOfDelivery { get; set; }
         public virtual ArsloProfoma Profoma { get; set; }
+        public string  BookingNumber { get; set; }
+        public string VesselNumber { get; set; }
     }
 }

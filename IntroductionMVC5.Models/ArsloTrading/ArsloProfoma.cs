@@ -37,6 +37,8 @@ namespace IntroductionMVC5.Models.ArsloTrading
         public string Location { get; set; }
 
         public List<ArsloProfomaItem> ProfomaItems { get; set; }
+
+        public List<ArsloProfomaDrawDown> ProfomaDrawDowns { get; set; }
     }
 }
 

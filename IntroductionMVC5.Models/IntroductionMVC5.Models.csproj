@@ -56,6 +56,7 @@
     <Compile Include="ArsloTrading\ArsloInvoiceItem.cs" />
     <Compile Include="ArsloTrading\ArsloInvoice.cs" />
     <Compile Include="ArsloTrading\ArsloProfoma.cs" />
+    <Compile Include="ArsloTrading\ArsloProfomaDrawDown.cs" />
     <Compile Include="ArsloTrading\ArsloProfomaItem.cs" />
     <Compile Include="Integrator\BankAccount.cs" />
     <Compile Include="Integrator\Booking.cs" />

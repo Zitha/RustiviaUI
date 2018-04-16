@@ -12,7 +12,6 @@
         <dt>
             <label>Profoma Number</label>
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.ProfomaNumber)
         </dd>
@@ -46,7 +45,7 @@
         </dt>
 
         <dd>
-          R  @Html.DisplayFor(model => model.Amount)
+            R  @Html.DisplayFor(model => model.Amount)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Location)
@@ -58,7 +57,43 @@
 
     </dl>
     <div class="row">
+        <div class="col-xs-6">
+            <h4>Drawdowns</h4>
+            <table class="table table-bordered" style="margin-top:2%">
+                <thead>
+                    <tr class="info">
+                        <th>
+                            Reference
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Amount
+                        </th>
+                    </tr>
+                </thead>
+
+                @foreach (var item in Model.ProfomaDrawDowns)
+        {
+            <tr class="active">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reference)
+                </td>
+                <td>
+                    @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
+                </td>
+                <td>
+                    R @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+            </tr>
+}
+            </table>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-xs-12">
+            <h4>Proma Invoices</h4>
             <table class="table table-bordered" style="margin-top:2%">
                 <thead>
                     <tr class="info">

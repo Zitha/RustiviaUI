@@ -390,11 +390,20 @@ namespace RustiviaSolutions.PDFGenerator
             var pol = new Phrase("POL \n" + invoice.PointOfLoading + "\n \n",
                 FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK));
 
-            var pod = new Phrase("POD \n" + invoice.PointOfDelivery + "\n",
+            var pod = new Phrase("POD \n" + invoice.PointOfDelivery + "\n \n",
              FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK));
+
+            var vessel = new Phrase("Vessel \n" + invoice.VesselNumber + "\n \n",
+             FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK));
+
+            var bookingNumber = new Phrase("Booking Number \n" + invoice.BookingNumber + "\n",
+             FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK));
+
             conactHeaderPr.Add(p2);
             conact1Pr.Add(pol);
             conact1Pr.Add(pod);
+            conact1Pr.Add(vessel);
+            conact1Pr.Add(bookingNumber);
 
             doc.Add(headerTable);
             doc.Add(mainTable);
