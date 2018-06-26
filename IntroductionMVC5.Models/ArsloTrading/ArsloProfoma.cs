@@ -32,7 +32,7 @@ namespace IntroductionMVC5.Models.ArsloTrading
 
         [Required]
         [DisplayName("Amount")]
-        public decimal Amount { get; set; }
+        public decimal? Amount { get; set; }
 
         public string Location { get; set; }
 

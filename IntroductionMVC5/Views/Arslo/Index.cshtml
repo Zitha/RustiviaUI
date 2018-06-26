@@ -1,21 +1,23 @@
-﻿@*@{
-    Layout = "~/Views/Shared/_ArsloLayout.cshtml"; }*@
-@using IntroductionMVC5.Models.ArsloTrading
+﻿@using IntroductionMVC5.Models.ArsloTrading
 @model IntroductionMVC5.Web.ViewModel.ArsloViewModel
 @{
     ViewBag.Title = "Arslo Trading";
 }
 
 <script>
+    @{
+        string active = ViewBag.Active;
+    }
     $(document).ready(function () {
+        var hash = window.location.hash;
         // store the currently selected tab in the hash value
         $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
             var id = $(e.target).attr("href").substr(1);
-            window.location.hash = id;
+            window.location.hash = this.hash;
         });
 
         // on load of the page: switch to the currently selected tab
-        var hash = window.location.hash;
+     
         $('#myTab a[href="' + hash + '"]').tab('show');
     });
 </script>
@@ -44,7 +46,21 @@
                             <input type="submit" class="btn btn-primary btn-sm" value="Add Customer" onclick=" location.href='@Url.Action("CreateCustomer", "Arslo")    ' " />
                         </td>
                         <td style="margin: 5px; text-align: right; width: 100%;">
-                            @{ Html.RenderPartial("_NameSearch", "Customer");}
+                            @using (Html.BeginForm("Search", "Arslo"))
+                            {
+                                <div class="searchBox" style="margin-top: 5px;">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <input name="search" id="search_Box" type="text" value="@Request["search"]"
+                                                   placeholder="Customer Name" class="form-control" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="submit" value="Search" class="btn btn-info btn-sm" />
+                                            <a href="?filter=clear" class="btn btn-default btn-sm">Refresh</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
                         </td>
                     </tr>
                 </table>
@@ -120,7 +136,7 @@
                                 Profoma Number
                             </th>
                             <th>
-                                UCR Number
+                               Quantity
                             </th>
                             <th>
                                 Created Date
@@ -150,7 +166,7 @@
                                 </strong>
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.UCRNumber)
+                                @string.Format("{0} Tons", item.ProfomaItems.Sum(s => s.Quantity))
                             </td>
                             <td>
                                 @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
@@ -173,7 +189,7 @@
                             }
                             <td>
                                 <strong>
-                                    @String.Format("R {0}", profoma.Invoices.Sum(s => s.TotalPrice))
+                                    @string.Format("{0:C}", profoma.Invoices.Sum(s => s.TotalPrice))
                                 </strong>
                             </td>
                             <td>
@@ -216,7 +232,7 @@
                             Date
                         </th>
                         <th>
-                            POL
+                           Quantity
                         </th>
                         <th>
                             POD
@@ -232,35 +248,37 @@
 
                 @foreach (var item in Model.Invoices)
                 {
-                    <tr class="active">
-                        <td>
-                            <strong>
-                                @Html.DisplayFor(modelItem => item.Customer.CustomerName)
-                            </strong>
-                        </td>
-                        <td>
-                            <strong>
-                                @Html.DisplayFor(modelItem => item.Reference)
-                            </strong>
-                        </td>
-                        <td>
-                            @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PointOfLoading)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PointOfDelivery)
-                        </td>
-                        <td style="color:green">
-                            <strong>  R @Html.DisplayFor(modelItem => item.TotalPrice)</strong>
-                        </td>
-                        <td>
-                            <a class="btn btn-info btn-xs" onclick=" location.href='@Url.Action("InvoiceDetails", "Arslo", new { id = item.Id }) ' ">
-                                <i class="glyphicon glyphicon-download"></i> View Invoice
-                            </a>
-                        </td>
-                    </tr>
+                <tr class="active">
+                    <td>
+                        <strong>
+                            @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                        </strong>
+                    </td>
+                    <td>
+                        <strong>
+                            @Html.DisplayFor(modelItem => item.Reference)
+                        </strong>
+                    </td>
+                    <td>
+                        @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
+                    </td>
+                    <td>
+                        @string.Format("{0} Tons", item.InvoiceItems.Sum(s => s.Quantity))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PointOfDelivery)
+                    </td>
+                    <td style="color:green">
+                        <strong>
+                            @string.Format("{0:C}", item.TotalPrice)
+                        </strong>
+                    </td>
+                    <td>
+                        <a class="btn btn-info btn-xs" onclick=" location.href='@Url.Action("InvoiceDetails", "Arslo", new { id = item.Id }) ' ">
+                            <i class="glyphicon glyphicon-download"></i> View Invoice
+                        </a>
+                    </td>
+                </tr>
                 }
             </table>
 

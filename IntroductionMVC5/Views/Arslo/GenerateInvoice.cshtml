@@ -53,28 +53,6 @@
         $("#itemCount").val(profItems);
     }
 
-    //function addNewColumn(profoma) {
-    //    $("#tBodyBra").html('');
-
-    //    var profomaLength = profoma.ProfomaItems.length;
-    //    $("#itemCount").val(profomaLength);
-    //    for (var d = 0; d < profomaLength; d++) {
-    //        $('#tab_logic').append('<tr id="addr' + (d) + '"></tr>');
-    //        $('#addr' + d).html("<td>" + (d + 1) + "</td>" +
-    //            "<td><input id='description" + d + "'name='description" + d + "' type='text' value='" + profoma.ProfomaItems[d].Description + "' readonly placeholder='Item' class='form-control' /> </td >" +
-    //            "<td><input id='quantity" + d + "' type='text' onkeyup='calculatePriceTotal()' placeholder='QTY' value='" + profoma.ProfomaItems[d].Quantity + "' name='quantity" + d + "' class='form-control'></td>" +
-    //            "<td><input id='unitPrice" + d + "' name='unitPrice" + d + "' value='" + profoma.ProfomaItems[d].Price + "' readonly type='text' placeholder='Price' class='form-control'></td>" +
-    //            "<td> <input class='form-control input-md' id='unitTotalPrice" + d + "' name='unitTotalPrice" + d + "' type='number' value='" + profoma.ProfomaItems[d].TotalPrice + "' readonly placeholder='Total Price' /></td > ");
-
-    //        $('#tab_logic').append('<tr id="addr' + (d + 1) + '"></tr>');
-
-    //        var qty = '#quantity' + d;
-    //        var qtyVal = 1 * $(qty).val();
-
-    //        originalQuantity.push(qtyVal);
-    //    }
-    //}
-
     function FillCity(profomaId) {
 
         $.ajax({
@@ -138,7 +116,7 @@
 
             var aa = 1 * $("#itemCount").val();
             $('#addr' + aa).html("<td>" + (aa + 1) +
-                "</td><td><input id='description" + aa + "'name='description" + aa + "' type='text' value='" + description + "' readonly placeholder='Item' class='form-control' /></td><td><input id='quantity" + aa + "' type='text' onkeyup='calculatePriceTotal()' placeholder='QTY' value='" + quntity + "' name='quantity" + aa + "' class='form-control'></td><td><input id='unitPrice" + aa + "' name='unitPrice" + aa+ "' value='" + unitPrice + "' readonly type='text' placeholder='Price' class='form-control'></td><td><input class='form-control input-md'id='unitTotalPrice" + aa + "' name='unitTotalPrice" + aa + "' type='number' readonly placeholder='Total Price'/></td>");
+                "</td><td><input id='description" + aa + "'name='description" + aa + "' type='text' value='" + description + "' readonly placeholder='Item' class='form-control' /></td><td><input id='desc" + aa + "'name='desc" + aa + "' type='text' value='' placeholder='Description' class='form-control' /></td><td><input id='quantity" + aa + "' type='text' onkeyup='calculatePriceTotal()' placeholder='QTY' value='" + quntity + "' name='quantity" + aa + "' class='form-control'></td><td><input id='unitPrice" + aa + "' name='unitPrice" + aa+ "' value='" + unitPrice + "' readonly type='text' placeholder='Price' class='form-control'></td><td><input class='form-control input-md'id='unitTotalPrice" + aa + "' name='unitTotalPrice" + aa + "' type='number' readonly placeholder='Total Price'/></td>");
 
 
             $('#tab_logic').append('<tr id="addr' + (aa + 1) + '"></tr>');
@@ -260,6 +238,9 @@
 
                         </th>
                         <th class="text-center">
+                            Product
+                        </th>
+                          <th class="text-center">
                             Description
                         </th>
                         <th class="text-center">
@@ -280,6 +261,9 @@
                             <input type="text" id='description0' name="description0" placeholder='Item' class="form-control" />
                         </td>
                         <td>
+                            <input type="text" id='desc0' name="desc0" placeholder='Description' class="form-control" />
+                        </td>
+                        <td>
                             <input type="text" id='quantity0' onchange='calculatePriceTotal()' name="quantity0" placeholder='QTY' class="form-control" />
                         </td>
                         <td>
@@ -296,7 +280,6 @@
                 <div class="col-md-12">
                     <input id="itemCount" hidden="hidden" name="itemCount" />
                     <a id='delete_row' class="pull-right btn-mini btn btn-default" style="border:1px solid; border-color:red;">Delete Row</a>
-                    @*<a id="add_row" class="btn btn-default btn-mini pull-right" style="border:1px solid; border-color:#94c523; margin-right:1px;">Add Row</a>*@
                 </div>
             </div>
             <div class="row">

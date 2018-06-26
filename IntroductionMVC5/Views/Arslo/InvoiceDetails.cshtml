@@ -14,7 +14,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Date)
+            @string.Format("{0}", Model.Date.ToString("yyyy-MM-dd"))
         </dd>
 
         <dt>
@@ -22,7 +22,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TotalPrice)
+            @string.Format("{0:C}", Model.TotalPrice)
         </dd>
 
         <dt>
@@ -87,10 +87,10 @@
                             @Html.DisplayFor(modelItem => item.Quantity)
                         </td>
                         <td>
-                            R  @Html.DisplayFor(modelItem => item.Price)
+                            @string.Format("{0:C}", item.Price)
                         </td>
-                        <td style="color:red;">
-                            R  @Html.DisplayFor(modelItem => item.TotalPrice)
+                        <td style="color:green;">
+                            @string.Format("{0:C}", item.TotalPrice)
                         </td>
                     </tr>
                 }

@@ -29,7 +29,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Date)
+            @string.Format("{0}", Model.Date.ToString("yyyy-MM-dd"))
         </dd>
 
         <dt>
@@ -39,16 +39,23 @@
         <dd>
             @Html.DisplayFor(model => model.Status)
         </dd>
+        <dt>
+            <label>Total Weight</label>
+        </dt>
 
+        <dd>
+            @string.Format("{0} Tons",  Model.ProfomaItems.Sum(d => d.Quantity))
+        </dd>
+       
         <dt>
             <label>Amount</label>
         </dt>
 
         <dd>
-            R  @Html.DisplayFor(model => model.Amount)
+            @string.Format("{0:C}", (Model.Amount - Model.ProfomaDrawDowns.Sum(d => d.Amount)))
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Location)
+           @* @Html.DisplayNameFor(model => model.Location)*@
         </dt>
 
         <dd>
@@ -84,7 +91,7 @@
                     @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
                 </td>
                 <td>
-                    R @Html.DisplayFor(modelItem => item.Amount)
+                    @string.Format("{0:C}", item.Amount)
                 </td>
             </tr>
 }
@@ -104,6 +111,9 @@
                             Date
                         </th>
                         <th>
+                            Quantity
+                        </th>
+                        <th>
                             Total Price
                         </th>
                         <th>
@@ -114,20 +124,23 @@
 
                 @foreach (var item in Model.Invoices)
                 {
-                    <tr class="active">
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Reference)
-                        </td>
-                        <td>
-                            @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
-                        </td>
-                        <td>
-                            R @Html.DisplayFor(modelItem => item.TotalPrice)
-                        </td>
-                        <td>
-                            <input type="button" class="btn btn-primary btn-xs" onclick=" location.href='@Url.Action("GetPdf", "Arslo", new { fileName = item.InvoiceLocation })'" value="Download" />
-                        </td>
-                    </tr>
+                <tr class="active">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Reference)
+                    </td>
+                    <td>
+                        @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
+                    </td>
+                    <td>
+                        @string.Format("{0} Tons", item.InvoiceItems.Sum(s => s.Quantity))
+                    </td>
+                    <td>
+                        @string.Format("{0:C}", item.TotalPrice)
+                    </td>
+                    <td>
+                        <input type="button" class="btn btn-primary btn-xs" onclick=" location.href='@Url.Action("GetPdf", "Arslo", new { fileName = item.InvoiceLocation })'" value="Download" />
+                    </td>
+                </tr>
                 }
             </table>
         </div>

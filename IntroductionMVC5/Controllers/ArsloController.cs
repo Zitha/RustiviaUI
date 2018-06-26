@@ -135,7 +135,8 @@ namespace IntroductionMVC5.Web.Controllers
                     {
                         for (int k = 0; k < paidInvoices[j].InvoiceItems.Count; k++)
                         {
-                            if (profomas.ProfomaItems[i].Description == paidInvoices[j].InvoiceItems[k].Description)
+                            string invoiceItemDesc = paidInvoices[j].InvoiceItems[k].Description.Split('-')[0];
+                            if (profomas.ProfomaItems[i].Description == invoiceItemDesc.Trim())
                             {
                                 profomas.ProfomaItems[i].Quantity = profomas.ProfomaItems[i].Quantity - paidInvoices[j].InvoiceItems[k].Quantity;
                                 profomas.ProfomaItems[i].TotalPrice = profomas.ProfomaItems[i].Quantity * profomas.ProfomaItems[i].Price;
@@ -145,8 +146,6 @@ namespace IntroductionMVC5.Web.Controllers
                 }
             }
             profomas.Invoices = null;
-
-
 
             var json = Newtonsoft.Json.JsonConvert.SerializeObject(profomas);
 
@@ -194,13 +193,14 @@ namespace IntroductionMVC5.Web.Controllers
                     && collection["unitTotalPrice" + i] != string.Empty)
                 {
                     var d = collection["description" + i];
+                    var desc = collection["desc" + i];
                     var q = collection["quantity" + i];
                     var p = collection["unitPrice" + i];
                     var t = collection["unitTotalPrice" + i];
 
                     var item = new ArsloInvoiceItem
                     {
-                        Description = collection["description" + i],
+                        Description = collection["description" + i]+" - "+desc,
                         Quantity = Convert.ToDecimal(collection["quantity" + i]),
                         Price = Convert.ToDecimal(collection["unitPrice" + i]),
                         TotalPrice = Convert.ToDecimal(collection["unitTotalPrice" + i])
@@ -221,6 +221,7 @@ namespace IntroductionMVC5.Web.Controllers
             _unit.ArsloInvoices.Add(arsloInvoice);
             _unit.SaveChanges();
 
+            ViewBag.ActiveTab = "invoice";
             return RedirectToAction("Index");
         }
         private List<ArsloInvoice> GetAllInvoices()
@@ -280,7 +281,7 @@ namespace IntroductionMVC5.Web.Controllers
                         TotalPrice = Convert.ToDecimal(collection["unitTotalPrice" + i])
                     };
                     items.Add(item);
-                    profoma.Amount = profoma.Amount + item.TotalPrice;
+                    profoma.Amount = profoma.Amount.HasValue ? profoma.Amount.Value + item.TotalPrice:item.TotalPrice;
                 }
             }
             if (itemCount > 0)
@@ -300,7 +301,9 @@ namespace IntroductionMVC5.Web.Controllers
         private List<ArsloProfoma> GetAllProfomas()
         {
             List<ArsloProfoma> profomas = _unit.ArsloProfomas.GetAll()
-                .Include(iv => iv.Invoices).Include(d => d.Customer)
+                .Include(iv => iv.Invoices)
+                .Include(d => d.Customer)
+                .Include(pi=>pi.ProfomaItems)
                 .OrderBy(s => s.Date).ToList();
             return profomas;
         }
@@ -315,7 +318,13 @@ namespace IntroductionMVC5.Web.Controllers
         {
             ViewBag.Status = new SelectList(new List<string> { "", "Paid", "Part Payment", "Pending Payment" });
 
-            var profoma = _unit.ArsloProfomas.GetAll().Include(dr => dr.ProfomaDrawDowns).Include(iv => iv.Invoices).FirstOrDefault(pr => pr.Id == id);
+            var profoma = _unit.ArsloProfomas.GetAll()
+                .Include(dr => dr.ProfomaDrawDowns)
+                .Include(dr => dr.ProfomaItems)
+                .Include(iv => iv.Invoices)
+                .Include("Invoices.InvoiceItems")
+                .FirstOrDefault(pr => pr.Id == id);
+
             return View(profoma);
         }
 
@@ -349,8 +358,11 @@ namespace IntroductionMVC5.Web.Controllers
         [HttpPost]
         public ActionResult DrawDownProfoma(ArsloProfoma profoma, FormCollection collection)
         {
-            var dbProfoma = _unit.ArsloProfomas.GetAll().Include(c => c.Customer)
-                .Include(dr => dr.ProfomaDrawDowns).FirstOrDefault(pr => pr.Id == profoma.Id);
+            ArsloProfoma dbProfoma = _unit.ArsloProfomas
+                                    .GetAll().Include(c => c.Customer)
+                                    .Include(pd => pd.ProfomaDrawDowns)
+                                    .Include(iv=>iv.Invoices)
+                                    .FirstOrDefault(pr => pr.Id == profoma.Id);
 
             if (collection["reference"] != string.Empty &&
                 collection["drawdownAmount"] != string.Empty)
@@ -362,7 +374,7 @@ namespace IntroductionMVC5.Web.Controllers
                     Reference = collection["reference"]
                 };
 
-                dbProfoma.Amount = dbProfoma.Amount - drawDown.Amount;
+                //dbProfoma.Amount = dbProfoma.Amount - drawDown.Amount;
                 dbProfoma.ProfomaDrawDowns.Add(drawDown);
                 _unit.ArsloProfomas.Update(dbProfoma);
                 _unit.SaveChanges();
@@ -415,5 +427,25 @@ namespace IntroductionMVC5.Web.Controllers
             }
         }
 
+
+        public ViewResultBase Search(string search)
+        {
+            List<ArsloCustomer> customers =
+                _unit.ArsloCustomers.GetAll().OrderBy(s => s.CustomerName).ToList();
+
+            //alfabet, first letter
+            if (!string.IsNullOrEmpty(search))
+            {
+                customers = customers.OrderBy(s => s.CustomerName)
+                    .Where(s => s.CustomerName.ToUpper().Contains(search.ToUpper())).ToList();
+            }
+
+            ArsloViewModel arsloViewModel = new ArsloViewModel();
+            arsloViewModel.Customers = customers;
+            arsloViewModel.Profomas = GetAllProfomas();
+            arsloViewModel.Invoices = GetAllInvoices();
+
+            return View("Index", arsloViewModel);
+        }
     }
 }
