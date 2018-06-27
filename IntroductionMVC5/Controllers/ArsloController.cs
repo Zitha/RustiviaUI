@@ -228,7 +228,7 @@ namespace IntroductionMVC5.Web.Controllers
         {
             List<ArsloInvoice> profomas = _unit.ArsloInvoices.GetAll()
                 .Include(iv => iv.InvoiceItems)
-                .OrderBy(s => s.Date).ToList();
+                .OrderByDescending(s => s.Date).ToList();
             return profomas;
         }
 
@@ -242,7 +242,7 @@ namespace IntroductionMVC5.Web.Controllers
             ViewBag.Status = new SelectList(new List<string> { "Paid", "Part Payment", "Pending Payment" });
             var profomas = GetAllProfomas();
 
-            var ucr = string.Format("{0}ZA21366338-Arslo-{1}-{2}", DateTime.Now.Year.ToString().Substring(2, 2), DateTime.Now.Year.ToString().Substring(2, 2), profomas.Count + 1);
+            var ucr = string.Format("{0}ZA21366338-Arslo-{1}", DateTime.Now.Year.ToString().Substring(2, 2),  profomas.Count + 1);
 
             var profoma = string.Format("Arslo-{0}-{1}", DateTime.Now.Year.ToString().Substring(2, 2), profomas.Count + 1);
 
@@ -304,7 +304,7 @@ namespace IntroductionMVC5.Web.Controllers
                 .Include(iv => iv.Invoices)
                 .Include(d => d.Customer)
                 .Include(pi=>pi.ProfomaItems)
-                .OrderBy(s => s.Date).ToList();
+                .OrderByDescending(s => s.Date).ToList();
             return profomas;
         }
         public ActionResult Profomas()

@@ -40,25 +40,37 @@ namespace RustiviaSolutions.PDFGenerator
             var mainTable = new PdfPTable(2);
             mainTable.DefaultCell.Border = 2;
             mainTable.WidthPercentage = 80;
-            mainTable.HorizontalAlignment = Element.ALIGN_MIDDLE;
+            mainTable.HorizontalAlignment = Element.ALIGN_LEFT;
 
             //Header Table
             var headerTable = new PdfPTable(2)
             {
-                HorizontalAlignment = Element.ALIGN_MIDDLE,
+                HorizontalAlignment = Element.ALIGN_LEFT,
                 WidthPercentage = 80
             };
 
             var infoPhrase = new Phrase
             {
                 new Chunk("Arslo Trading PTY LTD\n\n",
-                    FontFactory.GetFont("Microsoft Sans Serif", 16, Font.BOLD, BaseColor.BLACK)),
-                new Chunk(string.Format("{0}, {1}", "CK NO:", "2012/218554/07 \n"),
-                    FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
+                    FontFactory.GetFont("Microsoft Sans Serif", 14, Font.BOLD, BaseColor.BLACK)),
+                new Chunk(string.Format("{0} {1}", "CK NO:", "2012/218854/07 \n"),
+                    FontFactory.GetFont("Microsoft Sans Serif", 8, Font.NORMAL, BaseColor.BLACK)),
+                 new Chunk(string.Format("IE Code:{0}", "21366338\n"),
+                   FontFactory.GetFont("Microsoft Sans Serif", 8, Font.NORMAL, BaseColor.BLACK)),
+                new Chunk(string.Format("Regn:{0}", "9246511183\n"),
+                   FontFactory.GetFont("Microsoft Sans Serif", 8, Font.NORMAL, BaseColor.BLACK)),
+                new Chunk(string.Format("Vat Regn:{0}", "4950267544\n\n"),
+                   FontFactory.GetFont("Microsoft Sans Serif", 8, Font.NORMAL, BaseColor.BLACK)),
                 new Chunk(string.Format("{0}", "54, NORTH REEF ROAD ACTIVIA PARK GERMISTON 1420\n"),
-                    FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                    new Chunk(string.Format("Tel: +{0}", "27 11 828 9961\n"),
-                    FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK))
+                    FontFactory.GetFont("Microsoft Sans Serif", 8, Font.NORMAL, BaseColor.BLACK)),
+                new Chunk(string.Format("Tel: +{0}", "27 11 828 9961\n"),
+                   FontFactory.GetFont("Microsoft Sans Serif", 8, Font.NORMAL, BaseColor.BLACK)),
+                new Chunk(string.Format("Fax: +{0}", "27 11 828 5134\n\n"),
+                   FontFactory.GetFont("Microsoft Sans Serif", 8, Font.NORMAL, BaseColor.BLACK)),
+                 new Chunk(string.Format("www.Arslo.co.za\n"),
+                    FontFactory.GetFont("Microsoft Sans Serif", 8, Font.NORMAL, BaseColor.BLACK)),
+                  new Chunk(string.Format("Email:{0}", "Nikhil@Rustiviametals.co.za\n"),
+                    FontFactory.GetFont("Microsoft Sans Serif", 8, Font.NORMAL, BaseColor.BLACK)),
             };
             headerTable.AddCell(new PdfPCell(infoPhrase)
             {
@@ -86,7 +98,7 @@ namespace RustiviaSolutions.PDFGenerator
             //Header cell
             var invoiceLabelCell =
                 new PdfPCell(new Phrase("INVOICE",
-                    FontFactory.GetFont(FontFactory.HELVETICA, 26, Font.BOLD, BaseColor.GRAY)))
+                    FontFactory.GetFont(FontFactory.HELVETICA, 22, Font.BOLD, BaseColor.GRAY)))
                 {
                     Colspan = 2,
                     HorizontalAlignment = Element.ALIGN_RIGHT,
@@ -383,21 +395,21 @@ namespace RustiviaSolutions.PDFGenerator
             Phrase p2 = new Phrase
             {
                 new Phrase("Shipping Details",
-                    FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.BOLD, BaseColor.BLACK))
+                    FontFactory.GetFont(FontFactory.HELVETICA, 12, Font.BOLDITALIC, BaseColor.BLACK))
             };
             var conact1Pr = new Paragraph { SpacingBefore = 10f };
 
-            var pol = new Phrase("POL \n" + invoice.PointOfLoading + "\n \n",
-                FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK));
+            var pol = new Phrase("POL :" + invoice.PointOfLoading + "\n",
+                FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.BOLD, BaseColor.BLACK));
 
-            var pod = new Phrase("POD \n" + invoice.PointOfDelivery + "\n \n",
-             FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK));
+            var pod = new Phrase("POD :" + invoice.PointOfDelivery + "\n",
+             FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.BOLD, BaseColor.BLACK));
 
-            var vessel = new Phrase("Vessel \n" + invoice.VesselNumber + "\n \n",
-             FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK));
+            var vessel = new Phrase("Vessel :" + invoice.VesselNumber + "\n",
+             FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.BOLD, BaseColor.BLACK));
 
-            var bookingNumber = new Phrase("Booking Number \n" + invoice.BookingNumber + "\n",
-             FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK));
+            var bookingNumber = new Phrase("Booking Number :" + invoice.BookingNumber + "\n",
+             FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.BOLD, BaseColor.BLACK));
 
             conactHeaderPr.Add(p2);
             conact1Pr.Add(pol);
@@ -446,18 +458,26 @@ namespace RustiviaSolutions.PDFGenerator
             {
                 new Chunk("Arslo Trading PTY LTD\n\n",
                     FontFactory.GetFont("Microsoft Sans Serif", 16, Font.BOLD, BaseColor.BLACK)),
-                new Chunk(string.Format("{0} {1}", "CK NO:", "2012/218554/07 \n"),
+                new Chunk(string.Format("{0} {1}", "CK NO:", "2012/218854/07 \n"),
                     FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
+                 new Chunk(string.Format("IE Code:{0}", "21366338\n"),
+                   FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
+                new Chunk(string.Format("Regn:{0}", "9246511183\n"),
+                   FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
+                new Chunk(string.Format("Vat Regn:{0}", "4950267544\n\n"),
+                   FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
                 new Chunk(string.Format("{0}", "54, NORTH REEF ROAD ACTIVIA PARK GERMISTON 1420\n"),
                     FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
                 new Chunk(string.Format("Tel: +{0}", "27 11 828 9961\n"),
                    FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                new Chunk(string.Format("Fax: +{0}", "27 11 828 5134\n"),
+                new Chunk(string.Format("Fax: +{0}", "27 11 828 5134\n\n"),
                    FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                new Chunk(string.Format("Email:", "Nikhil@Rustiviametals.co.za\n"),
+                new Chunk(string.Empty,
+                   FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
+                 new Chunk(string.Format("www.Arslo.co.za\n"),
                     FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                 new Chunk(string.Format("www.Arslo.co.za", "\n"),
-                    FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK))
+                  new Chunk(string.Format("Email:{0}", "Nikhil@Rustiviametals.co.za\n"),
+                    FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
             };
             headerTable.AddCell(new PdfPCell(infoPhrase)
             {
@@ -486,7 +506,7 @@ namespace RustiviaSolutions.PDFGenerator
             });
             //Header cell
             var invoiceLabelCell =
-                new PdfPCell(new Phrase("Pro foma Invoice",
+                new PdfPCell(new Phrase("Profoma Invoice",
                     FontFactory.GetFont(FontFactory.HELVETICA, 26, Font.BOLD, BaseColor.DARK_GRAY)))
                 {
                     Colspan = 2,

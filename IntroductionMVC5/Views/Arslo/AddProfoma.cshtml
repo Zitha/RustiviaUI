@@ -2,7 +2,6 @@
 
 @{
     ViewBag.Title = "Add Profoma";
-    //Layout = "~/Views/Shared/_ArsloLayout.cshtml";
 }
 
 <script type="text/javascript">
@@ -33,6 +32,12 @@
             if (itmPrice && qtyVal) {
                 var total = itmPrice * qtyVal;
                 $('#unitTotalPrice' + a).val(total.toFixed(2));
+
+                if (total > 0) {
+                    $("#addProfomaBtn").removeAttr('disabled');
+                }
+            } else {
+                $("#addProfomaBtn").attr('disabled', 'disabled');
             }
         }
         $("#itemCount").val(i);
@@ -87,6 +92,8 @@
                 $('#total').val(total);
             }
         };
+
+        $("#addProfomaBtn").attr('disabled', 'disabled');
 
     });
 </script>
@@ -167,7 +174,7 @@
                                 <input type="text" id='description0' name="description0" placeholder='Item' class="form-control" />
                             </td>
                             <td>
-                                <input type="text" id='quantity0'  onkeyup='calculatePriceTotal()' name="quantity0" placeholder='QTY' class="form-control" />
+                                <input type="text" id='quantity0' onkeyup='calculatePriceTotal()' name="quantity0" placeholder='QTY' class="form-control" />
                             </td>
                             <td>
                                 <input type="text" id='unitPrice0' onkeyup='calculatePriceTotal()' name="unitPrice0" placeholder='Price' class="form-control calcClass" />
@@ -190,7 +197,7 @@
         </div>
         <p>
             <input type="button" class="btn btn-primary" onclick=" location.href='@Url.Action("Index", "Arslo")'" value="Back" />
-            <button value="Create" class="btn btn-primary" onclick=" location.href='@Url.Action("AddProfoma", "Arslo")'">Create</button>
+            <button value="Create" class="btn btn-primary" id="addProfomaBtn" onclick=" location.href='@Url.Action("AddProfoma", "Arslo")'">Create</button>
         </p>
     </fieldset>
 }
@@ -210,9 +217,9 @@
                         @{ Html.RenderPartial("_AddProfomaItem", new IntroductionMVC5.Models.ArsloTrading.ArsloProfomaItem { }); }
                     </div>
                 </div>
-                    <div class="modal-footer">
-                    </div>
-                            }
+                <div class="modal-footer">
+                </div>
+            }
         </div>
     </div>
 </div>
