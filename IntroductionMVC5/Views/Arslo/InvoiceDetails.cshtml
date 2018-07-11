@@ -22,7 +22,7 @@
         </dt>
 
         <dd>
-            @string.Format("{0:C}", Model.TotalPrice)
+            @string.Format("R {0:N}", Model.TotalPrice)
         </dd>
 
         <dt>
@@ -87,10 +87,10 @@
                             @Html.DisplayFor(modelItem => item.Quantity)
                         </td>
                         <td>
-                            @string.Format("{0:C}", item.Price)
+                            @string.Format("R {0:N}", item.Price)
                         </td>
                         <td style="color:green;">
-                            @string.Format("{0:C}", item.TotalPrice)
+                            @string.Format("R {0:N}", item.TotalPrice)
                         </td>
                     </tr>
                 }

@@ -192,11 +192,11 @@ namespace IntroductionMVC5.Web.Controllers
                     && collection["unitPrice" + i] != string.Empty
                     && collection["unitTotalPrice" + i] != string.Empty)
                 {
-                    var d = collection["description" + i];
+                    //var d = collection["description" + i];
                     var desc = collection["desc" + i];
-                    var q = collection["quantity" + i];
-                    var p = collection["unitPrice" + i];
-                    var t = collection["unitTotalPrice" + i];
+                    //var q = collection["quantity" + i];
+                    //var p = collection["unitPrice" + i];
+                    //var t = collection["unitTotalPrice" + i];
 
                     var item = new ArsloInvoiceItem
                     {

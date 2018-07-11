@@ -189,7 +189,7 @@
                             }
                             <td>
                                 <strong>
-                                    @string.Format("{0:C}", profoma.Invoices.Sum(s => s.TotalPrice))
+                                    @string.Format("R {0:N}", profoma.Invoices.Sum(s => s.TotalPrice))
                                 </strong>
                             </td>
                             <td>
@@ -270,7 +270,7 @@
                     </td>
                     <td style="color:green">
                         <strong>
-                            @string.Format("{0:C}", item.TotalPrice)
+                            @string.Format("R {0:N}", item.TotalPrice)
                         </strong>
                     </td>
                     <td>

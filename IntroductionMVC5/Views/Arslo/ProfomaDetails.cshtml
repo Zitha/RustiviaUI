@@ -52,7 +52,7 @@
         </dt>
 
         <dd>
-            @string.Format("{0:C}", (Model.Amount - Model.ProfomaDrawDowns.Sum(d => d.Amount)))
+            @string.Format("R {0:N}", (Model.Amount - Model.ProfomaDrawDowns.Sum(d => d.Amount)))
         </dd>
         <dt>
            @* @Html.DisplayNameFor(model => model.Location)*@
@@ -91,7 +91,7 @@
                     @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
                 </td>
                 <td>
-                    @string.Format("{0:C}", item.Amount)
+                    @string.Format("R {0:N}", item.Amount)
                 </td>
             </tr>
 }
@@ -135,7 +135,7 @@
                         @string.Format("{0} Tons", item.InvoiceItems.Sum(s => s.Quantity))
                     </td>
                     <td>
-                        @string.Format("{0:C}", item.TotalPrice)
+                        @string.Format("R {0:N}", item.TotalPrice)
                     </td>
                     <td>
                         <input type="button" class="btn btn-primary btn-xs" onclick=" location.href='@Url.Action("GetPdf", "Arslo", new { fileName = item.InvoiceLocation })'" value="Download" />
