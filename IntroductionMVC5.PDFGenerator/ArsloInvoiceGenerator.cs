@@ -17,8 +17,8 @@ namespace RustiviaSolutions.PDFGenerator
         private string _invoicepath;
         public ArsloInvoiceGenerator()
         {
-            _invoicepath = HttpContext.Current.Server.MapPath("~/ArsloInvoice");
-            //_invoicepath = @"C:\Projects\Rustivia\IntroductionMVC5\IntroductionMVC5\ArsloInvoice";
+            //_invoicepath = HttpContext.Current.Server.MapPath("~/ArsloInvoice");
+            _invoicepath = @"C:\Projects\Rustivia\IntroductionMVC5\IntroductionMVC5\ArsloInvoice";
             if (!Directory.Exists(_invoicepath))
             {
                 Directory.CreateDirectory(_invoicepath);
@@ -436,195 +436,147 @@ namespace RustiviaSolutions.PDFGenerator
             var doc = new Document(PageSize.A4);
             _invoicepath = string.Format("{0}\\{1}.pdf", _invoicepath, profoma.ProfomaNumber);
             var output = new FileStream(_invoicepath, FileMode.Create);
-            //var filecontent = new MemoryStream();
+
             PdfWriter writer = PdfWriter.GetInstance(doc, output);
 
             doc.AddTitle("Profoma Invoice");
 
             doc.Open();
 
-            var mainTable = new PdfPTable(2);
-            mainTable.DefaultCell.Border = 2;
-            mainTable.WidthPercentage = 90;
-            mainTable.HorizontalAlignment = Element.ALIGN_MIDDLE;
             //Header Table
-            var headerTable = new PdfPTable(2)
+            var logoTable = new PdfPTable(1)
             {
-                HorizontalAlignment = Element.ALIGN_LEFT,
+                HorizontalAlignment = Element.ALIGN_CENTER,
                 WidthPercentage = 90
             };
 
-            var infoPhrase = new Phrase
-            {
-                new Chunk("Arslo Trading PTY LTD\n\n",
-                    FontFactory.GetFont("Microsoft Sans Serif", 16, Font.BOLD, BaseColor.BLACK)),
-                new Chunk(string.Format("{0} {1}", "CK NO:", "2012/218854/07 \n"),
-                    FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                 new Chunk(string.Format("IE Code:{0}", "21366338\n"),
-                   FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                new Chunk(string.Format("Regn:{0}", "9246511183\n"),
-                   FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                new Chunk(string.Format("Vat Regn:{0}", "4950267544\n\n"),
-                   FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                new Chunk(string.Format("{0}", "54, NORTH REEF ROAD ACTIVIA PARK GERMISTON 1420\n"),
-                    FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                new Chunk(string.Format("Tel: +{0}", "27 11 828 9961\n"),
-                   FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                new Chunk(string.Format("Fax: +{0}", "27 11 828 5134\n\n"),
-                   FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                new Chunk(string.Empty,
-                   FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                 new Chunk(string.Format("www.Arslo.co.za\n"),
-                    FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
-                  new Chunk(string.Format("Email:{0}", "Nikhil@Rustiviametals.co.za\n"),
-                    FontFactory.GetFont("Microsoft Sans Serif", 10, Font.NORMAL, BaseColor.BLACK)),
+            //Add Logo
+            //var path = Path.Combine(HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["LogoPath"]));
+            var path = @"C:\Projects\Rustivia\IntroductionMVC5\IntroductionMVC5\Content\img\ArsoloLogo2.png";
+            Image image = Image.GetInstance(path);
+            PdfPCell imghead = new PdfPCell(image);
+            imghead.PaddingRight = 100f;
+            logoTable.AddCell(image);
+
+
+            //Header cell
+            List<CellValue> registration = new List<CellValue> {
+                new CellValue{ Value="CK NO:2012/218554",FontSize=Font.BOLD ,BorderColor=BaseColor.WHITE},
+                new CellValue{ Value="Vat No : 4950267544",FontSize=Font.BOLD,BorderColor=BaseColor.WHITE},
+                new CellValue{ Value="IE Code : 21366338",FontSize=Font.BOLD,BorderColor=BaseColor.WHITE}
             };
-            headerTable.AddCell(new PdfPCell(infoPhrase)
+            PdfPTable registrationTable = GetTable(registration);
+            registrationTable.SpacingBefore = 5f;
+
+            List<CellValue> address = new List<CellValue> {
+                new CellValue{ Value="54, NORTH REEF ROAD PARK GERMISTON 1420",
+                    FontSize =Font.NORMAL,
+                    HorizontalAlignment = Element.ALIGN_RIGHT,
+                    Padding =100f,
+                    BorderColor=BaseColor.WHITE
+                }
+            };
+            PdfPTable addressTable = GetTable(address);
+            addressTable.SpacingBefore = 2f;
+
+            List<CellValue> contactDetails = new List<CellValue> {
+                new CellValue{ Value="Tel: +27 11 828 9961",
+                    FontSize =Font.NORMAL,
+                    BorderColor =BaseColor.WHITE},
+                new CellValue{ Value="Fax: +27 11 828 5134",
+                    FontSize =Font.NORMAL,
+                    HorizontalAlignment = Element.ALIGN_RIGHT,
+                    Padding =100f,
+                    BorderColor =BaseColor.WHITE
+                }
+            };
+            PdfPTable contactDetail = GetTable(contactDetails);
+            contactDetail.SpacingBefore = 2f;
+
+            List<CellValue> profomaNumber = new List<CellValue> {
+                new CellValue{ Value=string.Format("PRO FORMA INVOICE {0}",profoma.ProfomaNumber),
+                    FontSize =Font.BOLD,
+                    HorizontalAlignment = Element.ALIGN_RIGHT,
+                    Padding =100f,
+                    BorderColor =BaseColor.GRAY,
+                    BackGroundColor=BaseColor.GRAY
+                }
+            };
+            PdfPTable profomaNumberTable = GetTable(profomaNumber);
+            profomaNumberTable.SpacingBefore = 2f;
+
+
+            List<CellValue> dateValues = new List<CellValue> {
+                new CellValue{ Value=string.Format("UCR NO - {0}",profoma.UCRNumber),
+                    FontSize =Font.BOLD,
+                    HorizontalAlignment = Element.ALIGN_LEFT,
+                    BorderColor =BaseColor.WHITE,
+                    BackGroundColor=BaseColor.WHITE
+                },
+                 new CellValue{ Value=string.Format("DATE - {0}",profoma.Date.ToString("yyyy/mm/dd")),
+                    FontSize =Font.BOLD,
+                    HorizontalAlignment = Element.ALIGN_LEFT,
+                    Padding =100f,
+                    BorderColor =BaseColor.WHITE,
+                    BackGroundColor=BaseColor.WHITE
+                }
+            };
+            PdfPTable dateTable = GetTable(dateValues);
+            dateTable.SpacingBefore = 2f;
+
+            string[] custAddress = arsloCustomer.Address.Split(',');
+            Phrase custAddressPhrase = new Phrase();
+
+            for (int i = 0; i < custAddress.Length; i++)
+            {
+                custAddressPhrase.Add(new Phrase { new Chunk(string.Format("{0} \n", custAddress[i]), FontFactory.GetFont("Microsoft Sans Serif", 8, Font.BOLD, BaseColor.BLACK)) });
+            }
+            var headerTable = new PdfPTable(1)
+            {
+                WidthPercentage = 90
+            };
+            headerTable.AddCell(new PdfPCell(custAddressPhrase)
             {
                 BorderColor = BaseColor.WHITE,
                 VerticalAlignment = Element.ALIGN_TOP,
-                HorizontalAlignment = Element.ALIGN_LEFT,
-                PaddingBottom = 1f,
-                PaddingTop = 0f
+                HorizontalAlignment = Element.ALIGN_LEFT
             });
-            //Add Logo
-            var path = Path.Combine(HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["LogoPath"]));
-            //var path = ConfigurationManager.AppSettings["LogoPath"];
-            //var path = $"C:\\Projects\\Rustivia\\IntroductionMVC5\\IntroductionMVC5\\Content\\img\\ArsoloLogo.png";
-            Image image =
-                Image.GetInstance(path);
-
-            image.ScaleToFit(60f, 40f);
-            image.Alignment = Element.ALIGN_RIGHT;
-            headerTable.AddCell(new PdfPCell(image)
-            {
-                BorderColor = BaseColor.WHITE,
-                VerticalAlignment = Element.ALIGN_MIDDLE,
-                HorizontalAlignment = Element.ALIGN_RIGHT,
-                PaddingBottom = 1f,
-                PaddingTop = 0f
-            });
-            //Header cell
-            var invoiceLabelCell =
-                new PdfPCell(new Phrase("Profoma Invoice",
-                    FontFactory.GetFont(FontFactory.HELVETICA, 26, Font.BOLD, BaseColor.DARK_GRAY)))
-                {
-                    Colspan = 2,
-                    HorizontalAlignment = Element.ALIGN_RIGHT,
-                    PaddingTop = 10f,
-                    BorderColor = BaseColor.WHITE
-                };
-
-            mainTable.AddCell(invoiceLabelCell);
-            mainTable.SpacingBefore = 10f;
-            //-------------------------//--------------------------------------------------//
-            //Invoice Number Table
-            var invoiceNumberTable = new PdfPTable(2)
-            {
-                HorizontalAlignment = Element.ALIGN_RIGHT,
-                WidthPercentage = 50
-            };
-
-            //Labels For PI number and Data
-            var invNumberCellLbl = new PdfPCell
-            {
-                Colspan = 1,
-                BackgroundColor = BaseColor.LIGHT_GRAY,
-                BorderColor = BaseColor.DARK_GRAY
-            };
-            invNumberCellLbl.AddElement(new Phrase("PI",
-                FontFactory.GetFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.DARK_GRAY)));
-            invNumberCellLbl.VerticalAlignment = Element.ALIGN_LEFT;
-            var invNumberCellData = new PdfPCell
-            {
-                Colspan = 1,
-                BorderColor = BaseColor.GRAY
-            };
-            invNumberCellData.AddElement(new Phrase(profoma.ProfomaNumber,
-                FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
-            invNumberCellData.VerticalAlignment = Element.ALIGN_LEFT;
-
-            invoiceNumberTable.AddCell(invNumberCellLbl);
-            invoiceNumberTable.AddCell(invNumberCellData);
-
-
-            //Labels For UCR number and Data
-            var UCRCellLbl = new PdfPCell
-            {
-                Colspan = 1,
-                BackgroundColor = BaseColor.LIGHT_GRAY,
-                BorderColor = BaseColor.DARK_GRAY
-            };
-            UCRCellLbl.AddElement(new Phrase("UCR NO",
-                FontFactory.GetFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.DARK_GRAY)));
-            UCRCellLbl.VerticalAlignment = Element.ALIGN_LEFT;
-            var UCRCellData = new PdfPCell
-            {
-                Colspan = 1,
-                BorderColor = BaseColor.GRAY
-            };
-            UCRCellData.AddElement(new Phrase(profoma.UCRNumber,
-                FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
-            UCRCellData.VerticalAlignment = Element.ALIGN_LEFT;
-
-            invoiceNumberTable.AddCell(UCRCellLbl);
-            invoiceNumberTable.AddCell(UCRCellData);
-
-            //Data For Date and Date
-            var dateCellLbl = new PdfPCell
-            {
-                VerticalAlignment = Element.ALIGN_MIDDLE,
-                BackgroundColor = BaseColor.LIGHT_GRAY,
-                BorderColor = BaseColor.DARK_GRAY
-            };
-            dateCellLbl.AddElement(new Phrase("Date",
-                FontFactory.GetFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.DARK_GRAY)));
-
-            var dateCellData = new PdfPCell
-            {
-                VerticalAlignment = Element.ALIGN_MIDDLE,
-                BorderColor = BaseColor.GRAY
-            };
-            dateCellData.AddElement(new Phrase(DateTime.Now.ToString("yyyy-MM-dd"),
-                FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
-            invoiceNumberTable.AddCell(dateCellLbl);
-            invoiceNumberTable.AddCell(dateCellData);
-            invoiceNumberTable.SpacingBefore = 10f;
+            headerTable.SpacingBefore = 15f;
             //-------------------------//--------------------------------------------------//
 
-            //Labels For Invoice Billing Information
-            var billignInfoTable = new PdfPTable(1)
-            {
-                HorizontalAlignment = Element.ALIGN_LEFT,
-                WidthPercentage = 30
-            };
-            //Billing Information Label
-            var billignCellLbl = new PdfPCell
-            {
-                Colspan = 1,
-                BackgroundColor = BaseColor.LIGHT_GRAY,
-                BorderColor = BaseColor.DARK_GRAY,
-                PaddingTop = 10f,
-                PaddingLeft = 50f
-            };
-            billignCellLbl.AddElement(new Phrase("Customer",
-                FontFactory.GetFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.DARK_GRAY)));
-            billignCellLbl.VerticalAlignment = Element.ALIGN_LEFT;
-            billignInfoTable.AddCell(billignCellLbl);
+            ////Labels For Invoice Billing Information
+            //var billignInfoTable = new PdfPTable(1)
+            //{
+            //    HorizontalAlignment = Element.ALIGN_LEFT,
+            //    WidthPercentage = 30
+            //};
+            ////Billing Information Label
+            //var billignCellLbl = new PdfPCell
+            //{
+            //    Colspan = 1,
+            //    BackgroundColor = BaseColor.LIGHT_GRAY,
+            //    BorderColor = BaseColor.DARK_GRAY,
+            //    PaddingTop = 10f,
+            //    PaddingLeft = 50f
+            //};
+            //billignCellLbl.AddElement(new Phrase("Customer",
+            //    FontFactory.GetFont(FontFactory.HELVETICA, 12, Font.BOLD, BaseColor.DARK_GRAY)));
+            //billignCellLbl.VerticalAlignment = Element.ALIGN_LEFT;
+            //billignInfoTable.AddCell(billignCellLbl);
 
-            //Billing Information Label
-            var billignCellData = new PdfPCell
-            {
-                Colspan = 1,
-                BorderColor = BaseColor.WHITE
-            };
-            billignCellData.AddElement(new Phrase(arsloCustomer.CustomerName + "\n" + arsloCustomer.Address + "\n" + arsloCustomer.TellNumber,
-                FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
-            billignCellData.VerticalAlignment = Element.ALIGN_LEFT;
-            billignInfoTable.AddCell(billignCellData);
-            billignInfoTable.SpacingAfter = 50f;
-            billignInfoTable.SpacingBefore = 10f;
-            //-------------------------//--------------------------------------------------//
+            ////Billing Information Label
+            //var billignCellData = new PdfPCell
+            //{
+            //    Colspan = 1,
+            //    BorderColor = BaseColor.WHITE
+            //};
+            //billignCellData.AddElement(new Phrase(arsloCustomer.CustomerName + "\n" + arsloCustomer.Address + "\n" + arsloCustomer.TellNumber,
+            //    FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.NORMAL, BaseColor.BLACK)));
+            //billignCellData.VerticalAlignment = Element.ALIGN_LEFT;
+            //billignInfoTable.AddCell(billignCellData);
+            //billignInfoTable.SpacingAfter = 50f;
+            //billignInfoTable.SpacingBefore = 10f;
+            ////-------------------------//--------------------------------------------------//
             var itemsTable = new PdfPTable(4)
             {
                 HorizontalAlignment = Element.ALIGN_LEFT,
@@ -681,93 +633,79 @@ namespace RustiviaSolutions.PDFGenerator
             {
                 total = total + item.Quantity * item.Price;
                 //Description Label
-                var item1 = new PdfPCell
-                {
-                    Colspan = 1,
-                    BorderColor = BaseColor.GRAY,
-                    PaddingTop = 10f,
-                    PaddingBottom = 10f
-                };
-                item1.AddElement(new Phrase(item.Description,
-                    FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK)));
+                var item1 = GetCell(item.Description, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                item1.PaddingTop = 10f;
+                item1.PaddingBottom = 10f;
                 item1.VerticalAlignment = Element.ALIGN_LEFT;
                 itemsTable.AddCell(item1);
                 //QTY Label
-                var item2 = new PdfPCell
-                {
-                    Colspan = 1,
-                    BorderColor = BaseColor.GRAY,
-                    PaddingTop = 10f,
-                    PaddingBottom = 10f
-                };
-                item2.AddElement(new Phrase(string.Format("{0}", item.Quantity),
-                    FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK)));
+                var item2 = GetCell(string.Format("{0}", item.Quantity), BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                item2.PaddingTop = 10f;
+                item2.PaddingBottom = 10f;
                 item2.VerticalAlignment = Element.ALIGN_LEFT;
                 itemsTable.AddCell(item2);
-
-
                 //Unit Price Label
-                var item3 = new PdfPCell
-                {
-                    Colspan = 1,
-                    BorderColor = BaseColor.GRAY,
-                    PaddingTop = 10f,
-                    PaddingBottom = 10f
-                };
-                item3.AddElement(new Phrase(string.Format("R {0}", String.Format("{0:n}", item.Price)),
-                    FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK)));
+                var item3 = GetCell(string.Format("R {0}", String.Format("{0:n}", item.Price)), BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                item3.PaddingTop = 10f;
+                item3.PaddingBottom = 10f;
                 item3.VerticalAlignment = Element.ALIGN_LEFT;
                 itemsTable.AddCell(item3);
                 //totalunit Price Label
-                var item4 = new PdfPCell
-                {
-                    Colspan = 1,
-                    BorderColor = BaseColor.GRAY,
-                    PaddingTop = 10f,
-                    PaddingBottom = 10f
-                };
-                item4.AddElement(new Phrase(string.Format("R {0}", String.Format("{0:n}", item.Price * item.Quantity)),
-                    FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK)));
+                var item4 = GetCell(string.Format("R {0}", String.Format("{0:n}", item.Price * item.Quantity)), BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                item4.PaddingTop = 10f;
+                item4.PaddingBottom = 10f;
                 item4.VerticalAlignment = Element.ALIGN_LEFT;
                 itemsTable.AddCell(item4);
             }
+
+            for (int em = 1; em < 5; em++)
+            {
+                //Description Label
+                var item1 = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                item1.PaddingTop = 10f;
+                item1.PaddingBottom = 10f;
+                item1.VerticalAlignment = Element.ALIGN_LEFT;
+                itemsTable.AddCell(item1);
+                //QTY Label
+                var item2 = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                item2.PaddingTop = 10f;
+                item2.PaddingBottom = 10f;
+                item2.VerticalAlignment = Element.ALIGN_LEFT;
+                itemsTable.AddCell(item2);
+                //Unit Price Label
+                var item3 = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                item3.PaddingTop = 10f;
+                item3.PaddingBottom = 10f;
+                item3.VerticalAlignment = Element.ALIGN_LEFT;
+                itemsTable.AddCell(item3);
+                //totalunit Price Label
+                var item4 = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                item4.PaddingTop = 10f;
+                item4.PaddingBottom = 10f;
+                item4.VerticalAlignment = Element.ALIGN_LEFT;
+                itemsTable.AddCell(item4);
+            }
+
             float[] widths = new float[] { 50f, 10f, 20f, 20f };
             itemsTable.SetWidths(widths);
-            var useless1 = new PdfPCell
-            {
-                Colspan = 2,
-                BorderColor = BaseColor.GRAY
-            };
-            useless1.AddElement(new Phrase("",
-                FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.NORMAL, BaseColor.BLACK)));
-            useless1.VerticalAlignment = Element.ALIGN_LEFT;
-            itemsTable.AddCell(useless1);
+            var emptyCell = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+            emptyCell.Colspan = 2;
+            emptyCell.VerticalAlignment = Element.ALIGN_LEFT;
+            itemsTable.AddCell(emptyCell);
 
-
-            var TotalLabel = new PdfPCell
-            {
-                Colspan = 1,
-                BorderColor = BaseColor.GRAY,
-                BackgroundColor = BaseColor.LIGHT_GRAY,
-            };
-            TotalLabel.AddElement(new Phrase("Total",
-                FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK)));
+            var TotalLabel = GetCell("Total", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+            TotalLabel.BorderColor = BaseColor.GRAY;
+            TotalLabel.BackgroundColor = BaseColor.LIGHT_GRAY;
             TotalLabel.VerticalAlignment = Element.ALIGN_LEFT;
             itemsTable.AddCell(TotalLabel);
 
-
             //total Price Label
-            var totalPrice = new PdfPCell
-            {
-                Colspan = 1,
-                BorderColor = BaseColor.GRAY,
-                BackgroundColor = BaseColor.LIGHT_GRAY,
-            };
-            totalPrice.AddElement(new Phrase(string.Format("R {0}", String.Format("{0:n}", total)),
-                FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK)));
+            var totalPrice = GetCell(string.Format("R {0}", String.Format("{0:n}", total)), BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+            totalPrice.BorderColor = BaseColor.GRAY;
+            totalPrice.BackgroundColor = BaseColor.LIGHT_GRAY;
             totalPrice.VerticalAlignment = Element.ALIGN_LEFT;
             itemsTable.AddCell(totalPrice);
-
+            itemsTable.SpacingBefore = 30f;
 
             //Banking Details
             var bankingHeaderPr = new Paragraph { SpacingBefore = 20f };
@@ -824,10 +762,15 @@ namespace RustiviaSolutions.PDFGenerator
             authorisedSpacing.Add(authorised);
             forArsloSpacing.Add(forArslo);
 
+            doc.Add(logoTable);
+            doc.Add(registrationTable);
+            doc.Add(addressTable);
+            doc.Add(contactDetail);
+            doc.Add(profomaNumberTable);
+            doc.Add(dateTable);
             doc.Add(headerTable);
-            doc.Add(mainTable);
-            doc.Add(invoiceNumberTable);
-            doc.Add(billignInfoTable);
+            //doc.Add(invoiceNumberTable);
+            //doc.Add(billignInfoTable);
             doc.Add(itemsTable);
 
             doc.Add(bankingHeaderPr);
@@ -844,6 +787,47 @@ namespace RustiviaSolutions.PDFGenerator
             output.Close();
 
             return _invoicepath;
+        }
+
+        private Image GetImage(string imagePath)
+        {
+            Image image = null;
+            if (File.Exists(imagePath))
+            {
+                image = Image.GetInstance(imagePath);
+            }
+            return image;
+        }
+
+        private PdfPCell GetCell(string data, BaseColor baseColor, BaseColor backgroundColor, int style = Font.NORMAL)
+        {
+            PdfPCell cell = new PdfPCell
+            {
+                VerticalAlignment = Element.ALIGN_MIDDLE,
+                BorderColor = BaseColor.GRAY,
+                BackgroundColor = backgroundColor,
+            };
+            cell.AddElement(new Phrase(data, FontFactory.GetFont(FontFactory.HELVETICA, 8, style, baseColor)));
+
+            return cell;
+        }
+
+        private PdfPTable GetTable(List<CellValue> values)
+        {
+            PdfPTable table = new PdfPTable(values.Count)
+            {
+                WidthPercentage = 90
+            };
+
+            foreach (CellValue value in values)
+            {
+                PdfPCell cell = GetCell(value.Value, BaseColor.BLACK, value.BackGroundColor, value.FontSize);
+                cell.BorderColor = value.BorderColor;
+                cell.HorizontalAlignment = value.HorizontalAlignment;
+                cell.PaddingLeft = value.Padding;
+                table.AddCell(cell);
+            }
+            return table;
         }
     }
 }

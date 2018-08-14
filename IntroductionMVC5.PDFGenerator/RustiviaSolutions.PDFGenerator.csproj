@@ -86,6 +86,7 @@
   <ItemGroup>
     <Compile Include="ArsloInvoiceGenerator.cs" />
     <Compile Include="BinaryContentResult.cs" />
+    <Compile Include="CellValue.cs" />
     <Compile Include="ContainerInfomationGenerator.cs" />
     <Compile Include="FakeView.cs" />
     <Compile Include="HtmlViewRenderer.cs" />

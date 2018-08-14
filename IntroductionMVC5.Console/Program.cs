@@ -5,6 +5,7 @@ using IntroductionMVC5.Data;
 using IntroductionMVC5.Models;
 using IntroductionMVC5.Models.Integrator;
 using IntroductionMVC5.Models.PettyCash;
+using IntroductionMVC5.Models.ArsloTrading;
 using RustiviaSolutions.PDFGenerator;
 using System.Net.Mail;
 using System.Net;
@@ -23,8 +24,8 @@ namespace IntroductionMVC5.ConsoleApp
 
                 //AddWeighBridgeInfos(context);
                 //AddSupplier(context);
-                // GenerateProfoma();
-                GenerateRandomNumbers();
+                GenerateProfoma();
+                //GenerateRandomNumbers();
                 //GenerateInvoice();
                 //var cn = new ContainerInfomationGenerator();
                 //cn.PrintContainerInfomation(new Container
@@ -125,7 +126,7 @@ namespace IntroductionMVC5.ConsoleApp
                     foreach (var board in boards)
                     {
                         textBody += "<tr><td>" + board.Key + "</td><td>" + board.Value[0] + "</td><td> " + board.Value[1] + "</td>" +
-                            "<td>" + board.Value[2] + "</td><td>"+ board.Value[3] + "</td><td>" + board.Value[4] + "</td><td>" + board.Value[5] + "</td> </tr>";
+                            "<td>" + board.Value[2] + "</td><td>" + board.Value[3] + "</td><td>" + board.Value[4] + "</td><td>" + board.Value[5] + "</td> </tr>";
                     }
 
                     textBody += "</table>";
@@ -148,26 +149,28 @@ namespace IntroductionMVC5.ConsoleApp
 
         private static void GenerateProfoma()
         {
-            var cn = new ArsloInvoiceGenerator();
-            var d = cn.GenerateProfoma(new Models.ArsloTrading.ArsloProfoma
+            ArsloInvoiceGenerator invoiceGenerator = new ArsloInvoiceGenerator();
+            ArsloProfoma profoma = new ArsloProfoma
             {
                 Amount = 300,
                 Date = DateTime.Now,
                 ProfomaNumber = "2342-6345534",
                 UCRNumber = "UHADAA",
-                ProfomaItems = new List<Models.ArsloTrading.ArsloProfomaItem> {
-                        new Models.ArsloTrading.ArsloProfomaItem {
+                ProfomaItems = new List<ArsloProfomaItem> {
+                        new ArsloProfomaItem {
                         Description="HKJASD",
                         Price=30,
                         Quantity=10,
                         TotalPrice=300
                     } }
-            }, new Models.ArsloTrading.ArsloCustomer
+            };
+            ArsloCustomer customer = new ArsloCustomer
             {
                 CustomerName = "James Smith",
                 TellNumber = "012 365 2514",
-                Address = "21 Nanyuki Road"
-            });
+                Address = "AL SHAMSI BUILDING , FLAT #110	AL KUWAIT STREET , MYSALOON, SHARJAH 25714 UAE"
+            };
+            string invoicePath = invoiceGenerator.GenerateProfoma(profoma, customer);
         }
 
         private static void GenerateInvoice()
