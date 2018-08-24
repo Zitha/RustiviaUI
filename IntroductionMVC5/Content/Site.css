@@ -258,3 +258,7 @@ td.total {
 .dropdown:hover .dropdown-menu {
     display: block;
 }
+input.currency {
+    text-align: right;
+    padding-right: 15px;
+}

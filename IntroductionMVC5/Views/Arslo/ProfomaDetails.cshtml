@@ -5,67 +5,80 @@
 }
 
 <h2>Profoma Details</h2>
-
+<hr />
 <div class="row">
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            <label>Profoma Number</label>
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.ProfomaNumber)
-        </dd>
 
-        <dt>
-            <label>UCR Number</label>
-        </dt>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <tr class="info">
+                    <td>
+                        <label style="align-content:flex-start">Profoma Number </label>
+                    </td>
+                    <td>
+                        <label>UCR Number </label>
+                    </td>
+                    <td>
+                        <label>Date</label>
+                    </td>
+                    <td>
+                        <label>Status </label>
+                    </td>
+                    <td>
+                        <label>Total Weight </label>
+                    </td>
+                    <td>
+                        <label>Profoma Amount </label>
+                    </td>
+                    <td>
+                        <label>Running Amount </label>
+                    </td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => model.ProfomaNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.UCRNumber)
+                    </td>
+                    <td>
+                        @string.Format("{0}", Model.Date.ToString("yyyy-MM-dd"))
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Status)
+                    </td>
+                    <td>
+                        @string.Format("{0} Tons", Model.ProfomaItems.Sum(d => d.Quantity))
+                    </td>
+                    <td>
+                        @string.Format("R {0:N}", (Model.Amount))
+                    </td>
+                    <td>
+                        @string.Format("R {0:N}", (Model.Amount - Model.ProfomaDrawDowns.Sum(d => d.Amount)))
+                    </td>
+                    <td>
+                        <input type="button" class="btn btn-success btn-xs" formtarget="_blank" target="_blank" onclick=" location.href='@Url.Action("GetPdf", "Arslo", new { fileName = Model.Location })'" value="Download Profoma" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.UCRNumber)
-        </dd>
-
-        <dt>
-            <label>Date</label>
-        </dt>
-
-        <dd>
-            @string.Format("{0}", Model.Date.ToString("yyyy-MM-dd"))
-        </dd>
-
-        <dt>
-            <label>Status</label>
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-        <dt>
-            <label>Total Weight</label>
-        </dt>
-
-        <dd>
-            @string.Format("{0} Tons",  Model.ProfomaItems.Sum(d => d.Quantity))
-        </dd>
-       
-        <dt>
-            <label>Amount</label>
-        </dt>
-
-        <dd>
-            @string.Format("R {0:N}", (Model.Amount - Model.ProfomaDrawDowns.Sum(d => d.Amount)))
-        </dd>
-        <dt>
-           @* @Html.DisplayNameFor(model => model.Location)*@
-        </dt>
-
-        <dd>
-            <input type="button" class="btn btn-primary btn-xs" onclick=" location.href='@Url.Action("GetPdf", "Arslo", new { fileName = Model.Location})'" value="Download Profoma" />
-        </dd>
-
-    </dl>
     <div class="row">
         <div class="col-xs-6">
-            <h4>Drawdowns</h4>
+            <table style="float: left; width: 100%;">
+                <tr>
+                    <td style="width: 50%">
+                        <h4>Drawdowns</h4>
+                    </td>
+                    <td style="width: 50%;">
+                        <a class="btn btn-primary pull-right btn-sm" onclick=" location.href='@Url.Action("DrawDownProfoma", "Arslo", new { id=Model.Id}) ' ">
+                            <i class="glyphicon glyphicon-credit-card"></i> Add Drawdown
+                        </a>
+                    </td>
+                </tr>
+            </table>
             <table class="table table-bordered" style="margin-top:2%">
                 <thead>
                     <tr class="info">
@@ -82,28 +95,45 @@
                 </thead>
 
                 @foreach (var item in Model.ProfomaDrawDowns)
-        {
-            <tr class="active">
-                <td>
-                    @Html.DisplayFor(modelItem => item.Reference)
-                </td>
-                <td>
-                    @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
-                </td>
-                <td>
-                    @string.Format("R {0:N}", item.Amount)
-                </td>
-            </tr>
-}
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Reference)
+                        </td>
+                        <td>
+                            @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
+                        </td>
+                        <td>
+                            @string.Format("R {0:N}", item.Amount)
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td></td>
+                    <td><b>Total</b></td>
+                    <td> @string.Format("R {0:N}", Model.ProfomaDrawDowns.Sum(d => d.Amount))</td>
+                </tr>
             </table>
         </div>
     </div>
     <div class="row">
         <div class="col-xs-12">
-            <h4>Invoices</h4>
+
+            <table style="float: left; width: 100%;">
+                <tr>
+                    <td style="width: 50%">
+                        <h4>Invoices</h4>
+                    </td>
+                    <td style="width: 50%;">
+                        <a class="btn btn-primary pull-right btn-sm" onclick=" location.href='@Url.Action("GenerateInvoice", "Arslo", new { id=Model.Id}) ' ">
+                            <i class="glyphicon glyphicon-plus-sign"></i> Generate Inovoice
+                        </a>
+                    </td>
+                </tr>
+            </table>
             <table class="table table-bordered" style="margin-top:2%">
                 <thead>
-                    <tr class="info">
+                    <tr style="background-color:lightcoral;">
                         <th>
                             Invoice Number
                         </th>
@@ -124,29 +154,45 @@
 
                 @foreach (var item in Model.Invoices)
                 {
-                <tr class="active">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Reference)
-                    </td>
-                    <td>
-                        @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
-                    </td>
-                    <td>
-                        @string.Format("{0} Tons", item.InvoiceItems.Sum(s => s.Quantity))
-                    </td>
-                    <td>
-                        @string.Format("R {0:N}", item.TotalPrice)
-                    </td>
-                    <td>
-                        <input type="button" class="btn btn-primary btn-xs" onclick=" location.href='@Url.Action("GetPdf", "Arslo", new { fileName = item.InvoiceLocation })'" value="Download" />
-                    </td>
-                </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Reference)
+                        </td>
+                        <td>
+                            @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
+                        </td>
+                        <td>
+                            @string.Format("{0:0.000} Tons", item.InvoiceItems.Sum(s => s.Quantity))
+                        </td>
+                        <td>
+                            @string.Format("R {0:N}", item.TotalPrice)
+                        </td>
+                        <td>
+                            <a class="btn btn-primary btn-xs" onclick=" location.href='@Url.Action("Index", "Arslo") ' ">
+                                <i class="glyphicon glyphicon-edit"></i> Edit
+                            </a>
+                            <input type="button" class="btn btn-success btn-xs"
+                                   onclick="location.href='@Url.Action("GetPdf", "Arslo",
+                                                          new { fileName = item.InvoiceLocation })'" value="Download" />
+                        </td>
+                    </tr>
                 }
+                <tr>
+                    <td></td>
+                    <td><b>Total</b></td>
+                    <td>
+                        @string.Format("{0:0.000} Tons", Model.Invoices.Sum(s => s.InvoiceItems.Sum(d => d.Quantity)))
+                    </td>
+                    <td> @string.Format("R {0:N}", Model.Invoices.Sum(d => d.TotalPrice))</td>
+                    <td></td>
+                </tr>
             </table>
         </div>
         <div class="form-group">
             <div class="col-md-2">
-                <input type="button" class="btn btn-primary" onclick=" location.href='@Url.Action("Index", "Arslo")'" value="Back" />
+                <a class="btn btn-default" onclick=" location.href='@Url.Action("Index", "Arslo") ' ">
+                    <i class="glyphicon glyphicon-backward"></i> Back
+                </a>
             </div>
         </div>
     </div>

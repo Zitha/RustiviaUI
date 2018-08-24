@@ -26,7 +26,7 @@ namespace IntroductionMVC5.Web.Controllers
             ArsloViewModel arsloViewModel = new ArsloViewModel();
             arsloViewModel.Customers = GetAllCustomers();
             arsloViewModel.Profomas = GetAllProfomas();
-            arsloViewModel.Invoices = GetAllInvoices();
+            //arsloViewModel.Invoices = GetAllInvoices();
 
             return View(arsloViewModel);
         }
@@ -75,35 +75,34 @@ namespace IntroductionMVC5.Web.Controllers
             return View(profomas);
         }
 
-        //static ArsloInvoice _newInvoice;
-        //static ArsloProfoma _newProfoma;
-
-        public ActionResult GenerateInvoice(bool isNew)
+        public ActionResult GenerateInvoice(int id)
         {
-            var customers = GetAllCustomers();
-            ViewBag.Customers = new SelectList(customers, "Id", "CustomerName");
-            var profomas = GetAllProfomas();
-            profomas = profomas.Where(p => p.Status != "Paid").ToList();
+            ArsloProfoma profoma = _unit.ArsloProfomas.GetAll()
+                .Include(pi=>pi.ProfomaItems)
+                .FirstOrDefault(p => p.Id == id);
 
-            var stands =
-             profomas
-            .Select(s => new
-            {
-                Id = s.Id,
-                Description = string.Format("{0} - {1}", s.ProfomaNumber, s.Customer.CustomerName)
-            })
-             .ToList();
+            //var stands =
+            // profomas
+            //.Select(s => new
+            //{
+            //    Id = s.Id,
+            //    Description = string.Format("{0} - {1}", s.ProfomaNumber, s.Customer.CustomerName)
+            //})
+            // .ToList();
 
-            ViewBag.Profomas = new SelectList(stands, "Id", "Description");
+          
 
-            var invoices = GetAllInvoices();
-            var invoiceNumber = string.Format("INV-Arslo-{0}-{1}", DateTime.Now.Year, invoices.Count + 1);
+            List<ArsloInvoice> invoices = GetAllInvoices();
+            string invoiceNumber = string.Format("INV-Arslo-{0}-{1}", DateTime.Now.Year, invoices.Count + 1);
+
+            ViewBag.ProfomaItems = new SelectList(profoma.ProfomaItems, "Id", "Description");
 
             var newInvoice = new ArsloInvoice
             {
                 Reference = invoiceNumber,
                 Date = DateTime.Now,
-                InvoiceItems = new List<ArsloInvoiceItem>()
+                InvoiceItems = new List<ArsloInvoiceItem>(),
+                Profoma = profoma
             };
 
             return View(newInvoice);
@@ -181,8 +180,8 @@ namespace IntroductionMVC5.Web.Controllers
         [HttpPost]
         public ActionResult GenerateInvoice(ArsloInvoice arsloInvoice, FormCollection collection)
         {
-            var bb = collection["itemCount"].Split(',')[0];
-            int itemCount = bb != string.Empty ? Convert.ToInt32(bb) : 0;
+            var count = collection["itemCount"].Split(',')[0];
+            int itemCount = count != string.Empty ? Convert.ToInt32(count) : 0;
             List<ArsloInvoiceItem> items = new List<ArsloInvoiceItem>();
             decimal total = 0;
             for (int i = 0; i < itemCount; i++)
@@ -192,11 +191,7 @@ namespace IntroductionMVC5.Web.Controllers
                     && collection["unitPrice" + i] != string.Empty
                     && collection["unitTotalPrice" + i] != string.Empty)
                 {
-                    //var d = collection["description" + i];
                     var desc = collection["desc" + i];
-                    //var q = collection["quantity" + i];
-                    //var p = collection["unitPrice" + i];
-                    //var t = collection["unitTotalPrice" + i];
 
                     var item = new ArsloInvoiceItem
                     {
@@ -221,8 +216,7 @@ namespace IntroductionMVC5.Web.Controllers
             _unit.ArsloInvoices.Add(arsloInvoice);
             _unit.SaveChanges();
 
-            ViewBag.ActiveTab = "invoice";
-            return RedirectToAction("Index");
+            return RedirectToAction("ProfomaDetails", new { id = arsloProfoma.Id });
         }
         private List<ArsloInvoice> GetAllInvoices()
         {
@@ -231,7 +225,6 @@ namespace IntroductionMVC5.Web.Controllers
                 .OrderByDescending(s => s.Date).ToList();
             return profomas;
         }
-
         #endregion
 
         #region Profomas
@@ -302,8 +295,9 @@ namespace IntroductionMVC5.Web.Controllers
         {
             List<ArsloProfoma> profomas = _unit.ArsloProfomas.GetAll()
                 .Include(iv => iv.Invoices)
-                .Include(d => d.Customer)
+                .Include(c => c.Customer)
                 .Include(pi => pi.ProfomaItems)
+                .Include(dd => dd.ProfomaDrawDowns)
                 .OrderByDescending(s => s.Date).ToList();
             return profomas;
         }
@@ -330,8 +324,11 @@ namespace IntroductionMVC5.Web.Controllers
 
         public ActionResult EditProfoma(int id)
         {
-            var profoma = _unit.ArsloProfomas.GetAll().Include(p => p.ProfomaItems).FirstOrDefault(pr => pr.Id == id);
+            var profoma = _unit.ArsloProfomas.GetAll()
+                        .Include(p => p.ProfomaItems)
+                        .FirstOrDefault(pr => pr.Id == id);
             ViewBag.Status = new SelectList(new List<string> { "", "Paid", "Part Payment", "Pending Payment" });
+
             return View(profoma);
         }
 
@@ -341,7 +338,7 @@ namespace IntroductionMVC5.Web.Controllers
             var dbProfoma = _unit.ArsloProfomas.GetAll()
                 .Include(c => c.Customer)
                 .Include(pi => pi.ProfomaItems)
-                .Include(dw=>dw.ProfomaDrawDowns)
+                .Include(dw => dw.ProfomaDrawDowns)
                 .FirstOrDefault(pr => pr.Id == profoma.Id);
 
             dbProfoma.Status = profoma.Status;
@@ -378,13 +375,20 @@ namespace IntroductionMVC5.Web.Controllers
 
             _unit.ArsloProfomas.Update(dbProfoma);
             _unit.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("ProfomaDetails", new { id = profoma.Id });
         }
 
         public ActionResult DrawDownProfoma(int id)
         {
-            var profoma = _unit.ArsloProfomas.GetAll().FirstOrDefault(pr => pr.Id == id);
+            var profoma = _unit.ArsloProfomas.GetAll()
+                .Include(pi => pi.ProfomaItems)
+                .Include(dw => dw.ProfomaDrawDowns)
+                .FirstOrDefault(pr => pr.Id == id);
+
             ViewBag.Status = new SelectList(new List<string> { "", "Paid", "Part Payment", "Pending Payment" });
+
+            profoma.Amount = profoma.Amount - profoma.ProfomaDrawDowns.Sum(a => a.Amount);
+
             return View(profoma);
         }
 
@@ -407,15 +411,13 @@ namespace IntroductionMVC5.Web.Controllers
                     Reference = collection["reference"]
                 };
 
-                //dbProfoma.Amount = dbProfoma.Amount - drawDown.Amount;
                 dbProfoma.ProfomaDrawDowns.Add(drawDown);
                 _unit.ArsloProfomas.Update(dbProfoma);
                 _unit.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("ProfomaDetails", new { id = profoma.Id });
             }
             return DrawDownProfoma(profoma.Id);
         }
-
 
         private string MoveIdFile(ArsloProfoma profoma)
         {
@@ -459,7 +461,6 @@ namespace IntroductionMVC5.Web.Controllers
                 return File(file, MediaTypeNames.Application.Pdf);
             }
         }
-
 
         public ViewResultBase Search(string search)
         {
