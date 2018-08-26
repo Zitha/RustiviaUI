@@ -24,9 +24,9 @@ namespace IntroductionMVC5.ConsoleApp
 
                 //AddWeighBridgeInfos(context);
                 //AddSupplier(context);
-                GenerateProfoma();
+                //GenerateProfoma();
                 //GenerateRandomNumbers();
-                //GenerateInvoice();
+                GenerateInvoice();
                 //var cn = new ContainerInfomationGenerator();
                 //cn.PrintContainerInfomation(new Container
                 //{
@@ -154,7 +154,7 @@ namespace IntroductionMVC5.ConsoleApp
             {
                 Amount = 300,
                 Date = DateTime.Now,
-                ProfomaNumber = "2342-6345534",
+                ProfomaNumber = "PI-2018-01",
                 UCRNumber = "UHADAA",
                 ProfomaItems = new List<ArsloProfomaItem> {
                         new ArsloProfomaItem {
@@ -175,44 +175,50 @@ namespace IntroductionMVC5.ConsoleApp
 
         private static void GenerateInvoice()
         {
-            var cn = new ArsloInvoiceGenerator();
-            var location = cn.GenerateInvoice(new Models.ArsloTrading.ArsloInvoice
+            ArsloInvoiceGenerator invoiceGenerator = new ArsloInvoiceGenerator();
+            var location = invoiceGenerator.GenerateInvoice(new ArsloInvoice
             {
-                Profoma = new Models.ArsloTrading.ArsloProfoma
-                {
-                    Amount = 300,
-                    Date = DateTime.Now,
-                    ProfomaNumber = "PI-23432-3232",
-                    UCRNumber = "UHADAA",
-                    ProfomaItems = new List<Models.ArsloTrading.ArsloProfomaItem> {
-                        new Models.ArsloTrading.ArsloProfomaItem {
-                        Description="HKJASD",
-                        Price=30,
-                        Quantity=10,
-                        TotalPrice=300,
-                    }
-                    }
-                },
+                Profoma = GetProfoma(),
                 TotalPrice = 300,
                 Date = DateTime.Now,
-                Reference = "23432-423432",
+                Reference = "INV-ARSLO - 20350",
                 PointOfLoading = "Durban",
                 PointOfDelivery = "Mumbai",
                 Customer =
-                new Models.ArsloTrading.ArsloCustomer
+                new ArsloCustomer
                 {
                     CustomerName = "James Smith",
                     TellNumber = "012 365 2514",
-                    Address = "21 Nanyuki Road"
+                    Address = "AL SHAMSI BUILDING , FLAT #110	AL KUWAIT STREET , MYSALOON, SHARJAH 25714 UAE"
                 },
-                InvoiceItems = new List<Models.ArsloTrading.ArsloInvoiceItem> {
-                        new Models.ArsloTrading.ArsloInvoiceItem {
-                        Description="HKJASD",
-                        Price=30,
-                        Quantity=10,
-                        TotalPrice=300
-                    } }
+                InvoiceItems = new List<ArsloInvoiceItem> {
+                        new ArsloInvoiceItem {
+                            Description="HKJASD",
+                            Price=30,
+                            Quantity=10,
+                            TotalPrice=300
+                         }
+                }
             });
+        }
+
+        private static ArsloProfoma GetProfoma()
+        {
+            return new ArsloProfoma
+            {
+                Amount = 300,
+                Date = DateTime.Now,
+                ProfomaNumber = "PI-23432-3232",
+                UCRNumber = "UHADAA",
+                ProfomaItems = new List<ArsloProfomaItem> {
+                        new ArsloProfomaItem {
+                            Description="HKJASD",
+                            Price=30,
+                            Quantity=10,
+                            TotalPrice=300,
+                        }
+                 }
+            };
         }
 
         private static void AddSupplier(DataContext context)
