@@ -236,6 +236,7 @@ namespace RustiviaSolutions.PDFGenerator
                 item4.PaddingBottom = 5f;
                 item4.VerticalAlignment = Element.ALIGN_LEFT;
                 itemsTable.AddCell(item4);
+                count++;
             }
 
             for (int em = 1; em < 10; em++)
@@ -245,58 +246,88 @@ namespace RustiviaSolutions.PDFGenerator
                 item1.PaddingBottom = 5f;
                 item1.VerticalAlignment = Element.ALIGN_LEFT;
                 item1.VerticalAlignment = Element.ALIGN_CENTER;
-                item1.PaddingLeft = 30f;
+                item1.PaddingLeft = 40f;
                 itemsTable.AddCell(item1);
 
                 //Description Label
-                if (em == 4)
+                if (em == 2)
                 {
                     var item2 = GetCell("QUALITY", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
                     item2.PaddingTop = 5f;
                     item2.PaddingBottom = 5f;
                     item2.VerticalAlignment = Element.ALIGN_CENTER;
                     item2.VerticalAlignment = Element.ALIGN_CENTER;
-                    item2.PaddingLeft = 30f;
+                    item2.PaddingLeft = 40f;
                     itemsTable.AddCell(item2);
                 }
-                else if (em == 5)
+                else if (em == 3)
                 {
-                    var item2 = GetCell("STEEL SCRAP", BaseColor.BLUE, BaseColor.WHITE, Font.BOLD);
+                    var item2 = GetCell("STEEL SCRAP", BaseColor.BLUE, BaseColor.WHITE, Font.NORMAL);
                     item2.PaddingTop = 5f;
                     item2.PaddingBottom = 5f;
                     item2.VerticalAlignment = Element.ALIGN_CENTER;
                     item2.HorizontalAlignment = Element.ALIGN_CENTER;
-                    item2.PaddingLeft = 30f;
+                    item2.PaddingLeft = 40f;
                     itemsTable.AddCell(item2);
                 }
-                else if (em == 6)
+                else if (em == 4)
                 {
                     var item2 = GetCell("POL", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
                     item2.PaddingTop = 5f;
                     item2.PaddingBottom = 5f;
                     item2.VerticalAlignment = Element.ALIGN_CENTER;
                     item2.HorizontalAlignment = Element.ALIGN_CENTER;
-                    item2.PaddingLeft = 30f;
+                    item2.PaddingLeft = 40f;
                     itemsTable.AddCell(item2);
                 }
-                else if (em == 7)
+                else if (em == 5)
                 {
-                    var item2 = GetCell("DURBAN", BaseColor.BLUE, BaseColor.WHITE, Font.BOLD);
+                    var item2 = GetCell(invoice.PointOfLoading, BaseColor.BLUE, BaseColor.WHITE, Font.NORMAL);
                     item2.PaddingTop = 5f;
                     item2.PaddingBottom = 5f;
                     item2.VerticalAlignment = Element.ALIGN_CENTER;
                     item2.HorizontalAlignment = Element.ALIGN_CENTER;
-                    item2.PaddingLeft = 30f;
+                    item2.PaddingLeft = 40f;
                     itemsTable.AddCell(item2);
                 }
-                else if (em == 8)
+                else if (em == 6)
                 {
                     var item2 = GetCell("POD", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
                     item2.PaddingTop = 10f;
                     item2.PaddingBottom = 10f;
                     item2.VerticalAlignment = Element.ALIGN_CENTER;
                     item2.HorizontalAlignment = Element.ALIGN_CENTER;
-                    item2.PaddingLeft = 30f;
+                    item2.PaddingLeft = 40f;
+                    itemsTable.AddCell(item2);
+                }
+                else if (em == 7)
+                {
+                    var item2 = GetCell(invoice.PointOfDelivery, BaseColor.BLUE, BaseColor.WHITE, Font.NORMAL);
+                    item2.PaddingTop = 10f;
+                    item2.PaddingBottom = 10f;
+                    item2.VerticalAlignment = Element.ALIGN_CENTER;
+                    item2.HorizontalAlignment = Element.ALIGN_CENTER;
+                    item2.PaddingLeft = 40f;
+                    itemsTable.AddCell(item2);
+                }
+                else if (em == 8)
+                {
+                    var item2 = GetCell("VESSEL", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+                    item2.PaddingTop = 10f;
+                    item2.PaddingBottom = 10f;
+                    item2.VerticalAlignment = Element.ALIGN_CENTER;
+                    item2.HorizontalAlignment = Element.ALIGN_CENTER;
+                    item2.PaddingLeft = 40f;
+                    itemsTable.AddCell(item2);
+                }
+                else if (em == 9)
+                {
+                    PdfPCell item2 = GetCell(invoice.VesselNumber, BaseColor.BLUE, BaseColor.WHITE, Font.NORMAL);
+                    item2.PaddingTop = 10f;
+                    item2.PaddingBottom = 10f;
+                    item2.VerticalAlignment = Element.ALIGN_CENTER;
+                    item2.HorizontalAlignment = Element.ALIGN_CENTER;
+                    item2.PaddingLeft = 40f;
                     itemsTable.AddCell(item2);
                 }
                 else
@@ -308,7 +339,6 @@ namespace RustiviaSolutions.PDFGenerator
                     item2.VerticalAlignment = Element.ALIGN_LEFT;
                     itemsTable.AddCell(item2);
                 }
-
 
                 //Unit Price Label
                 var item3 = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
@@ -329,14 +359,12 @@ namespace RustiviaSolutions.PDFGenerator
                 item5.PaddingBottom = 10f;
                 item5.VerticalAlignment = Element.ALIGN_LEFT;
                 itemsTable.AddCell(item5);
-
-
             }
 
-            float[] widths = new float[] { 10f, 50f, 10f, 20f, 20f };
+            float[] widths = new float[] { 8f, 45f, 18f, 18f, 20f };
             itemsTable.SetWidths(widths);
             var emptyCell = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
-            emptyCell.Colspan = 3;
+            emptyCell.Colspan = 1;
             emptyCell.VerticalAlignment = Element.ALIGN_LEFT;
             itemsTable.AddCell(emptyCell);
 
@@ -346,35 +374,48 @@ namespace RustiviaSolutions.PDFGenerator
             TotalLabel.VerticalAlignment = Element.ALIGN_LEFT;
             itemsTable.AddCell(TotalLabel);
 
+            var TotalQty = GetCell(string.Format("{0} kg", invoice.InvoiceItems.Sum(iv => iv.Quantity)), BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+            TotalQty.BorderColor = BaseColor.GRAY;
+            TotalQty.BackgroundColor = BaseColor.LIGHT_GRAY;
+            TotalQty.VerticalAlignment = Element.ALIGN_LEFT;
+            itemsTable.AddCell(TotalQty);
+
+            var anotherEmptyCell = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+            anotherEmptyCell.BorderColor = BaseColor.GRAY;
+            anotherEmptyCell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            anotherEmptyCell.VerticalAlignment = Element.ALIGN_LEFT;
+            itemsTable.AddCell(anotherEmptyCell);
+
             //total Price Label
-            var totalPrice = GetCell(string.Format("R {0}", String.Format("{0:n}", total)), BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+            var totalPrice = GetCell(string.Format("R {0}", String.Format("{0:n}", invoice.InvoiceItems.Sum(iv => iv.TotalPrice))), BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
             totalPrice.BorderColor = BaseColor.GRAY;
             totalPrice.BackgroundColor = BaseColor.LIGHT_GRAY;
             totalPrice.VerticalAlignment = Element.ALIGN_LEFT;
             itemsTable.AddCell(totalPrice);
             itemsTable.SpacingBefore = 30f;
 
-            var conactHeaderPr = new Paragraph { SpacingBefore = 20f };
-            Phrase p2 = new Phrase
+            
+            var authorisedSpacing = new Paragraph
             {
-                new Phrase("Shipping Details",
-                    FontFactory.GetFont(FontFactory.HELVETICA, 12, Font.BOLDITALIC, BaseColor.BLACK))
+                SpacingBefore = 30f,
+                Alignment = Element.ALIGN_LEFT,
+                IndentationLeft = 25f
             };
-            var conact1Pr = new Paragraph { SpacingBefore = 10f };
+            var authorised = new Phrase("AUTHORISED SIGNATORY:\n",
+                FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.BOLD, BaseColor.BLACK));
 
-            var pol = new Phrase("POL :" + invoice.PointOfLoading + "\n", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK));
+            var forArsloSpacing = new Paragraph
+            {
+                SpacingBefore = 20f,
+                Alignment = Element.ALIGN_LEFT,
+                IndentationLeft = 25f
+            };
+            var forArslo = new Phrase("For Arslo Trading (Pty) Ltd\n",
+                FontFactory.GetFont(FontFactory.HELVETICA, 10, Font.BOLD, BaseColor.BLACK));
 
-            var pod = new Phrase("POD :" + invoice.PointOfDelivery + "\n", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK));
+            authorisedSpacing.Add(authorised);
+            forArsloSpacing.Add(forArslo);
 
-            var vessel = new Phrase("Vessel :" + invoice.VesselNumber + "\n", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK));
-
-            var bookingNumber = new Phrase("Booking Number :" + invoice.BookingNumber + "\n", FontFactory.GetFont(FontFactory.HELVETICA, 8, Font.BOLD, BaseColor.BLACK));
-
-            conactHeaderPr.Add(p2);
-            conact1Pr.Add(pol);
-            conact1Pr.Add(pod);
-            conact1Pr.Add(vessel);
-            conact1Pr.Add(bookingNumber);
 
             doc.Add(logoTable);
             doc.Add(registrationTable);
@@ -383,12 +424,9 @@ namespace RustiviaSolutions.PDFGenerator
             doc.Add(profomaNumberTable);
             doc.Add(dateTable);
             doc.Add(headerTable);
-
-            //doc.Add(invoiceNumberTable);
-            //doc.Add(billignInfoTable);
             doc.Add(itemsTable);
-            //doc.Add(conactHeaderPr);
-            //doc.Add(conact1Pr);
+            doc.Add(authorisedSpacing);
+            doc.Add(forArsloSpacing);
 
             doc.Close();
             output.Close();
@@ -423,7 +461,6 @@ namespace RustiviaSolutions.PDFGenerator
             imghead.PaddingRight = 100f;
             logoTable.AddCell(image);
 
-
             //Header cell
             List<CellValue> registration = new List<CellValue> {
                 new CellValue{ Value="CK NO:2012/218554",FontSize=Font.BOLD ,BorderColor=BaseColor.WHITE},
@@ -433,12 +470,12 @@ namespace RustiviaSolutions.PDFGenerator
             PdfPTable registrationTable = GetTable(registration);
             registrationTable.SpacingBefore = 5f;
 
-            List<CellValue> address = new List<CellValue> {
-                new CellValue{ Value="54, NORTH REEF ROAD PARK GERMISTON 1420",
-                    FontSize =Font.NORMAL,
+            List<CellValue> address     = new List<CellValue> {
+                new CellValue{ Value    ="54, NORTH REEF ROAD PARK GERMISTON 1420",
+                    FontSize            =Font.NORMAL,
                     HorizontalAlignment = Element.ALIGN_RIGHT,
-                    Padding =100f,
-                    BorderColor=BaseColor.WHITE
+                    Padding             =100f,
+                    BorderColor         =BaseColor.WHITE
                 }
             };
             PdfPTable addressTable = GetTable(address);
@@ -619,63 +656,12 @@ namespace RustiviaSolutions.PDFGenerator
                 item1.VerticalAlignment = Element.ALIGN_LEFT;
                 itemsTable.AddCell(item1);
 
-                //Description Label
-                if (em == 4)
-                {
-                    var item2 = GetCell("QUALITY", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
-                    item2.PaddingTop = 10f;
-                    item2.PaddingBottom = 10f;
-                    item2.VerticalAlignment = Element.ALIGN_CENTER;
-                    itemsTable.AddCell(item2);
-                }
-                else if (em == 5)
-                {
-                    var item2 = GetCell("STEEL SCRAP", BaseColor.BLUE, BaseColor.WHITE, Font.BOLD);
-                    item2.PaddingTop = 10f;
-                    item2.PaddingBottom = 10f;
-                    item2.VerticalAlignment = Element.ALIGN_CENTER;
-                    item2.HorizontalAlignment = Element.ALIGN_CENTER;
-                    itemsTable.AddCell(item2);
-                }
-                else if (em == 6)
-                {
-                    var item2 = GetCell("POL", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
-                    item2.PaddingTop = 10f;
-                    item2.PaddingBottom = 10f;
-                    item2.VerticalAlignment = Element.ALIGN_CENTER;
-                    item2.HorizontalAlignment = Element.ALIGN_CENTER;
-                    itemsTable.AddCell(item2);
-                }
-                else if (em == 7)
-                {
-                    var item2 = GetCell("DURBAN", BaseColor.CYAN, BaseColor.WHITE, Font.BOLD);
-                    item2.PaddingTop = 10f;
-                    item2.PaddingBottom = 10f;
-                    item2.VerticalAlignment = Element.ALIGN_CENTER;
-                    item2.HorizontalAlignment = Element.ALIGN_CENTER;
-                    item2.PaddingLeft = 30f;
-                    itemsTable.AddCell(item2);
-                }
-                else if (em == 8)
-                {
-                    var item2 = GetCell("POD", BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
-                    item2.PaddingTop = 10f;
-                    item2.PaddingBottom = 10f;
-                    item2.VerticalAlignment = Element.ALIGN_CENTER;
-                    item2.HorizontalAlignment = Element.ALIGN_CENTER;
-                    itemsTable.AddCell(item2);
-                }
-                else
-                {
-                    //QTY Label
-                    var item2 = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
-                    item2.PaddingTop = 10f;
-                    item2.PaddingBottom = 10f;
-                    item2.VerticalAlignment = Element.ALIGN_LEFT;
-                    itemsTable.AddCell(item2);
-                }
-
-
+                //QTY Label
+                var item2 = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
+                item2.PaddingTop = 10f;
+                item2.PaddingBottom = 10f;
+                item2.VerticalAlignment = Element.ALIGN_LEFT;
+                itemsTable.AddCell(item2);
                 //Unit Price Label
                 var item3 = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
                 item3.PaddingTop = 10f;
@@ -695,14 +681,12 @@ namespace RustiviaSolutions.PDFGenerator
                 item5.PaddingBottom = 10f;
                 item5.VerticalAlignment = Element.ALIGN_LEFT;
                 itemsTable.AddCell(item5);
-
-
             }
 
-            float[] widths = new float[] { 10f, 50f, 10f, 20f, 20f };
+            float[] widths = new float[] { 8f, 45f, 18f, 18f, 20f };
             itemsTable.SetWidths(widths);
             var emptyCell = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.NORMAL);
-            emptyCell.Colspan = 3;
+            emptyCell.Colspan = 1;
             emptyCell.VerticalAlignment = Element.ALIGN_LEFT;
             itemsTable.AddCell(emptyCell);
 
@@ -711,6 +695,18 @@ namespace RustiviaSolutions.PDFGenerator
             TotalLabel.BackgroundColor = BaseColor.LIGHT_GRAY;
             TotalLabel.VerticalAlignment = Element.ALIGN_LEFT;
             itemsTable.AddCell(TotalLabel);
+
+            var TotalQty = GetCell(string.Format("{0} kg", profoma.ProfomaItems.Sum(iv => iv.Quantity)), BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+            TotalQty.BorderColor = BaseColor.GRAY;
+            TotalQty.BackgroundColor = BaseColor.LIGHT_GRAY;
+            TotalQty.VerticalAlignment = Element.ALIGN_LEFT;
+            itemsTable.AddCell(TotalQty);
+
+            var anotherEmptyCell = GetCell(string.Empty, BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);
+            anotherEmptyCell.BorderColor = BaseColor.GRAY;
+            anotherEmptyCell.BackgroundColor = BaseColor.LIGHT_GRAY;
+            anotherEmptyCell.VerticalAlignment = Element.ALIGN_LEFT;
+            itemsTable.AddCell(anotherEmptyCell);
 
             //total Price Label
             var totalPrice = GetCell(string.Format("R {0}", String.Format("{0:n}", total)), BaseColor.BLACK, BaseColor.WHITE, Font.BOLD);

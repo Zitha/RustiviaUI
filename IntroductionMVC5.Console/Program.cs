@@ -24,7 +24,7 @@ namespace IntroductionMVC5.ConsoleApp
 
                 //AddWeighBridgeInfos(context);
                 //AddSupplier(context);
-                //GenerateProfoma();
+                GenerateProfoma();
                 //GenerateRandomNumbers();
                 GenerateInvoice();
                 //var cn = new ContainerInfomationGenerator();
@@ -176,7 +176,7 @@ namespace IntroductionMVC5.ConsoleApp
         private static void GenerateInvoice()
         {
             ArsloInvoiceGenerator invoiceGenerator = new ArsloInvoiceGenerator();
-            var location = invoiceGenerator.GenerateInvoice(new ArsloInvoice
+            ArsloInvoice invoice = new ArsloInvoice
             {
                 Profoma = GetProfoma(),
                 TotalPrice = 300,
@@ -184,6 +184,7 @@ namespace IntroductionMVC5.ConsoleApp
                 Reference = "INV-ARSLO - 20350",
                 PointOfLoading = "Durban",
                 PointOfDelivery = "Mumbai",
+                VesselNumber = "IRENES RHYTHM 006E",
                 Customer =
                 new ArsloCustomer
                 {
@@ -191,15 +192,69 @@ namespace IntroductionMVC5.ConsoleApp
                     TellNumber = "012 365 2514",
                     Address = "AL SHAMSI BUILDING , FLAT #110	AL KUWAIT STREET , MYSALOON, SHARJAH 25714 UAE"
                 },
-                InvoiceItems = new List<ArsloInvoiceItem> {
-                        new ArsloInvoiceItem {
-                            Description="HKJASD",
-                            Price=30,
-                            Quantity=10,
-                            TotalPrice=300
-                         }
-                }
-            });
+                InvoiceItems = GetInvoiceItems()
+            };
+            var location = invoiceGenerator.GenerateInvoice(invoice);
+        }
+
+        private static List<ArsloInvoiceItem> GetInvoiceItems()
+        {
+            return new List<ArsloInvoiceItem> {
+                     new ArsloInvoiceItem {
+                         Description="PONU 0490475 SEAL 4866625",
+                         Price=3.6M,
+                         Quantity=32620,
+                         TotalPrice= 117432.00M
+                      },
+                      new ArsloInvoiceItem {
+                         Description="TEMU 5466173 S 4866623",
+                         Price=3.6M,
+                         Quantity=26940.00M,
+                         TotalPrice=  96984.00M
+                      },
+                       new ArsloInvoiceItem {
+                         Description="MSKU 2250447 SEAL 4866624",
+                         Price=3.6M,
+                         Quantity=26830,
+                         TotalPrice=  96588.00M
+                      },
+                       new ArsloInvoiceItem {
+                         Description="MSKU 2250447 SEAL 4866624",
+                         Price=3.6M,
+                         Quantity=26830,
+                         TotalPrice=  96588.00M
+                      },
+                       new ArsloInvoiceItem {
+                         Description="MSKU 2250447 SEAL 4866624",
+                         Price=3.6M,
+                         Quantity=26830,
+                         TotalPrice=  96588.00M
+                      },
+                       new ArsloInvoiceItem {
+                         Description="MSKU 2250447 SEAL 4866624",
+                         Price=3.6M,
+                         Quantity=26830,
+                         TotalPrice=  96588.00M
+                      },
+                       new ArsloInvoiceItem {
+                         Description="MSKU 2250447 SEAL 4866624",
+                         Price=3.6M,
+                         Quantity=26830,
+                         TotalPrice=  96588.00M
+                      },
+                       new ArsloInvoiceItem {
+                         Description="MSKU 2250447 SEAL 4866624",
+                         Price=3.6M,
+                         Quantity=26830,
+                         TotalPrice=  96588.00M
+                      },
+                       new ArsloInvoiceItem {
+                         Description="MSKU 2250447 SEAL 4866624",
+                         Price=3.6M,
+                         Quantity=26830,
+                         TotalPrice=  96588.00M
+                      }
+            };
         }
 
         private static ArsloProfoma GetProfoma()
