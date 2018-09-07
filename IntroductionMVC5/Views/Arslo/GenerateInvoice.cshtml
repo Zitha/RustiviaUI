@@ -13,7 +13,7 @@
         var object = {};
         var text = $("#selectDescription").find(":selected").text();
         for (var i = 0; i < invoiceItems.length; i++) {
-            if (invoiceItems[i].Description == text) {
+            if (invoiceItems[i].Description === text) {
                 object = invoiceItems[i];
                 break;
             }
@@ -36,8 +36,8 @@
             var qtyVal = 1 * $(qty).val();
             var isqtyValNumber = isNaN(qtyVal);
             if (isqtyValNumber) {
-                var replaceVal = $(qty).val().substr(0, $(qty).val().length - 1);
-                $(qty).val(replaceVal);
+                var replaceValQty = $(qty).val().substr(0, $(qty).val().length - 1);
+                $(qty).val(replaceValQty);
                 return;
             }
             if (itmPrice && qtyVal) {
@@ -47,7 +47,7 @@
 
             var itemCode = $('#description' + a).val();
             var lineItemCode = $('#description' + e).val();
-            if (lineItemCode == itemCode) {
+            if (lineItemCode === itemCode) {
                 totalQuantity = totalQuantity + qtyVal;
             }
         }
@@ -89,7 +89,7 @@
         var object = {};
         var text = $("#selectDescription").find(":selected").text();
         for (var i = 0; i < invoiceItems.length; i++) {
-            if (invoiceItems[i].Description == text) {
+            if (invoiceItems[i].Description === text) {
                 object = invoiceItems[i];
                 break;
             }

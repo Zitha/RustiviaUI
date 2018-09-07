@@ -44,7 +44,7 @@ namespace RustiviaSolutions.PDFGenerator
             };
 
             // var path = Path.Combine(HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["LogoPath"]));
-            var path = @"C:\Projects\Rustivia\IntroductionMVC5\IntroductionMVC5\Content\img\ArsoloLogo2.png";
+            var path = @"C:\Development\Rustivia\IntroductionMVC5\Content\img\ArsoloLogo2.png";
             Image image = Image.GetInstance(path);
             PdfPCell imghead = new PdfPCell(image);
             imghead.PaddingRight = 100f;
@@ -455,7 +455,7 @@ namespace RustiviaSolutions.PDFGenerator
 
             //Add Logo
             //var path = Path.Combine(HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["LogoPath"]));
-            var path = @"C:\Projects\Rustivia\IntroductionMVC5\IntroductionMVC5\Content\img\ArsoloLogo2.png";
+            var path = @"C:\Development\Rustivia\IntroductionMVC5\Content\img\ArsoloLogo2.png";
             Image image = Image.GetInstance(path);
             PdfPCell imghead = new PdfPCell(image);
             imghead.PaddingRight = 100f;

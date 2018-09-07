@@ -78,7 +78,7 @@ namespace IntroductionMVC5.Web.Controllers
         public ActionResult GenerateInvoice(int id)
         {
             ArsloProfoma profoma = _unit.ArsloProfomas.GetAll()
-                .Include(pi=>pi.ProfomaItems)
+                .Include(pi => pi.ProfomaItems)
                 .FirstOrDefault(p => p.Id == id);
 
             //var stands =
@@ -90,7 +90,7 @@ namespace IntroductionMVC5.Web.Controllers
             //})
             // .ToList();
 
-          
+
 
             List<ArsloInvoice> invoices = GetAllInvoices();
             string invoiceNumber = string.Format("INV-Arslo-{0}-{1}", DateTime.Now.Year, invoices.Count + 1);
@@ -289,7 +289,7 @@ namespace IntroductionMVC5.Web.Controllers
             }
 
 
-            return Redirect("Index");
+            return RedirectToAction("ProfomaDetails", new { id = profoma.Id });
         }
         private List<ArsloProfoma> GetAllProfomas()
         {

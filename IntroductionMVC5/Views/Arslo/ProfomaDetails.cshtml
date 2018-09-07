@@ -125,7 +125,9 @@
                         <h4>Invoices</h4>
                     </td>
                     <td style="width: 50%;">
-                        <a class="btn btn-primary pull-right btn-sm" onclick=" location.href='@Url.Action("GenerateInvoice", "Arslo", new { id=Model.Id}) ' ">
+                        <a class="btn btn-primary pull-right btn-sm" id="generateInvoiceBtn" 
+                           onclick=" location.href='@Url.Action("GenerateInvoice", "Arslo", new { id=Model.Id}) ' "
+                           data-toggle="tooltip" data-placement="top" title="Cannot Generate Invoice Before Drawdown">
                             <i class="glyphicon glyphicon-plus-sign"></i> Generate Inovoice
                         </a>
                     </td>
@@ -197,3 +199,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        var list = @Html.Raw(Json.Encode(Model.ProfomaDrawDowns))
+        if (list.length < 1) {
+            $("#generateInvoiceBtn").attr('disabled', 'disabled');
+            $('#generateInvoiceBtn').tooltip({ boundary: 'window' });
+        }
+    });
+</script>
