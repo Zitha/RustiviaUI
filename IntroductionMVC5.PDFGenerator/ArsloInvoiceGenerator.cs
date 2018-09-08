@@ -393,7 +393,6 @@ namespace RustiviaSolutions.PDFGenerator
             totalPrice.VerticalAlignment = Element.ALIGN_LEFT;
             itemsTable.AddCell(totalPrice);
             itemsTable.SpacingBefore = 30f;
-
             
             var authorisedSpacing = new Paragraph
             {

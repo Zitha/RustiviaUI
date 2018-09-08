@@ -1,5 +1,6 @@
 ﻿using IntroductionMVC5.Data;
 using IntroductionMVC5.Models.ArsloTrading;
+using IntroductionMVC5.Web.Utils.PagedList;
 using IntroductionMVC5.Web.ViewModel;
 using RustiviaSolutions.PDFGenerator;
 using System;
@@ -20,15 +21,23 @@ namespace IntroductionMVC5.Web.Controllers
     {
         private readonly ApplicationUnit _unit = new ApplicationUnit();
         private ArsloInvoiceGenerator arsloInvoiceGenerator = new ArsloInvoiceGenerator();
-        // GET: Arslo
-        public ActionResult Index()
-        {
-            ArsloViewModel arsloViewModel = new ArsloViewModel();
-            arsloViewModel.Customers = GetAllCustomers();
-            arsloViewModel.Profomas = GetAllProfomas();
-            //arsloViewModel.Invoices = GetAllInvoices();
+        private readonly int _defaultPageSize =
+          Convert.ToInt32(ConfigurationManager.AppSettings["DefaultPaginationSize"]);
 
-            return View(arsloViewModel);
+        // GET: Arslo
+        public ActionResult Index(int? page)
+        {
+            ArsloViewModel viewModel = new ArsloViewModel();
+
+            viewModel.Customers = GetAllCustomers();
+            List<ArsloProfoma> pagedList = GetAllProfomas();
+
+            int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
+            viewModel.Profomas = pagedList.ToPagedList(currentPageIndex, 5);
+
+            viewModel.ActiveTab = page.HasValue ? "#profile" : "#home";
+
+            return View(viewModel);
         }
 
         #region Customers
@@ -371,6 +380,7 @@ namespace IntroductionMVC5.Web.Controllers
                 .Include(pi => pi.ProfomaItems)
                 .Include(dd => dd.ProfomaDrawDowns)
                 .OrderByDescending(s => s.Date).ToList();
+
             return profomas;
         }
 
@@ -549,8 +559,9 @@ namespace IntroductionMVC5.Web.Controllers
 
             ArsloViewModel arsloViewModel = new ArsloViewModel();
             arsloViewModel.Customers = customers;
-            arsloViewModel.Profomas = GetAllProfomas();
-            arsloViewModel.Invoices = GetAllInvoices();
+
+            List<ArsloProfoma> pagedList = GetAllProfomas();
+            arsloViewModel.Profomas = pagedList.ToPagedList(1, 5);
 
             return View("Index", arsloViewModel);
         }

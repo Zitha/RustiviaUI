@@ -1,14 +1,16 @@
-﻿@using IntroductionMVC5.Models.ArsloTrading
+﻿@using IntroductionMVC5.Web.Utils.PagedList
+@using IntroductionMVC5.Models.ArsloTrading
 @model IntroductionMVC5.Web.ViewModel.ArsloViewModel
 @{
     ViewBag.Title = "Arslo Trading";
 }
 
 <script>
-    @{
-        string active = ViewBag.Active;
-    }
+   
+   
     $(document).ready(function () {
+
+        var acttiveTab = "@Model.ActiveTab";
         var hash = window.location.hash;
         // store the currently selected tab in the hash value
         $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
@@ -17,8 +19,8 @@
         });
 
         // on load of the page: switch to the currently selected tab
-     
-        $('#myTab a[href="' + hash + '"]').tab('show');
+
+        $('#myTab a[href="' + acttiveTab + '"]').tab('show');
     });
 </script>
 
@@ -32,8 +34,8 @@
             <a href="#profile" data-toggle="tab">Profoma</a>
         </li>
         @*<li class="" style="background-color: skyblue">
-            <a href="#invoice" data-toggle="tab">Invoice</a>
-        </li>*@
+                <a href="#invoice" data-toggle="tab">Invoice</a>
+            </li>*@
     </ul>
 
     <div id="myTabContent" class="tab-content">
@@ -120,6 +122,9 @@
                         <td style="width: 50%">
                             <input type="submit" class="btn btn-primary btn-sm" value="Add Proma" onclick=" location.href='@Url.Action("AddProfoma", "Arslo")    ' " />
                         </td>
+                        <td class="pull-right">
+                             @Html.Pager(Model.Profomas.PageSize, Model.Profomas.PageNumber, Model.Profomas.TotalItemCount, new { @class = "pagination" })
+                        </td>
                     </tr>
                 </table>
 
@@ -136,7 +141,7 @@
                                 Profoma Number
                             </th>
                             <th>
-                               Quantity
+                                Quantity
                             </th>
                             <th>
                                 Created Date
@@ -151,31 +156,30 @@
                         </tr>
                     </thead>
 
-                    @foreach (var item in Model.Profomas)
+                    @foreach (ArsloProfoma profoma in Model.Profomas)
                     {
-                        var profoma = (ArsloProfoma)item;
                         <tr class="active">
                             <td>
                                 <strong>
-                                    @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+                                    @Html.DisplayFor(modelItem => profoma.Customer.CustomerName)
                                 </strong>
                             </td>
                             <td>
                                 <strong>
-                                    @Html.DisplayFor(modelItem => item.ProfomaNumber)
+                                    @Html.DisplayFor(modelItem => profoma.ProfomaNumber)
                                 </strong>
                             </td>
                             <td>
-                                @string.Format("{0} Tons", item.ProfomaItems.Sum(s => s.Quantity))
+                                @string.Format("{0} Tons", profoma.ProfomaItems.Sum(s => s.Quantity))
                             </td>
                             <td>
-                                @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
+                                @string.Format("{0}", profoma.Date.ToString("yyyy-MM-dd"))
                             </td>
                             @if (profoma.Status == "Paid")
                             {
                                 <td style="color:green">
                                     <strong>
-                                        @Html.DisplayFor(modelItem => item.Status)
+                                        @Html.DisplayFor(modelItem => profoma.Status)
                                     </strong>
                                 </td>
                             }
@@ -183,7 +187,7 @@
                             {
                                 <td style="color:red">
                                     <strong>
-                                        @Html.DisplayFor(modelItem => item.Status)
+                                        @Html.DisplayFor(modelItem => profoma.Status)
                                     </strong>
                                 </td>
                             }
@@ -193,95 +197,14 @@
                                 </strong>
                             </td>
                             <td>
-                                <input type="button" class="btn btn-primary btn-xs" value="Edit" onclick=" location.href='@Url.Action("EditProfoma", "Arslo", new { id = item.Id }) ' " />
-                                <input type="button" class="btn btn-info btn-xs" value="Details" onclick=" location.href='@Url.Action("ProfomaDetails", "Arslo", new { id = item.Id }) ' " />
+                                <input type="button" class="btn btn-primary btn-xs" value="Edit" onclick=" location.href='@Url.Action("EditProfoma", "Arslo", new { id = profoma.Id }) ' " />
+                                <input type="button" class="btn btn-info btn-xs" value="Details" onclick=" location.href='@Url.Action("ProfomaDetails", "Arslo", new { id = profoma.Id }) ' " />
                             </td>
                         </tr>
                     }
                 </table>
-
             </div>
         </div>
-
-        @*<div id="invoice" class="tab-pane fade">
-            <h2>Invoices</h2>
-
-
-            <table style="border-bottom: 1px solid #5D5A53; float: left; width: 100%;">
-                <tr>
-                    <td style="width: 50%">
-                        <input type="submit" class="btn btn-primary btn-sm" value="Generate Invoice" onclick=" location.href='@Url.Action("GenerateInvoice", "Arslo",new { isNew = true})    ' " />
-                    </td>
-                </tr>
-            </table>
-
-            <div data-bind="template: {name:'customer', foreach:customers}" id="album-list" style="width: 100%">
-            </div>
-
-            <table class="table table-bordered">
-                <thead>
-                    <tr class="info">
-                        <th>
-                            Cutomer
-                        </th>
-                        <th>
-                            Invoice Reference
-                        </th>
-                        <th>
-                            Date
-                        </th>
-                        <th>
-                           Quantity
-                        </th>
-                        <th>
-                            POD
-                        </th>
-                        <th>
-                            Total
-                        </th>
-                        <th>
-
-                        </th>
-                    </tr>
-                </thead>
-
-                @foreach (var item in Model.Invoices)
-                {
-                <tr class="active">
-                    <td>
-                        <strong>
-                            @Html.DisplayFor(modelItem => item.Customer.CustomerName)
-                        </strong>
-                    </td>
-                    <td>
-                        <strong>
-                            @Html.DisplayFor(modelItem => item.Reference)
-                        </strong>
-                    </td>
-                    <td>
-                        @string.Format("{0}", item.Date.ToString("yyyy-MM-dd"))
-                    </td>
-                    <td>
-                        @string.Format("{0} Tons", item.InvoiceItems.Sum(s => s.Quantity))
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PointOfDelivery)
-                    </td>
-                    <td style="color:green">
-                        <strong>
-                            @string.Format("R {0:N}", item.TotalPrice)
-                        </strong>
-                    </td>
-                    <td>
-                        <a class="btn btn-info btn-xs" onclick=" location.href='@Url.Action("InvoiceDetails", "Arslo", new { id = item.Id }) ' ">
-                            <i class="glyphicon glyphicon-download"></i> View Invoice
-                        </a>
-                    </td>
-                </tr>
-                }
-            </table>
-
-        </div>*@
     </div>
 </div>
 
