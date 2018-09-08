@@ -73,7 +73,7 @@
                         <h4>Drawdowns</h4>
                     </td>
                     <td style="width: 50%;">
-                        <a class="btn btn-primary pull-right btn-sm" onclick=" location.href='@Url.Action("DrawDownProfoma", "Arslo", new { id=Model.Id}) ' ">
+                        <a class="btn btn-primary pull-right btn-sm" onclick=" location.href='@Url.Action("DrawDownProfoma", "Arslo", new { id = Model.Id }) ' ">
                             <i class="glyphicon glyphicon-credit-card"></i> Add Drawdown
                         </a>
                     </td>
@@ -125,8 +125,8 @@
                         <h4>Invoices</h4>
                     </td>
                     <td style="width: 50%;">
-                        <a class="btn btn-primary pull-right btn-sm" id="generateInvoiceBtn" 
-                           onclick=" location.href='@Url.Action("GenerateInvoice", "Arslo", new { id=Model.Id}) ' "
+                        <a class="btn btn-primary pull-right btn-sm" id="generateInvoiceBtn"
+                           onclick=" location.href='@Url.Action("GenerateInvoice", "Arslo", new { id = Model.Id }) ' "
                            data-toggle="tooltip" data-placement="top" title="Cannot Generate Invoice Before Drawdown">
                             <i class="glyphicon glyphicon-plus-sign"></i> Generate Inovoice
                         </a>
@@ -170,12 +170,13 @@
                             @string.Format("R {0:N}", item.TotalPrice)
                         </td>
                         <td>
-                            <a class="btn btn-primary btn-xs" onclick=" location.href='@Url.Action("Index", "Arslo") ' ">
+                            <a class="btn btn-primary btn-xs" onclick=" location.href='@Url.Action("EditInvoice", "Arslo",
+                                    new { id = item.Id }) ' ">
                                 <i class="glyphicon glyphicon-edit"></i> Edit
                             </a>
                             <input type="button" class="btn btn-success btn-xs"
                                    onclick="location.href='@Url.Action("GetPdf", "Arslo",
-                                                          new { fileName = item.InvoiceLocation })'" value="Download" />
+                                    new { fileName = item.InvoiceLocation })'" value="Download" />
                         </td>
                     </tr>
                 }
@@ -202,7 +203,9 @@
 
 <script>
     $(document).ready(function () {
-        var list = @Html.Raw(Json.Encode(Model.ProfomaDrawDowns))
+
+        var list = @{ @Html.Raw(Json.Encode(Model.ProfomaDrawDowns)); };
+        
         if (list.length < 1) {
             $("#generateInvoiceBtn").attr('disabled', 'disabled');
             $('#generateInvoiceBtn').tooltip({ boundary: 'window' });

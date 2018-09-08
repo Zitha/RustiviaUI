@@ -58,6 +58,33 @@ namespace IntroductionMVC5.Web.Controllers
                 .OrderBy(s => s.CustomerName).ToList();
             return customers;
         }
+
+        public ActionResult CustomerDetails(int customerId)
+        {
+            var customer = _unit.ArsloCustomers.GetAll().FirstOrDefault(pr => pr.Id == customerId);
+            return View(customer);
+        }
+
+        public ActionResult EditCustomerDetails(int customerId)
+        {
+            var customer = _unit.ArsloCustomers.GetAll().FirstOrDefault(pr => pr.Id == customerId);
+            return View(customer);
+        }
+
+        [HttpPost]
+        public ActionResult EditCustomerDetails(ArsloCustomer customer)
+        {
+            var dbCustomer = _unit.ArsloCustomers.GetAll().FirstOrDefault(pr => pr.Id == customer.Id);
+
+            dbCustomer.CustomerName = customer.CustomerName;
+            dbCustomer.TellNumber = customer.TellNumber;
+            dbCustomer.Address = customer.Address;
+
+            _unit.ArsloCustomers.Update(dbCustomer);
+            _unit.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
         #endregion
 
         #region Invoices
@@ -151,32 +178,6 @@ namespace IntroductionMVC5.Web.Controllers
             return json;
         }
 
-        public ActionResult CustomerDetails(int customerId)
-        {
-            var customer = _unit.ArsloCustomers.GetAll().FirstOrDefault(pr => pr.Id == customerId);
-            return View(customer);
-        }
-
-        public ActionResult EditCustomerDetails(int customerId)
-        {
-            var customer = _unit.ArsloCustomers.GetAll().FirstOrDefault(pr => pr.Id == customerId);
-            return View(customer);
-        }
-
-        [HttpPost]
-        public ActionResult EditCustomerDetails(ArsloCustomer customer)
-        {
-            var dbCustomer = _unit.ArsloCustomers.GetAll().FirstOrDefault(pr => pr.Id == customer.Id);
-
-            dbCustomer.CustomerName = customer.CustomerName;
-            dbCustomer.TellNumber = customer.TellNumber;
-            dbCustomer.Address = customer.Address;
-
-            _unit.ArsloCustomers.Update(dbCustomer);
-            _unit.SaveChanges();
-
-            return RedirectToAction("Index");
-        }
         [HttpPost]
         public ActionResult GenerateInvoice(ArsloInvoice arsloInvoice, FormCollection collection)
         {
@@ -218,6 +219,7 @@ namespace IntroductionMVC5.Web.Controllers
 
             return RedirectToAction("ProfomaDetails", new { id = arsloProfoma.Id });
         }
+
         private List<ArsloInvoice> GetAllInvoices()
         {
             List<ArsloInvoice> profomas = _unit.ArsloInvoices.GetAll()
@@ -225,6 +227,75 @@ namespace IntroductionMVC5.Web.Controllers
                 .OrderByDescending(s => s.Date).ToList();
             return profomas;
         }
+
+        public ActionResult EditInvoice(int id)
+        {
+            ArsloInvoice invoice = _unit.ArsloInvoices.GetAll()
+                        .Include(iv => iv.InvoiceItems)
+                        .Include(p => p.Profoma)
+                        .FirstOrDefault(pr => pr.Id == id);
+
+            return View(invoice);
+        }
+
+        [HttpPost]
+        public ActionResult EditInvoice(ArsloInvoice arsloInvoice, FormCollection collection)
+        {
+            ArsloInvoice aI = _unit.ArsloInvoices.GetAll()
+                .Include(pr => pr.Profoma)
+                .Include(c => c.Customer)
+                .Include(iv => iv.InvoiceItems)
+                .FirstOrDefault(iv => iv.Id == arsloInvoice.Id);
+
+            if (!string.IsNullOrEmpty(aI.InvoiceLocation))
+            {
+                if (System.IO.File.Exists(aI.InvoiceLocation))
+                {
+                    System.IO.File.Delete(aI.InvoiceLocation);
+                }
+            }
+            var count = collection["itemCount"].Split(',')[0];
+            int itemCount = count != string.Empty ? Convert.ToInt32(count) : 0;
+            List<ArsloInvoiceItem> items = new List<ArsloInvoiceItem>();
+            decimal total = 0;
+            for (int i = 0; i < itemCount; i++)
+            {
+                if (collection["description" + i] != string.Empty
+                    && collection["quantity" + i] != string.Empty
+                    && collection["unitPrice" + i] != string.Empty
+                    && collection["unitTotalPrice" + i] != string.Empty)
+                {
+                    var desc = collection["desc" + i];
+
+                    var item = new ArsloInvoiceItem
+                    {
+                        Description = collection["description" + i] + " - " + desc,
+                        Quantity = Convert.ToDecimal(collection["quantity" + i]),
+                        Price = Convert.ToDecimal(collection["unitPrice" + i]),
+                        TotalPrice = Convert.ToDecimal(collection["unitTotalPrice" + i])
+                    };
+                    total = total + Convert.ToDecimal(collection["unitTotalPrice" + i]);
+                    items.Add(item);
+                }
+            }
+            int oldItemCount = aI.InvoiceItems.Count;
+            for (int i = 0; i < oldItemCount; i++)
+            {
+                ArsloInvoiceItem invoiceItem = aI.InvoiceItems[i];
+                _unit.ArsloInvoiceItems.Delete(invoiceItem);
+                _unit.SaveChanges();
+            }
+
+            aI.InvoiceItems = items;
+            aI.TotalPrice = total;
+            string invoiceLocation = arsloInvoiceGenerator.GenerateInvoice(aI);
+            aI.InvoiceLocation = invoiceLocation;
+            _unit.ArsloInvoices.Update(aI);
+            _unit.SaveChanges();
+
+            return RedirectToAction("ProfomaDetails", new { id = aI.Profoma.Id });
+        }
+
         #endregion
 
         #region Profomas
@@ -291,6 +362,7 @@ namespace IntroductionMVC5.Web.Controllers
 
             return RedirectToAction("ProfomaDetails", new { id = profoma.Id });
         }
+
         private List<ArsloProfoma> GetAllProfomas()
         {
             List<ArsloProfoma> profomas = _unit.ArsloProfomas.GetAll()
@@ -301,6 +373,7 @@ namespace IntroductionMVC5.Web.Controllers
                 .OrderByDescending(s => s.Date).ToList();
             return profomas;
         }
+
         public ActionResult Profomas()
         {
             List<ArsloProfoma> profomas = GetAllProfomas();
