@@ -17,8 +17,8 @@ namespace RustiviaSolutions.PDFGenerator
         private string _invoicepath;
         public ArsloInvoiceGenerator()
         {
-            //_invoicepath = HttpContext.Current.Server.MapPath("~/ArsloInvoice");
-            _invoicepath = @"C:\Projects\Rustivia\IntroductionMVC5\IntroductionMVC5\ArsloInvoice";
+            _invoicepath = HttpContext.Current.Server.MapPath("~/ArsloInvoice");
+            //_invoicepath = @"C:\Projects\Rustivia\IntroductionMVC5\IntroductionMVC5\ArsloInvoice";
             if (!Directory.Exists(_invoicepath))
             {
                 Directory.CreateDirectory(_invoicepath);
@@ -43,8 +43,8 @@ namespace RustiviaSolutions.PDFGenerator
                 WidthPercentage = 90
             };
 
-            // var path = Path.Combine(HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["LogoPath"]));
-            var path = @"C:\Development\Rustivia\IntroductionMVC5\Content\img\ArsoloLogo2.png";
+            var path = Path.Combine(HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["LogoPath"]));
+            //var path = @"C:\Development\Rustivia\IntroductionMVC5\Content\img\ArsoloLogo2.png";
             Image image = Image.GetInstance(path);
             PdfPCell imghead = new PdfPCell(image);
             imghead.PaddingRight = 100f;
@@ -453,8 +453,8 @@ namespace RustiviaSolutions.PDFGenerator
             };
 
             //Add Logo
-            //var path = Path.Combine(HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["LogoPath"]));
-            var path = @"C:\Development\Rustivia\IntroductionMVC5\Content\img\ArsoloLogo2.png";
+            var path = Path.Combine(HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["LogoPath"]));
+            //var path = @"C:\Development\Rustivia\IntroductionMVC5\Content\img\ArsoloLogo2.png";
             Image image = Image.GetInstance(path);
             PdfPCell imghead = new PdfPCell(image);
             imghead.PaddingRight = 100f;

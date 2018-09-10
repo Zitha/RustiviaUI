@@ -94,42 +94,9 @@
     <Compile Include="Configuration\UserConfiguration.cs" />
     <Compile Include="Configuration\WeighBridgeConfiguration.cs" />
     <Compile Include="DataContext.cs" />
-    <Compile Include="Migrations\201411210556409_Sales.cs" />
-    <Compile Include="Migrations\201708120849279_First.cs" />
-    <Compile Include="Migrations\201708120849279_First.Designer.cs">
-      <DependentUpon>201708120849279_First.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708121210074_AddArsloTrading.cs" />
-    <Compile Include="Migrations\201708121210074_AddArsloTrading.Designer.cs">
-      <DependentUpon>201708121210074_AddArsloTrading.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708121542359_UpdateArsloCustomer.cs" />
-    <Compile Include="Migrations\201708121542359_UpdateArsloCustomer.Designer.cs">
-      <DependentUpon>201708121542359_UpdateArsloCustomer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708151905348_AddProfomaToInvoice.cs" />
-    <Compile Include="Migrations\201708151905348_AddProfomaToInvoice.Designer.cs">
-      <DependentUpon>201708151905348_AddProfomaToInvoice.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708181701034_AddLocation.cs" />
-    <Compile Include="Migrations\201708181701034_AddLocation.Designer.cs">
-      <DependentUpon>201708181701034_AddLocation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708221941056_AddArsloItem.cs" />
-    <Compile Include="Migrations\201708221941056_AddArsloItem.Designer.cs">
-      <DependentUpon>201708221941056_AddArsloItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708222008527_RenameColumn.cs" />
-    <Compile Include="Migrations\201708222008527_RenameColumn.Designer.cs">
-      <DependentUpon>201708222008527_RenameColumn.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710080652289_ProfomaValidation.cs" />
-    <Compile Include="Migrations\201710080652289_ProfomaValidation.Designer.cs">
-      <DependentUpon>201710080652289_ProfomaValidation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710250510583_Changes-ModelBack up.cs" />
-    <Compile Include="Migrations\201710250510583_Changes-ModelBack up.Designer.cs">
-      <DependentUpon>201710250510583_Changes-ModelBack up.cs</DependentUpon>
+    <Compile Include="Migrations\201809100526178_IdentityUpdate.cs" />
+    <Compile Include="Migrations\201809100526178_IdentityUpdate.Designer.cs">
+      <DependentUpon>201809100526178_IdentityUpdate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Repositories\ArsloTrading\ArsloCustomerRepository.cs" />
@@ -184,32 +151,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708120849279_First.resx">
-      <DependentUpon>201708120849279_First.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708121210074_AddArsloTrading.resx">
-      <DependentUpon>201708121210074_AddArsloTrading.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708121542359_UpdateArsloCustomer.resx">
-      <DependentUpon>201708121542359_UpdateArsloCustomer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708151905348_AddProfomaToInvoice.resx">
-      <DependentUpon>201708151905348_AddProfomaToInvoice.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708181701034_AddLocation.resx">
-      <DependentUpon>201708181701034_AddLocation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708221941056_AddArsloItem.resx">
-      <DependentUpon>201708221941056_AddArsloItem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708222008527_RenameColumn.resx">
-      <DependentUpon>201708222008527_RenameColumn.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710080652289_ProfomaValidation.resx">
-      <DependentUpon>201710080652289_ProfomaValidation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710250510583_Changes-ModelBack up.resx">
-      <DependentUpon>201710250510583_Changes-ModelBack up.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201809100526178_IdentityUpdate.resx">
+      <DependentUpon>201809100526178_IdentityUpdate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

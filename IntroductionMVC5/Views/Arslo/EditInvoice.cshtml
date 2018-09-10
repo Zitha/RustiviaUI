@@ -58,9 +58,9 @@
             $("#notificationAlert").hide();
         }
 
-        if (counter >= 1) {
-            $("#createBtn").removeAttr('disabled');
-        }
+        //if (counter >= 1) {
+        //    $("#createBtn").removeAttr('disabled');
+        //}
         $("#itemCount").val(profItems);
     }
 
@@ -151,7 +151,7 @@
             }
         });
 
-        $("#createBtn").attr('disabled', 'disabled');
+        //$("#createBtn").attr('disabled', 'disabled');
         FillCity(@Model.Profoma.Id);
 
         addInvoiceItems();

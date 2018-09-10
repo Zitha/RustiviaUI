@@ -129,7 +129,7 @@ namespace IntroductionMVC5.Web.Controllers
 
 
             List<ArsloInvoice> invoices = GetAllInvoices();
-            string invoiceNumber = string.Format("INV-Arslo-{0}-{1}", DateTime.Now.Year, invoices.Count + 1);
+            string invoiceNumber = string.Format("INV-Arslo-{0}-{1}", DateTime.Now.Year, 70 + invoices.Count + 1);
 
             ViewBag.ProfomaItems = new SelectList(profoma.ProfomaItems, "Id", "Description");
 
@@ -290,13 +290,20 @@ namespace IntroductionMVC5.Web.Controllers
             int oldItemCount = aI.InvoiceItems.Count;
             for (int i = 0; i < oldItemCount; i++)
             {
-                ArsloInvoiceItem invoiceItem = aI.InvoiceItems[i];
+                ArsloInvoiceItem invoiceItem = aI.InvoiceItems.FirstOrDefault();
                 _unit.ArsloInvoiceItems.Delete(invoiceItem);
                 _unit.SaveChanges();
             }
 
             aI.InvoiceItems = items;
             aI.TotalPrice = total;
+
+
+            aI.VesselNumber = arsloInvoice.VesselNumber;
+            aI.BookingNumber = arsloInvoice.BookingNumber;
+            aI.PointOfDelivery = arsloInvoice.PointOfDelivery;
+            aI.PointOfLoading = arsloInvoice.PointOfLoading;
+
             string invoiceLocation = arsloInvoiceGenerator.GenerateInvoice(aI);
             aI.InvoiceLocation = invoiceLocation;
             _unit.ArsloInvoices.Update(aI);
@@ -315,9 +322,10 @@ namespace IntroductionMVC5.Web.Controllers
             ViewBag.Status = new SelectList(new List<string> { "Paid", "Part Payment", "Pending Payment" });
             var profomas = GetAllProfomas();
 
-            var ucr = string.Format("{0}ZA21366338-Arslo-{1}", DateTime.Now.Year.ToString().Substring(2, 2), profomas.Count + 1);
+            int profomaCount = 58 + profomas.Count + 1;
+            var ucr = string.Format("{0}ZA21366338-Arslo-{1}", DateTime.Now.Year.ToString().Substring(2, 2), profomaCount);
 
-            var profoma = string.Format("Arslo-{0}-{1}", DateTime.Now.Year.ToString().Substring(2, 2), profomas.Count + 1);
+            var profoma = string.Format("Arslo-{0}-{1}", DateTime.Now.Year.ToString().Substring(2, 2), profomaCount);
 
             ArsloProfoma newProfoma = new ArsloProfoma
             {
