@@ -1,0 +1,33 @@
+﻿<script>
+    $("#companyDocs").click(function () {
+        $("#dvCompany").load('@(Url.Action("CompanyDocuments", "Employee", null, Request.Url.Scheme))');
+    });
+
+    $("#bankStatement").click(function () {
+        $("#dvCompany").load('@(Url.Action("BankStatements", "Employee", null, Request.Url.Scheme))');
+    });
+
+    $("#expence").click(function () {
+        $("#dvCompany").load('@(Url.Action("Expenditures", "Expense", null, Request.Url.Scheme))');
+    });
+</script>
+
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <h2 style="color:#94c523;">Tusso Technologies Documents</h2>
+        </div>
+    </div>
+    <hr />
+    <div class="row" style="margin-top:5%;margin-bottom:5%">
+        <div class="col-md-4">
+            <button class="btn-system border-btn btn-medium" id="companyDocs" style="margin-left:2px"> <i class="fa fa-folder-open-o fa-2x"></i>  Documents</button>
+        </div>
+        <div class="col-md-4">
+            <button class="btn-system border-btn btn-medium" id="expence" style="margin-left:2px"><i style="color:red" class="fa fa-money fa-2x"></i> Expenditure</button>
+        </div>
+        <div class="col-md-4">
+            <button class="btn-system border-btn btn-medium" id="bankStatement" style="margin-left:2px"><i style="color:orange" class="fa fa-bank fa-2x"></i> Bank Statements</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+﻿
+<!-- Start Page Banner -->
+<div class="page-banner" style="padding:40px 0; background: url(/images/slide-02-bg.jpg) center #f9f9f9;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Contact Us</h2>
+                <p>Get Intouch</p>
+            </div>
+            <div class="col-md-6">
+                <ul class="breadcrumbs">
+                    <li><a href="#">Home</a></li>
+                    <li>Contact Us</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Page Banner -->
+<!-- Start Content -->
+<div id="content">
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-8">
+
+                <!-- Classic Heading -->
+                <h4 class="classic-title"><span>Contact Us</span></h4>
+
+                <!-- Start Contact Form -->
+                @using (Html.BeginForm("Contact", "Home", FormMethod.Post, new
+                {
+                    @class = "contact-form"
+                }))
+                {
+                    <div class="form-group">
+                        <div class="controls">
+                            <input type="text" class="form-control" placeholder="Name" name="name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="controls">
+                            <input type="email" class="form-control email" placeholder="Email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="controls">
+                            <input type="text" class="form-control requiredField" pattern="\d*" placeholder="Phone No." name="phoneNo" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="controls">
+                            <textarea rows="7" class="form-control" placeholder="Message" name="message"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @if (@ViewBag.IsContacted)
+                        {
+                            <label class="col-sm-12  btn-system btn-large border-btn"><strong> Thank you for your contacting us, We will be intouch</strong></label>
+                        }
+                    </div>
+
+                    <button type="submit" id="submit" class="btn-system btn-large">Send</button><div id="success" style="color:#34495e;"></div>
+                }
+
+                <!-- End Contact Form -->
+
+            </div>
+
+            <div class="col-md-4">
+
+                <!-- Classic Heading -->
+                <h4 class="classic-title"><span>Information</span></h4>
+
+                <!-- Divider -->
+                <div class="hr1" style="margin-bottom:10px;"></div>
+
+                <!-- Info - Icons List -->
+                <ul class="icons-list">
+                    <li><i class="fa fa-globe">  </i> <strong>Address:</strong> 2 Keswick, Nanyuki Road,Sunninghill.</li>
+                    <li><i class="fa fa-envelope-o"></i> <strong>Email:</strong> info@tussotechnologies.co.za</li>
+                    <li><i class="fa fa-mobile icon-medium"></i> <strong>Phone:</strong>072 6315 461/083 473 1660</li>
+                </ul>
+
+                <!-- Divider -->
+                <div class="hr1" style="margin-bottom:15px;"></div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- End content -->

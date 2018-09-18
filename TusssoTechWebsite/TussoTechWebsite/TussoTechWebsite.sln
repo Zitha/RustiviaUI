@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TussoTechWebsite", "TussoTechWebsite\TussoTechWebsite.csproj", "{47CF33C1-ADA8-45C1-9BC0-7B80A8FE6343}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TussoTechWebsite.Model", "TussoTechWebsite.Model\TussoTechWebsite.Model.csproj", "{7AA42BD4-8AF6-404D-A541-FE27AE2A1FD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TussoTechWebsite.Data", "TussoTechWebsite.Data\TussoTechWebsite.Data.csproj", "{31C14B3C-9DA2-4293-92DA-958550B6062F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TussoTechWebsite.PDFGenerator", "TussoTechWebsite.PDFGenerator\TussoTechWebsite.PDFGenerator.csproj", "{E87388DD-3C1E-4C26-ACB7-D5E0F8263FA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TussoTechWebsite.ConsoleApp", "TussoTechWebsite.ConsoleApp\TussoTechWebsite.ConsoleApp.csproj", "{E1072036-378F-47C0-AF14-438920CC839C}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 6
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://ndavhestudio.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = TussoTechWebsite\\TussoTechWebsite.csproj
+		SccProjectName1 = TussoTechWebsite
+		SccLocalPath1 = TussoTechWebsite
+		SccProjectUniqueName2 = TussoTechWebsite.Model\\TussoTechWebsite.Model.csproj
+		SccProjectName2 = TussoTechWebsite.Model
+		SccLocalPath2 = TussoTechWebsite.Model
+		SccProjectUniqueName3 = TussoTechWebsite.Data\\TussoTechWebsite.Data.csproj
+		SccProjectName3 = TussoTechWebsite.Data
+		SccLocalPath3 = TussoTechWebsite.Data
+		SccProjectUniqueName4 = TussoTechWebsite.PDFGenerator\\TussoTechWebsite.PDFGenerator.csproj
+		SccProjectName4 = TussoTechWebsite.PDFGenerator
+		SccLocalPath4 = TussoTechWebsite.PDFGenerator
+		SccProjectUniqueName5 = TussoTechWebsite.ConsoleApp\\TussoTechWebsite.ConsoleApp.csproj
+		SccProjectName5 = TussoTechWebsite.ConsoleApp
+		SccLocalPath5 = TussoTechWebsite.ConsoleApp
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47CF33C1-ADA8-45C1-9BC0-7B80A8FE6343}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47CF33C1-ADA8-45C1-9BC0-7B80A8FE6343}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47CF33C1-ADA8-45C1-9BC0-7B80A8FE6343}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47CF33C1-ADA8-45C1-9BC0-7B80A8FE6343}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AA42BD4-8AF6-404D-A541-FE27AE2A1FD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AA42BD4-8AF6-404D-A541-FE27AE2A1FD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AA42BD4-8AF6-404D-A541-FE27AE2A1FD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AA42BD4-8AF6-404D-A541-FE27AE2A1FD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31C14B3C-9DA2-4293-92DA-958550B6062F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31C14B3C-9DA2-4293-92DA-958550B6062F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31C14B3C-9DA2-4293-92DA-958550B6062F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31C14B3C-9DA2-4293-92DA-958550B6062F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E87388DD-3C1E-4C26-ACB7-D5E0F8263FA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E87388DD-3C1E-4C26-ACB7-D5E0F8263FA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E87388DD-3C1E-4C26-ACB7-D5E0F8263FA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E87388DD-3C1E-4C26-ACB7-D5E0F8263FA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1072036-378F-47C0-AF14-438920CC839C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1072036-378F-47C0-AF14-438920CC839C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1072036-378F-47C0-AF14-438920CC839C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1072036-378F-47C0-AF14-438920CC839C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

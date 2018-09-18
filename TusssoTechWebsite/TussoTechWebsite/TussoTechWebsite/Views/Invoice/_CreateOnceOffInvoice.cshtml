@@ -1,0 +1,138 @@
+﻿@model TussoTechWebsite.Model.OnceOffInvoice
+
+<script>
+    $(document).ready(function () {
+        var i = 1;
+        $("#add_row").click(function () {
+            $('#addr' + i).html("<td>" + (i + 1) + "</td><td><input id='description" + i + "' name='description" + i + "' type='text' placeholder='Item' class='form-control input-md'  /> </td><td><input  id='quantity" + i + "' type='text' placeholder='QTY' name='quantity" + i + "'  class='form-control input-md'></td><td><input  id='unitPrice" + i + "' name='unitPrice" + i + "' type='text' placeholder='Price'  class='form-control input-md'></td>");
+
+            $('#tab_logic').append('<tr id="addr' + (i + 1) + '"></tr>');
+            i++;
+            getTotal(i);
+            $("#itemCount").val(i);
+        });
+        $("#delete_row").click(function () {
+            if (i > 1) {
+                $("#addr" + (i - 1)).html('');
+                i--;
+                getTotal(i);
+                $("#itemCount").val(i);
+            }
+        });
+    });
+
+    function getTotal(i) {
+        var total = 0;
+        for (a = 0; a < i; a++) {
+            var itm = '#unitPrice' + a;
+            var itmPrice = 1 * $(itm).val();
+            var qty = '#quantity' + a;
+            var qtyVal = 1 * $(qty).val()
+            total = total + itmPrice * qtyVal;
+
+            $('#total').val(total);
+        }
+    };
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <div class="form-group">
+            <div class="form-group">
+                <div class="controls">
+                    <input type="text" class="form-control email" placeholder="Email" name="email" required>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Description, new
+       {
+           @class = "form-control",
+           @type = "text",
+           @placeholder = "Description",
+           @required = "required"
+       })
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.CustomerName, new
+       {
+           @class = "form-control",
+           @type = "text",
+           @placeholder = "Customer Name",
+           @required = "required"
+       })
+            @Html.ValidationMessageFor(model => model.CustomerName)
+        </div>
+        <div class="form-group">
+            <div class="form-group">
+                @Html.TextAreaFor(model => model.Address, new
+       {
+           @class = "form-control",
+           @type = "text",
+           @rows = "5",
+           @placeholder = "Customer Address",
+           @required = "required"
+       })
+                @Html.ValidationMessageFor(model => model.Address)
+            </div>
+        </div>
+        <div class="form-group">
+            <table class="table table-bordered table-hover" id="tab_logic">
+                <thead>
+                    <tr>
+                        <th class="text-center">
+
+                        </th>
+                        <th class="text-center">
+                            Item
+                        </th>
+                        <th class="text-center">
+                            Quantity
+                        </th>
+                        <th class="text-center">
+                            Total Price
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id='addr0'>
+                        <td>1</td>
+                        <td>
+                            <input type="text" id='description0' name="description0" placeholder='Item' class="form-control" />
+                        </td>
+                        <td>
+                            <input type="text" id='quantity0' name="quantity0" placeholder='QTY' class="form-control" />
+                        </td>
+                        <td>
+                            <input type="text" id='unitPrice0' name="unitPrice0" placeholder='Price' class="form-control" />
+                        </td>
+                    </tr>
+                    <tr id='addr1'></tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-12">
+                    <input id="itemCount" hidden="hidden" name="itemCount" />
+                    <a id="add_row" class="btn btn-default btn-mini pull-left" style="border:1px solid; border-color:#94c523; margin-right:1px;">Add Row</a>
+                    <a id='delete_row' class="pull-left btn-mini btn btn-default" style="border:1px solid; border-color:red;">Delete Row</a>
+                    @Html.TextBoxFor(model => model.Total, new
+       {
+           @class = "form-control pull-right",
+           @type = "text",
+           @id = "total",
+           @style = "width:70px",
+           @readonly = "readonly"
+       })
+                </div>
+            </div>
+        </div>
+
+        <p>
+            <button type="button" class="btn btn-default btn-mini" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn-system btn-mini" value="Save"><i class="fa fa-envelope-o"></i> Send</button>
+        </p>
+    </fieldset>
+}

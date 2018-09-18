@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tusso Technologies</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script>
+        $(document).ready(function () {
+            var url = window.location;
+            $('.navbar .nav').find('.active').removeClass('active');
+            $('.navbar .nav li a').each(function () {
+                if (this.href == url) {
+                    $(this).addClass('active');
+                }
+            });
+        });
+    </script>
+    <!--[if IE 8]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <!--[if lt IE 9]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <link rel="shortcut icon" href="~/favicon.ico" />
+</head>
+<body>
+
+    <!-- Full Body Container -->
+    <div class="container">
+        <div class="navbar navbar-default navbar-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <!-- Stat Toggle Nav Link For Mobiles -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <!-- End Toggle Nav Link For Mobiles -->
+                    <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                        <img alt="" src="~/images/tussoLogo.png">
+                    </a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <!-- Stat Search -->
+                    <div class="search-side">
+                        <a href="#" class="show-search"><i class="fa fa-search"></i></a>
+                        <div class="search-form">
+                            <form autocomplete="off" role="search" method="get" class="searchform" action="#">
+                                <input type="text" value="" name="s" id="s" placeholder="Search the site...">
+                            </form>
+                        </div>
+                    </div>
+                    <!-- End Search --> <!-- Start Navigation List -->
+                    <ul class="nav navbar-nav navbar-right" id="main-menu">
+                        <li class="drop">
+                            <a id="home" href="@Url.Action("Index", "Home")">Home</a>
+                        </li>
+                        <li class="drop">
+                            <a href="@Url.Action("About", "Home")">About</a>
+                        </li>
+                        <li class="drop">
+                            <a id="service" href="@Url.Action("Services", "Home")">Product & Services</a>
+                        </li>
+                        <li class="drop">
+                            <a href="@Url.Action("Support", "Home")">Support</a>
+                        </li>
+                        @if (Request.IsAuthenticated)
+                        {
+                            <li class="drop">
+                                <a href="@Url.Action("Index", "Employee")">Employee</a>
+                            </li>
+                        }
+                        <li>
+                            <a href="@Url.Action("Contact", "Home")">Contact</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"> </div>
+    </div>
+    <div>
+        @RenderBody()
+        <!-- Start Footer Section -->
+        <footer>
+            <div class="container">
+                <div class="row footer-widgets">
+
+
+                    <!-- Start Subscribe & Social Links Widget -->
+                    <div class="col-md-3 col-xs-12">
+                        <div class="footer-widget mail-subscribe-widget">
+                            <h4>Our Mission<span class="head-line"></span></h4>
+                            <p>To give every business the opportunity to use best technology systems to help them focus on their core operation and grow their business.</p>
+                        </div>
+                        <div class="footer-widget social-widget">
+                            <h4>Follow Us<span class="head-line"></span></h4>
+                            <ul class="social-icons">
+                                <li>
+                                    <a class="facebook" href="#"><i class="fa fa-facebook"></i></a>
+                                </li>
+                                <li>
+                                    <a class="twitter" href="#"><i class="fa fa-twitter"></i></a>
+                                </li>
+                                <li>
+                                    <a class="google" href="#"><i class="fa fa-google-plus"></i></a>
+                                </li>
+                                <li>
+                                    <a class="dribbble" href="#"><i class="fa fa-dribbble"></i></a>
+                                </li>
+                                <li>
+                                    <a class="linkdin" href="#"><i class="fa fa-linkedin"></i></a>
+                                </li>
+                                <li>
+                                    <a class="flickr" href="#"><i class="fa fa-flickr"></i></a>
+                                </li>
+                                <li>
+                                    <a class="tumblr" href="#"><i class="fa fa-tumblr"></i></a>
+                                </li>
+                                <li>
+                                    <a class="instgram" href="#"><i class="fa fa-instagram"></i></a>
+                                </li>
+                                <li>
+                                    <a class="vimeo" href="#"><i class="fa fa-vimeo-square"></i></a>
+                                </li>
+                                <li>
+                                    <a class="skype" href="#"><i class="fa fa-skype"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- .col-md-3 -->
+                    <!-- End Subscribe & Social Links Widget -->
+                    <!-- Start Twitter Widget -->
+                    <div class="col-md-5 col-xs-12">
+                        <div class="footer-widget twitter-widget">
+                            <h4>Tusso on Facebook<span class="head-line"></span></h4>
+                            <div id="fb-root"></div>
+                            <script>
+                                (function (d, s, id) {
+                                    var js, fjs = d.getElementsByTagName(s)[0];
+                                    if (d.getElementById(id)) return;
+                                    js = d.createElement(s); js.id = id;
+                                    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3&appId=566296143499558";
+                                    fjs.parentNode.insertBefore(js, fjs);
+                                }(document, 'script', 'facebook-jssdk'));</script>
+                            <div class="fb-page" data-href="https://www.facebook.com/Tussotechnologies" data-height="300" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false" data-show-posts="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/Tussotechnologies"><a href="https://www.facebook.com/Tussotechnologies">Tusso Technologies</a></blockquote></div></div>
+                        </div>
+                    </div>
+                    <!-- .col-md-3 -->
+                    <!-- End Twitter Widget -->
+                    <!-- Start Contact Widget -->
+                    <div class="col-md-3 col-xs-12">
+                        <div style="align-content: center">
+                            <img src="~/images/vision.png" class="img-circle center-block" alt="Footer Logo" style="align-content: center;margin-left:20%;margin-bottom:10%" />
+
+                            @*<img src="images/footer-margo.png" class="img-responsive" alt="Footer Logo" />*@
+                            <ul>
+                                <li style="margin-bottom:5%"><span><i class="fa fa-circle" style="color:#94c523;font-size:large;"></i></span> Service excellence : Develop and Implement customizeed solutions.</li>
+                                <li style="margin-bottom:5%"><span><i class="fa fa-circle" style="color:#94c523;font-size:large;"></i></span> Accountable for commitments, results, and quality to our customers.</li>
+                                <li style="margin-bottom:5%"><span><i class="fa fa-circle" style="color:#94c523;font-size:large;"></i></span> Create Quality and Innovation.</li>
+                                <li><span><i class="fa fa-circle" style="color:#94c523;font-size:large;"></i></span> Do More with Less.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- .col-md-3 -->
+                    <!-- End Contact Widget -->
+                </div>
+                <!-- .row -->
+                <!-- Start Copyright -->
+                <div class="copyright-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>&copy; 2014 Tusso Technologies -  All Rights Reserved <a href="#">Tusso technologies</a> </p>
+                        </div>
+                        <!-- .col-md-6 -->
+                        <div class="col-md-6">
+                            <ul class="footer-nav">
+                                <li>
+                                    <a href="@Url.Action("Services", "Home")">Services</a>
+                                </li>
+                                <li>
+                                    <a href="@Url.Action("Contact", "Home")">Contact</a>
+                                </li>
+                                <li>
+                                    @if (!Request.IsAuthenticated)
+                                    {
+                                        <a href="@Url.Action("Login", "Account")">Log in</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                                    }
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- .col-md-6 -->
+                    </div>
+                    <!-- .row -->
+                </div>
+                <!-- End Copyright -->
+
+            </div>
+        </footer>
+        <!-- End Footer Section -->
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

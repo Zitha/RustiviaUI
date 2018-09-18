@@ -1,0 +1,197 @@
+﻿
+<script>
+    $(document).ready(function () {
+        if ('@ViewBag.View' == "Index") {
+            $("#dvCustomers").load('@(Url.Action("Customers", "Employee", null, Request.Url.Scheme))');
+            $("#dvCompany").load('@(Url.Action("Company", "Employee", null, Request.Url.Scheme))');
+            $("#dvResourceMaterial").load('@(Url.Action("ResourceMaterial", "Employee", null, Request.Url.Scheme))');
+            $("#dvFinance").load('@(Url.Action("Index", "Finance", null, Request.Url.Scheme))');
+            $("#dvMoreFunction").load('@(Url.Action("QoutationView", "Qoutation", null, Request.Url.Scheme))');
+        }
+        else if ('@ViewBag.View' == "Detail") {
+            $("#dvCustomers").load('@(Url.Action("Details", "Employee", null, Request.Url.Scheme))');
+            $("#dvCompany").load('@(Url.Action("Company", "Employee", null, Request.Url.Scheme))');
+            $("#dvResourceMaterial").load('@(Url.Action("ResourceMaterial", "Employee", null, Request.Url.Scheme))');
+            $("#dvFinance").load('@(Url.Action("Index", "Finance", null, Request.Url.Scheme))');
+            $("#dvMoreFunction").load('@(Url.Action("QoutationView", "Qoutation", null, Request.Url.Scheme))');
+        }
+        else if ('@ViewBag.View' == "ResourceMaterial") {
+            $('.nav-tabs a[href="#tab-2"]').tab('show');
+            $("#dvCustomers").load('@(Url.Action("Customers", "Employee", null, Request.Url.Scheme))');
+            $("#dvCompany").load('@(Url.Action("CompanyDocuments", "Employee", null, Request.Url.Scheme))');
+            $("#dvResourceMaterial").load('@(Url.Action("ResourceMaterial", "Employee", null, Request.Url.Scheme))');
+            $("#dvFinance").load('@(Url.Action("Index", "Finance", null, Request.Url.Scheme))');
+            $("#dvMoreFunction").load('@(Url.Action("QoutationView", "Qoutation", null, Request.Url.Scheme))');
+        }
+        else if ('@ViewBag.View' == "Company") {
+            $('.nav-tabs a[href="#tab-3"]').tab('show');
+            $("#dvCustomers").load('@(Url.Action("Customers", "Employee", null, Request.Url.Scheme))');
+            $("#dvCompany").load('@(Url.Action("CompanyDocuments", "Employee", null, Request.Url.Scheme))');
+            $("#dvResourceMaterial").load('@(Url.Action("ResourceMaterial", "Employee", null, Request.Url.Scheme))');
+            $("#dvFinance").load('@(Url.Action("Index", "Finance", null, Request.Url.Scheme))');
+            $("#dvMoreFunction").load('@(Url.Action("QoutationView", "Qoutation", null, Request.Url.Scheme))');
+        }
+        else if ('@ViewBag.View' == "Statement") {
+            $('.nav-tabs a[href="#tab-3"]').tab('show');
+            $("#dvCustomers").load('@(Url.Action("Customers", "Employee", null, Request.Url.Scheme))');
+            $("#dvCompany").load('@(Url.Action("BankStatements", "Employee", null, Request.Url.Scheme))');
+            $("#dvResourceMaterial").load('@(Url.Action("ResourceMaterial", "Employee", null, Request.Url.Scheme))');
+            $("#dvFinance").load('@(Url.Action("Index", "Finance", null, Request.Url.Scheme))');
+            $("#dvMoreFunction").load('@(Url.Action("QoutationView", "Qoutation", null, Request.Url.Scheme))');
+        }
+        else if ('@ViewBag.View' == "Expense") {
+            $('.nav-tabs a[href="#tab-3"]').tab('show');
+            $("#dvCustomers").load('@(Url.Action("Customers", "Employee", null, Request.Url.Scheme))');
+            $("#dvCompany").load('@(Url.Action("Expenditures", "Expense", null, Request.Url.Scheme))');
+            $("#dvResourceMaterial").load('@(Url.Action("ResourceMaterial", "Employee", null, Request.Url.Scheme))');
+            $("#dvFinance").load('@(Url.Action("Index", "Finance", null, Request.Url.Scheme))');
+            $("#dvMoreFunction").load('@(Url.Action("QoutationView", "Qoutation", null, Request.Url.Scheme))');
+        }
+        else if ('@ViewBag.View' == "Finance") {
+            $('.nav-tabs a[href="#tab-4"]').tab('show');
+            $("#dvCustomers").load('@(Url.Action("Customers", "Employee", null, Request.Url.Scheme))');
+            $("#dvCompany").load('@(Url.Action("Expenditures", "Expense", null, Request.Url.Scheme))');
+            $("#dvResourceMaterial").load('@(Url.Action("ResourceMaterial", "Employee", null, Request.Url.Scheme))');
+            $("#dvFinance").load('@(Url.Action("Index", "Finance", null, Request.Url.Scheme))');
+            $("#dvMoreFunction").load('@(Url.Action("QoutationView", "Qoutation", null, Request.Url.Scheme))');
+        }
+        else if ('@ViewBag.View' == "MoreFuncation") {
+            $('.nav-tabs a[href="#tab-5"]').tab('show');
+            $("#dvCustomers").load('@(Url.Action("Customers", "Employee", null, Request.Url.Scheme))');
+            $("#dvCompany").load('@(Url.Action("Expenditures", "Expense", null, Request.Url.Scheme))');
+            $("#dvResourceMaterial").load('@(Url.Action("ResourceMaterial", "Employee", null, Request.Url.Scheme))');
+            $("#dvFinance").load('@(Url.Action("Index", "Finance", null, Request.Url.Scheme))');
+            $("#dvMoreFunction").load('@(Url.Action("QoutationView", "Qoutation", null, Request.Url.Scheme))');
+        }
+        //Add
+        $(document).on("click", ".Open-createInvoiceModal", function () {
+            var postId = $(this).data('id');
+            $("#dvCreateInvoice").load('@Url.Action("CreateInvoice", "Invoice")');
+        });
+
+        $(document).on("click", ".Open-createExpenseModal", function () {
+            var postId = $(this).data('id');
+            $("#dvCreateExpense").load('@Url.Action("AddExpense", "Expense")');
+        });
+        //Edit
+        $(document).on("click", ".Open-editInvoiceModal", function () {
+            var postId = $(this).data('id');
+            $("#dvEditInvoice").load('@Url.Action("EditInvoice", "Invoice")?id=' + postId);
+        });
+        //Edit
+        $(document).on("click", ".Open-editDocumentModal", function () {
+            var postId = $(this).data('id');
+            $("#dveditDocument").load('@Url.Action("EditDocument", "Employee")?id=' + postId);
+        });
+
+        $(document).on("click", ".open-EditCustomer", function () {
+            var cstId = $(this).data('id');
+            $("#dveditCustomer").load('@Url.Action("EditCustomer", "Employee")?id=' + cstId);
+        });
+
+        $(document).on("click", ".open-editExpenditureModal", function () {
+            var cstId = $(this).data('id');
+            $("#dvEditExpense").load('@Url.Action("EditExpense", "Expense")?id=' + cstId);
+        });
+
+        $(document).on("click", ".open-EditStatement", function () {
+            var cstId = $(this).data('id');
+            $("#divEditBankStatement").load('@Url.Action("EditBankStatement", "Employee")?id=' + cstId);
+        });
+        //Qoutation
+        $(document).on("click", ".Open-editQoutationModal", function () {
+            var cstId = $(this).data('id');
+            $("#dvEditQoutation").load('@Url.Action("EditQoutation", "Qoutation")?id=' + cstId);
+        });
+
+        $(document).on("click", ".Open-createQouation", function () {
+            var cstId = $(this).data('id');
+            $("#dvCreateQoutation").load('@Url.Action("CreateQoutation", "Qoutation")?id=' + cstId);
+        });
+
+        //More Functionality
+        $(document).on("click", ".Open-createQouationMore", function () {
+            var cstId = $(this).data('id');
+            $("#dvCreateQoutation").load('@Url.Action("CreateQoutation", "Qoutation")?id=' + cstId);
+        });
+
+        $(document).on("click", ".Open-createInvoiceModalMore", function () {
+            var postId = $(this).data('id');
+            $("#dvCreateInvoice").load('@Url.Action("CreateOnceOffInvoice", "Invoice")');
+        });
+    });
+</script>
+
+<!-- Start Page Banner -->
+<div class="page-banner no-subtitle">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Employee Self Service</h2>
+            </div>
+            <div class="col-md-6">
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Page Banner -->
+<!-- Start Content -->
+<div id="content">
+    <div class="container">
+        <div class="row sidebar-page">
+
+            <!-- Page Content -->
+            <div class="col-md-12 page-content">
+
+                <div class="tabs-section" style="border:1px solid;border-color:lightgray">
+
+                    <!-- Nav Tabs -->
+                    <ul class="nav nav-tabs" id="menuTabs">
+                        <li class="active"><a href="#tab-1" data-toggle="tab"><i class="fa fa-group"></i><strong> Customers</strong></a></li>
+                        <li><a href="#tab-2" data-toggle="tab"><i class="fa fa-cogs"></i><strong>Resources & Materials</strong></a></li>
+                        <li><a href="#tab-3" data-toggle="tab"><i class="fa fa-file-text"></i><strong>Company Documents</strong></a></li>
+                        <li><a href="#tab-4" data-toggle="tab"><i class="fa fa-money"></i><strong>Finance</strong></a></li>
+                        <li><a href="#tab-5" data-toggle="tab"><i class="fa fa-money"></i><strong>More Functions</strong></a></li>
+                    </ul>
+
+                    <!-- Tab panels -->
+                    <div class="tab-content">
+                        <!-- Tab Content 1 -->
+                        <div class="tab-pane fade in active" id="tab-1">
+                            <div id="dvCustomers">
+                            </div>
+                        </div>
+                        <!-- Tab Content 2 -->
+                        <div class="tab-pane fade" id="tab-2">
+                            <div id="dvResourceMaterial">
+                            </div>
+                        </div>
+                        <!-- Tab Content 3 -->
+                        <div class="tab-pane fade" id="tab-3">
+                            <div id="dvCompany">
+                            </div>
+                        </div>
+                        <!-- Tab Content 4 -->
+                        <div class="tab-pane fade" id="tab-4">
+                            <div id="dvFinance">
+                            </div>
+                        </div>
+                        <!-- Tab Content 4 -->
+                        <div class="tab-pane fade" id="tab-5">
+                            <div id="dvMoreFunction">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Tab Panels -->
+
+                </div>
+
+                <!-- Divider -->
+                <div class="hr5" style="margin-top:45px;margin-bottom:45px;"></div>
+            </div>
+            <!-- End Page Content -->
+        </div>
+    </div>
+</div>
+<!-- End Content -->

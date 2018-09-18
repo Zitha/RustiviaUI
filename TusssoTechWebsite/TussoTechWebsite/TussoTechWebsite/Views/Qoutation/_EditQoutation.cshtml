@@ -1,0 +1,62 @@
+﻿@model TussoTechWebsite.Model.Qoutation
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <div class="form-group" hidden>
+            @Html.TextBoxFor(model => model.Id, new
+            {
+                @class = "form-control",
+                @type = "text",
+                @hidden = "@hidden"
+            })
+            @Html.ValidationMessageFor(model => model.Id)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.QoutationNumber, new
+       {
+           @class = "form-control",
+           @type = "text",
+           @placeholder = "Qoutation Number",
+           @required = "required",
+           @readonly = "readonly"
+       })
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Description, new
+       {
+           @class = "form-control",
+           @type = "text",
+           @placeholder = "Description",
+           @required = "required"
+       })
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+
+        <div class="form-group">
+            <input id="itemCount" hidden="hidden" name="itemCount" />
+            @Html.TextBoxFor(model => model.Total, new
+            {
+                @class = "form-control",
+                @type = "text",
+                @id = "total",
+                @required = "required",
+                @style = "width:300px"
+            })
+        </div>
+        <div class="form-group">
+            <input type="text" value='@string.Format("{0}", @Model.Location.Split('\\').Last())' class="form-control" style="color: #5E5B54; width:300px;font-weight: bold; margin: 5px; padding-left: 2px" readonly="readonly" />
+            @Html.TextBox("FileLocation", "", new
+       {
+           @type = "file",
+           @id = "FileLocation"
+       })
+        </div>
+        <p>
+            <button type="button" class="btn btn-default btn-mini" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn-system btn-mini" value="Save"><i class="fa fa-save"></i> Save</button>
+        </p>
+    </fieldset>
+}
