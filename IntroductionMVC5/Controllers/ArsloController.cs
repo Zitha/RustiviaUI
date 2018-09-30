@@ -33,7 +33,7 @@ namespace IntroductionMVC5.Web.Controllers
             List<ArsloProfoma> pagedList = GetAllProfomas();
 
             int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
-            viewModel.Profomas = pagedList.ToPagedList(currentPageIndex, 5);
+            viewModel.Profomas = pagedList.ToPagedList(currentPageIndex, 15);
 
             viewModel.ActiveTab = page.HasValue ? "#profile" : "#home";
 
@@ -117,19 +117,8 @@ namespace IntroductionMVC5.Web.Controllers
                 .Include(pi => pi.ProfomaItems)
                 .FirstOrDefault(p => p.Id == id);
 
-            //var stands =
-            // profomas
-            //.Select(s => new
-            //{
-            //    Id = s.Id,
-            //    Description = string.Format("{0} - {1}", s.ProfomaNumber, s.Customer.CustomerName)
-            //})
-            // .ToList();
-
-
-
             List<ArsloInvoice> invoices = GetAllInvoices();
-            string invoiceNumber = string.Format("INV-Arslo-{0}-{1}", DateTime.Now.Year, 70 + invoices.Count + 1);
+            string invoiceNumber = string.Format("INV-Arslo-{0}-{1}", DateTime.Now.Year, 64 + invoices.Count + 1);
 
             ViewBag.ProfomaItems = new SelectList(profoma.ProfomaItems, "Id", "Description");
 
@@ -319,11 +308,11 @@ namespace IntroductionMVC5.Web.Controllers
         {
             var customers = GetAllCustomers();
             ViewBag.Customers = new SelectList(customers, "Id", "CustomerName");
-            ViewBag.Status = new SelectList(new List<string> { "Paid", "Part Payment", "Pending Payment" });
+            ViewBag.Status = new SelectList(new List<string> { "Part Payment", "Pending Payment" });
             var profomas = GetAllProfomas();
 
-            int profomaCount = 58 + profomas.Count + 1;
-            var ucr = string.Format("{0}ZA21366338-Arslo-{1}", DateTime.Now.Year.ToString().Substring(2, 2), profomaCount);
+            int profomaCount = 57 + profomas.Count + 1;
+            var ucr = string.Format("{0}ZA21366338-C-Arslo-{1} M", DateTime.Now.Year.ToString().Substring(2, 2), profomaCount);
 
             var profoma = string.Format("Arslo-{0}-{1}", DateTime.Now.Year.ToString().Substring(2, 2), profomaCount);
 
@@ -407,6 +396,7 @@ namespace IntroductionMVC5.Web.Controllers
                 .Include(dr => dr.ProfomaDrawDowns)
                 .Include(dr => dr.ProfomaItems)
                 .Include(iv => iv.Invoices)
+                .Include(cst => cst.Customer)
                 .Include("Invoices.InvoiceItems")
                 .FirstOrDefault(pr => pr.Id == id);
 
@@ -418,7 +408,7 @@ namespace IntroductionMVC5.Web.Controllers
             var profoma = _unit.ArsloProfomas.GetAll()
                         .Include(p => p.ProfomaItems)
                         .FirstOrDefault(pr => pr.Id == id);
-            ViewBag.Status = new SelectList(new List<string> { "", "Paid", "Part Payment", "Pending Payment" });
+            ViewBag.Status = new SelectList(new List<string> { "", "Paid", "Part Payment", "Pending Payment", "Paid  & Completed" });
 
             return View(profoma);
         }
@@ -460,7 +450,10 @@ namespace IntroductionMVC5.Web.Controllers
             {
                 System.IO.File.Delete(dbProfoma.Location);
             }
-
+            if (profoma.Date != null)
+            {
+                dbProfoma.Date = profoma.Date;
+            }
             string profomaLocation = arsloInvoiceGenerator.GenerateProfoma(dbProfoma, dbProfoma.Customer);
             dbProfoma.Location = profomaLocation;
 

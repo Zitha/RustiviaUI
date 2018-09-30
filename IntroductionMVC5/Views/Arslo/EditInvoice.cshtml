@@ -111,6 +111,17 @@
         var today = now.getFullYear() + '/' + month + '/' + day;
         if (!$('#invoiceDate').val()) {
             $('#invoiceDate').val(today);
+        } else {
+            var valDate = new Date($('#invoiceDate').val());
+
+            var valMonth = (valDate.getMonth() + 1);
+            var valDay = valDate.getDate();
+            if (valMonth < 10)
+                valMonth = "0" + valMonth;
+            if (valDay < 10)
+                valDay = "0" + valDay;
+            var val = valDate.getFullYear() + '/' + valMonth + '/' + valDay;
+            $('#invoiceDate').val(val);
         }
         $('.datepicker').datepicker({
             autoclose: true,

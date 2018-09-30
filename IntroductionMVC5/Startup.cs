@@ -11,7 +11,15 @@ namespace IntroductionMVC5.Web
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuth(app);
+            try
+            {
+                ConfigureAuth(app);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
         }
     }
 }

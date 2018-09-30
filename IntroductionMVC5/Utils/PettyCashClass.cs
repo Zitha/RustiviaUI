@@ -229,12 +229,11 @@ namespace IntroductionMVC5.Web.Utils
         {
             DateTime searchDate = Convert.ToDateTime(date);
 
-            DateTime previousDayDate = searchDate.AddDays(-1);
+            //DateTime previousDayDate = searchDate.AddDays(-1);
 
             EndDayBalance previousDayBalance =
                 _unit.EndDayBalances.GetAll()
-                    .Where(
-                        d => EntityFunctions.TruncateTime(d.Date) <= EntityFunctions.TruncateTime(previousDayDate))
+                    .Where(d => EntityFunctions.TruncateTime(d.Date) <= EntityFunctions.TruncateTime(searchDate))
                     .OrderByDescending(b => b.Id)
                     .FirstOrDefault();
 
@@ -304,10 +303,7 @@ namespace IntroductionMVC5.Web.Utils
 
         public bool LastDayBalanced(EndDayBalance yesterDayBalance)
         {
-            if (yesterDayBalance == null)
-            {
-                return true;
-            }
+           
             Payment lastPayment = _unit.Payments.GetAll().OrderByDescending(b => b.Id).FirstOrDefault();
             Receipt lastReceipt = _unit.Receipts.GetAll().OrderByDescending(b => b.Id).FirstOrDefault();
 

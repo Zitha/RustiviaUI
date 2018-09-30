@@ -63,6 +63,8 @@ namespace IntroductionMVC5.Web.Controllers
             PettyCashViewModel pettyCashViewModel = _pettyClass.Search(DateTime.Now.ToString("d"));
             ViewBag.ClearAllMessage = message ?? false;
 
+
+           
             return View(pettyCashViewModel);
         }
 
@@ -249,7 +251,7 @@ namespace IntroductionMVC5.Web.Controllers
 
             int currentPageIndex = page.HasValue ? page.Value - 1 : 0;
 
-            var pettyCashViewModel = new PettyCashViewModel
+            PettyCashViewModel pettyCashViewModel = new PettyCashViewModel
             {
                 DailyActiviList = accountActivity.OrderByDescending(d => d.Date).ToPagedList(currentPageIndex,
                     _defaultPageSize),

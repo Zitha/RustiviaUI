@@ -107,7 +107,7 @@ namespace RustiviaSolutions.PDFGenerator
                     BorderColor =BaseColor.WHITE,
                     BackGroundColor=BaseColor.WHITE
                 },
-                 new CellValue{ Value=string.Format("DATE - {0}",invoice.Date.ToString("yyyy/mm/dd")),
+                 new CellValue{ Value=string.Format("DATE - {0}",invoice.Date.ToString("yyyy/MM/dd")),
                     FontSize =Font.BOLD,
                     HorizontalAlignment = Element.ALIGN_LEFT,
                     Padding =100f,
@@ -120,6 +120,7 @@ namespace RustiviaSolutions.PDFGenerator
 
             string[] custAddress = invoice.Customer.Address.Split(',');
             Phrase custAddressPhrase = new Phrase();
+            custAddressPhrase.Add(new Phrase { new Chunk(string.Format("{0} \n", invoice.Customer.CustomerName), FontFactory.GetFont("Microsoft Sans Serif", 8, Font.BOLD, BaseColor.BLACK)) });
 
             for (int i = 0; i < custAddress.Length; i++)
             {
@@ -515,7 +516,7 @@ namespace RustiviaSolutions.PDFGenerator
                     BorderColor =BaseColor.WHITE,
                     BackGroundColor=BaseColor.WHITE
                 },
-                 new CellValue{ Value=string.Format("DATE - {0}",profoma.Date.ToString("yyyy/mm/dd")),
+                 new CellValue{ Value=string.Format("DATE - {0}",profoma.Date.ToString("yyyy/MM/dd")),
                     FontSize =Font.BOLD,
                     HorizontalAlignment = Element.ALIGN_LEFT,
                     Padding =100f,
@@ -528,7 +529,7 @@ namespace RustiviaSolutions.PDFGenerator
 
             string[] custAddress = arsloCustomer.Address.Split(',');
             Phrase custAddressPhrase = new Phrase();
-
+            custAddressPhrase.Add(new Phrase { new Chunk(string.Format("{0} \n", arsloCustomer.CustomerName), FontFactory.GetFont("Microsoft Sans Serif", 8, Font.BOLD, BaseColor.BLACK)) });
             for (int i = 0; i < custAddress.Length; i++)
             {
                 custAddressPhrase.Add(new Phrase { new Chunk(string.Format("{0} \n", custAddress[i]), FontFactory.GetFont("Microsoft Sans Serif", 8, Font.BOLD, BaseColor.BLACK)) });

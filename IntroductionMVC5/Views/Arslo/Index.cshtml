@@ -6,8 +6,8 @@
 }
 
 <script>
-   
-   
+
+
     $(document).ready(function () {
 
         var acttiveTab = "@Model.ActiveTab";
@@ -123,7 +123,7 @@
                             <input type="submit" class="btn btn-primary btn-sm" value="Add Proma" onclick=" location.href='@Url.Action("AddProfoma", "Arslo")    ' " />
                         </td>
                         <td class="pull-right">
-                             @Html.Pager(Model.Profomas.PageSize, Model.Profomas.PageNumber, Model.Profomas.TotalItemCount, new { @class = "pagination" })
+                            @Html.Pager(Model.Profomas.PageSize, Model.Profomas.PageNumber, Model.Profomas.TotalItemCount, new { @class = "pagination" })
                         </td>
                     </tr>
                 </table>
@@ -158,49 +158,60 @@
 
                     @foreach (ArsloProfoma profoma in Model.Profomas)
                     {
-                        <tr class="active">
-                            <td>
+                    <tr class="active">
+                        <td>
+                            <strong>
+                                @Html.DisplayFor(modelItem => profoma.Customer.CustomerName)
+                            </strong>
+                        </td>
+                        <td>
+                            <strong>
+                                @Html.DisplayFor(modelItem => profoma.ProfomaNumber)
+                            </strong>
+                        </td>
+                        <td>
+                            @string.Format("{0} Tons", profoma.ProfomaItems.Sum(s => s.Quantity))
+                        </td>
+                        <td>
+                            @string.Format("{0}", profoma.Date.ToString("yyyy-MM-dd"))
+                        </td>
+                        @if (profoma.Status == "Paid")
+                        {
+                            <td style="color:blue">
                                 <strong>
-                                    @Html.DisplayFor(modelItem => profoma.Customer.CustomerName)
+                                    @Html.DisplayFor(modelItem => profoma.Status)
                                 </strong>
                             </td>
-                            <td>
+                        }
+                        else if (profoma.Status == "Paid & Completed")
+                        {
+                            <td style="color:green">
                                 <strong>
-                                    @Html.DisplayFor(modelItem => profoma.ProfomaNumber)
+                                    @Html.DisplayFor(modelItem => profoma.Status)
                                 </strong>
                             </td>
-                            <td>
-                                @string.Format("{0} Tons", profoma.ProfomaItems.Sum(s => s.Quantity))
+                        }
+                        else
+                        {
+                            <td style="color:red">
+                                <strong>
+                                    @Html.DisplayFor(modelItem => profoma.Status)
+                                </strong>
                             </td>
-                            <td>
-                                @string.Format("{0}", profoma.Date.ToString("yyyy-MM-dd"))
-                            </td>
-                            @if (profoma.Status == "Paid")
+                        }
+                        <td>
+                            <strong>
+                                @string.Format("R {0:N}", profoma.ProfomaDrawDowns.Sum(s => s.Amount) - profoma.Invoices.Sum(s => s.TotalPrice))
+                            </strong>
+                        </td>
+                        <td>
+                            @if (HttpContext.Current.User.IsInRole("Admin"))
                             {
-                                <td style="color:green">
-                                    <strong>
-                                        @Html.DisplayFor(modelItem => profoma.Status)
-                                    </strong>
-                                </td>
-                            }
-                            else
-                            {
-                                <td style="color:red">
-                                    <strong>
-                                        @Html.DisplayFor(modelItem => profoma.Status)
-                                    </strong>
-                                </td>
-                            }
-                            <td>
-                                <strong>
-                                    @string.Format("R {0:N}", profoma.ProfomaDrawDowns.Sum(s => s.Amount) - profoma.Invoices.Sum(s => s.TotalPrice))
-                                </strong>
-                            </td>
-                            <td>
                                 <input type="button" class="btn btn-primary btn-xs" value="Edit" onclick=" location.href='@Url.Action("EditProfoma", "Arslo", new { id = profoma.Id }) ' " />
-                                <input type="button" class="btn btn-info btn-xs" value="Details" onclick=" location.href='@Url.Action("ProfomaDetails", "Arslo", new { id = profoma.Id }) ' " />
-                            </td>
-                        </tr>
+                            }
+                            <input type="button" class="btn btn-info btn-xs" value="Details" onclick=" location.href='@Url.Action("ProfomaDetails", "Arslo", new { id = profoma.Id }) ' " />
+                        </td>
+                    </tr>
                     }
                 </table>
             </div>

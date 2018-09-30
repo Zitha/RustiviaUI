@@ -105,7 +105,7 @@
             <div class="col-lg-4">
                 <div class="form-group">
                     @Html.LabelFor(model => model.Amount)
-                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @type = "text" })
+                    @Html.TextBoxFor(model => model.Amount, new { @class = "form-control", @type = "text", @readonly = "readonly", })
                     @Html.ValidationMessageFor(model => model.Amount)
                 </div>
             </div>
