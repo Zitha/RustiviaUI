@@ -118,7 +118,8 @@ namespace IntroductionMVC5.Web.Controllers
                 .FirstOrDefault(p => p.Id == id);
 
             List<ArsloInvoice> invoices = GetAllInvoices();
-            string invoiceNumber = string.Format("INV-Arslo-{0}-{1}", DateTime.Now.Year, 64 + invoices.Count + 1);
+            string invoiceNumber = string.Format("INV-Arslo-{0}-{1}", DateTime.Now.Year, 
+                Convert.ToInt32(ConfigurationManager.AppSettings["InvoiceCount"]) + invoices.Count + 1);
 
             ViewBag.ProfomaItems = new SelectList(profoma.ProfomaItems, "Id", "Description");
 
@@ -311,7 +312,7 @@ namespace IntroductionMVC5.Web.Controllers
             ViewBag.Status = new SelectList(new List<string> { "Part Payment", "Pending Payment" });
             var profomas = GetAllProfomas();
 
-            int profomaCount = 57 + profomas.Count + 1;
+            int profomaCount = Convert.ToInt32(ConfigurationManager.AppSettings["ProfomaCount"]) + profomas.Count + 1;
             var ucr = string.Format("{0}ZA21366338-C-Arslo-{1} M", DateTime.Now.Year.ToString().Substring(2, 2), profomaCount);
 
             var profoma = string.Format("Arslo-{0}-{1}", DateTime.Now.Year.ToString().Substring(2, 2), profomaCount);
