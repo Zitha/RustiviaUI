@@ -1,0 +1,108 @@
+﻿@model TussoTechWebsite.Model.Company
+<script>
+    $(document).ready(function () {
+        $("#CDocBack").click(function () {
+            $("#dvCompany").load('@(Url.Action("Company", "Employee", null, Request.Url.Scheme))');
+        });
+    });
+</script>
+
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <button class="btn-system border-btn btn-mini" data-toggle="modal" data-target="#addDoc"><i class="fa fa-plus-circle"></i> Add Document</button>
+        </div>
+
+        <div class="col-md-6">
+            <div class="col-md-6" style="text-align:right">
+                <button class="btn-system btn-small" id="CDocBack"><i class="fa fa-fast-backward"></i> Back</button>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered" style="border:1px solid; border-color:white;">
+                <thead style="color:white;background-color:#94c523;">
+                    <tr class="info">
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model.Documents)
+                {
+                    <tr style="vertical-align:middle">
+                        <td>
+                            <strong>@item.Name </strong>
+                        </td>
+                        <td>
+                            <strong>@item.Type </strong>
+                        </td>
+                        <td>
+                            <i class="fa fa-file-pdf-o" style="color:red"></i>
+                            <strong>
+                                @Html.ActionLink("View", "GetFile", new
+                                {
+                                    FileName = item.Location
+                                }, new
+                                {
+                                    @fontsize = "16"
+                                })
+                            </strong>
+                            <a class="Open-editDocumentModal" style="margin-left: 10%" href="#" data-id="@item.Id" data-toggle="modal" data-target="#editDocument"><i class="fa fa-edit" style="color:orange;"></i></a>
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addDoc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Add Dcoument</h3>
+            </div>
+            @using (Html.BeginForm("AddCompanyDoc", "Employee", FormMethod.Post, new
+            {
+                enctype = "multipart/form-data"
+            }))
+            {
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        @{ Html.RenderPartial("_AddCDocument", new TussoTechWebsite.Model.CompanyDocument()); }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editDocument" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" style="align-content: center">
+                <div>
+                    <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Edit Document</h3>
+                </div>
+                @using (Html.BeginForm("EditDocument", "Employee", FormMethod.Post, new
+    {
+        enctype = "multipart/form-data"
+    }))
+                {
+                    <div id="dveditDocument">
+
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

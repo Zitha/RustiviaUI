@@ -1,0 +1,13 @@
+﻿@model string
+
+<!-- Start Content -->
+<div id="content">
+    <div class="error-page">
+        <img src="~/images/errorFace.jpg" /><br />
+        <strong>@ViewBag.ErrorMessage</strong><br />
+        <div class="text-center"><a href="@Url.Action("Index", "Home")" class="btn-system border-btn btn-mini">Back To Home</a></div>
+    </div>
+
+
+</div>
+<!-- End Content -->

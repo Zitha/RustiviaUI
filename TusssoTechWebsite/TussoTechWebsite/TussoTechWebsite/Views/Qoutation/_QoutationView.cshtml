@@ -1,0 +1,206 @@
+﻿@using System.Web.UI.WebControls
+@model  TussoTechWebsite.Models.InvoiceQoutation
+
+<div>
+    <hr />
+    <div class="row">
+        <div class="col-md-2">
+            <div class="bs-component">
+                <ul class="nav nav-pills nav-stacked" id="myTab" style="margin-top: 3px">
+                    <li class="active">
+                        <a href="#invoicesMore" data-toggle="tab">
+                            <strong> Once Of Invoices</strong>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#QoutationsMore" data-toggle="tab">
+                            <strong>
+                                Qoutations
+                            </strong>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="tab-content" style="border:1px solid;border-color:#94c523">
+                    <div id="invoicesMore" class="tab-pane fade active in">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button class="Open-createInvoiceModalMore btn-system border-btn btn-mini" data-toggle="modal" data-target="#createInvoiceMore"><i class="fa fa-money"></i> Create Invoice</button>
+                            </div>
+                            <div class="col-md-3" style="text-align:right">
+                                <h3 style="color:#94c523">Total Revenue:</h3>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <table class="table table-bordered" style="border:1px solid; border-color:white;">
+                                <thead style="color:white;background-color:#94c523;">
+                                    <tr class="info">
+                                        <th>
+                                            Invoice Number
+                                        </th>
+                                        <th>
+                                            Description
+                                        </th>
+                                        <th>
+                                            Date Created
+                                        </th>
+                                        <th>
+                                            Status
+                                        </th>
+                                        <th>
+                                            Amount
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                @foreach (var item in Model.Invoices)
+                                {
+                                    <tr style="vertical-align:middle">
+                                        <td>
+                                            <strong>@item.InvoiceNumber </strong>
+                                        </td>
+                                        <td>
+                                            <strong>@item.Description </strong>
+                                        </td>
+                                        <td>
+                                            <strong>@item.DateSent.ToString("yyyy-MM-dd")</strong>
+                                        </td>
+                                        <td>
+                                            @if (item.Status == TussoTechWebsite.Models.Status.Paid.ToString())
+                                            {
+                                                <strong style="color:#94c523">@item.Status</strong>
+                                            }
+                                            else
+                                            {
+                                                <strong style="color:red">@item.Status</strong>
+                                            }
+
+                                        </td>
+                                        <td>
+                                            <strong>@string.Format("R {0}", String.Format("{0:n}", item.Total)) </strong>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-file-pdf-o" style="color:red"></i>
+                                            <strong>
+                                                @Html.ActionLink("View", "GetFile", new
+                                                {
+                                                    FileName = item.Location
+                                                }, new
+                                                {
+                                                    @fontsize = "16",
+                                                    @target = "_blank"
+                                                })
+                                            </strong>
+                                            <a class="Open-editInvoiceModal" style="margin-left: 10%" href="#" data-id="@item.Id" data-toggle="modal" data-target="#editInvoice"><i class="fa fa-edit" style="color:orange;"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="QoutationsMore" class="tab-pane fade">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button class="Open-createQouationMore btn-system border-btn btn-mini" data-toggle="modal" data-target="#createQouationMore"><i class="fa fa-money"></i> Create Qoutation</button>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <table class="table table-bordered" style="border:1px solid; border-color:white;">
+                                <thead style="color:white;background-color:#94c523;">
+                                    <tr class="info">
+                                        <th>
+                                            Qoutation Number
+                                        </th>
+                                        <th>
+                                            Description
+                                        </th>
+                                        <th>
+                                            Date Created
+                                        </th>
+                                        <th>
+                                            Amount
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                @foreach (var item in Model.Qoutations)
+                                {
+                                    <tr style="vertical-align:middle">
+                                        <td>
+                                            <strong>@item.QoutationNumber </strong>
+                                        </td>
+                                        <td>
+                                            <strong>@item.Description </strong>
+                                        </td>
+                                        <td>
+                                            <strong>@item.DateSent.ToString("yyyy-MM-dd")</strong>
+                                        </td>
+                                        <td>
+                                            <strong>@string.Format("R {0}", String.Format("{0:n}", item.Total)) </strong>
+                                        </td>
+                                        <td>
+                                            <i class="fa fa-file-pdf-o" style="color:red"></i>
+                                            <strong>
+                                                @Html.ActionLink("View", "GetFile", new
+                                                {
+                                                    FileName = item.Location
+                                                }, new
+                                                {
+                                                    @fontsize = "16",
+                                                    @target = "_blank"
+                                                })
+                                            </strong>
+                                            <a class="Open-editQoutationModal" style="margin-left: 10%" href="#" data-id="@item.Id" data-toggle="modal" data-target="#editQoutation"><i class="fa fa-edit" style="color:orange;"></i></a>
+                                        </td>
+                                    </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createQouationMore" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Create Qoutation</h3>
+            </div>
+            @using (Html.BeginForm("CreateQoutation", "Qoutation", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <div id="dvCreateQoutation">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createInvoiceMore" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Create Invoice</h3>
+            </div>
+            @using (Html.BeginForm("CreateOnceOffInvoice", "Invoice", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <div id="dvCreateInvoice">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

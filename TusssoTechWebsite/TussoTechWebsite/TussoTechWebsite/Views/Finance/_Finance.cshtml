@@ -1,0 +1,53 @@
+﻿@model TussoTechWebsite.Controllers.Reporting
+
+<script>
+    $("#outstandingInvoice").click(function () {
+        $("#dvFinance").load('@(Url.Action("OutstandingInvoice", "Finance", null, Request.Url.Scheme))');
+    });
+</script>
+
+<h2 style="color:#94c523">Financial Reporting</h2><br /><hr />
+<div class="row">
+    <div class="col-md-3">
+        <h3 style="color:#94c523">Total Invocie Paid</h3>
+    </div>
+    <div class="col-md-3">
+        <h3 style="color:#94c523">@string.Format("R {0}", String.Format("{0:n}", Model.Invoices.Where(d => d.Status == "Paid").Sum(inv => inv.Total))) </h3>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-3">
+        <h3 style="color:orange"><a id="outstandingInvoice" href="#" style="color:orange"> Total Invocie Outstanding</a></h3>
+    </div>
+    <div class="col-md-3">
+        <h3 style="color:orange">@string.Format("R {0}", String.Format("{0:n}", Model.Invoices.Where(i => i.Status == "Unpaid").Sum(inv => inv.Total))) </h3>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-3">
+        <h3 style="color:red">Total Expeneses</h3>
+    </div>
+    <div class="col-md-3">
+        <h3 style="color:red">@string.Format("R {0}", String.Format("{0:n}", Model.Expenses.Sum(inv => inv.Total))) </h3>
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-3">
+        <h3 style="color:green">Total Revenue</h3>
+    </div>
+    <div class="col-md-3">
+        <h3 style="color:green">@string.Format("R {0}", String.Format("{0:n}", Model.Invoices.Sum(inv => inv.Total))) </h3>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-3">
+        <h3 style="color:gray">Balance</h3>
+    </div>
+    <div class="col-md-3">
+        <h3 style="color:gray">@string.Format("R {0}", String.Format("{0:n}", Model.Invoices.Sum(inv => inv.Total) - Model.Expenses.Sum(inv => inv.Total))) </h3>
+    </div>
+</div>

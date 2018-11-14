@@ -1,0 +1,51 @@
+﻿@model TussoTechWebsite.Model.BankStatement
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <div class="form-group" hidden>
+            @Html.TextBoxFor(model => model.Id, new
+            {
+                @class = "form-control",
+                @type = "text",
+                @hidden = "@hidden"
+            })
+            @Html.ValidationMessageFor(model => model.Id)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.DateSent, new
+            {
+                @class = "form-control",
+                @type = "text",
+                @placeholder = "Document Name",
+                @required = "required"
+            })
+            @Html.ValidationMessageFor(model => model.DateSent)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.AccountAmount, new
+            {
+                @class = "form-control",
+                @type = "text",
+                @placeholder = "Document Name",
+                @required = "required"
+            })
+            @Html.ValidationMessageFor(model => model.AccountAmount)
+        </div>
+
+        <div class="form-group">
+            <input type="text" value='@string.Format("{0}", @Model.Location.Split('\\').Last())' class="form-control" style="color: #5E5B54; width:400px;font-weight: bold; margin: 5px; padding-left: 2px" readonly="readonly" />
+            @Html.TextBox("FileLocation", "", new
+       {
+           @type = "file",
+           @id = "FileLocation"
+       })
+            @Html.ValidationMessageFor(model => model.Location)
+        </div>
+        <p>
+            <button type="button" class="btn btn-default btn-mini" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn-system btn-mini" value="Save"><i class="fa fa-save"></i> Save</button>
+        </p>
+    </fieldset>
+}

@@ -1,0 +1,75 @@
+﻿@model List<TussoTechWebsite.Model.Invoice>
+<script>
+    $(document).ready(function () {
+        $("#financeBack").click(function () {
+            $("#dvFinance").load('@(Url.Action("Index", "Finance", null, Request.Url.Scheme))');
+        });
+    });
+</script>
+<div class="row">
+    <div class="col-md-6">
+        <h2 style="color:#94c523">Invocies Outstanding</h2>
+    </div>
+    <div class="col-md-6" style="text-align:right">
+        <a class="btn-system btn-small" id="financeBack" href="#"><i class="fa fa-fast-backward"></i> Back</a>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <table class="table table-bordered" style="border:1px solid; border-color:white;">
+        <thead style="color:white;background-color:#94c523;">
+            <tr class="info">
+                <th>
+                    Customer
+                </th>
+                <th>
+                    Invoice Number
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Date Created
+                </th>
+                <th>
+                    Status
+                </th>
+                <th>
+                    Amount
+                </th>
+
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr style="vertical-align:middle">
+                <td>
+                    <strong>@item.Customer.Name </strong>
+                </td>
+                <td>
+                    <strong>@item.InvoiceNumber </strong>
+                </td>
+                <td>
+                    <strong>@item.Description </strong>
+                </td>
+                <td>
+                    <strong>@item.DateSent.ToString("yyyy-MM-dd")</strong>
+                </td>
+                <td>
+                    @if (item.Status == TussoTechWebsite.Models.Status.Paid.ToString())
+                    {
+                        <strong style="color:#94c523">@item.Status</strong>
+                    }
+                    else
+                    {
+                        <strong style="color:red">@item.Status</strong>
+                    }
+
+                </td>
+                <td>
+                    <strong>@string.Format("R {0}", String.Format("{0:n}", item.Total)) </strong>
+                </td>
+            </tr>
+        }
+    </table>
+</div>

@@ -1,0 +1,185 @@
+﻿@model List<TussoTechWebsite.Model.Expense>
+<script>
+    $(document).ready(function () {
+        $("#expenceBack").click(function () {
+            $("#dvCompany").load('@(Url.Action("Company", "Employee", null, Request.Url.Scheme))');
+        });
+
+        $(document).on("click", ".open-DeleteModal", function () {
+            var expenseId = $(this).data('id');
+            $("#Expense_Id").val(expenseId);
+        });
+    });
+</script>
+
+<div>
+    <div class="row">
+        <div class="col-md-3">
+            <button class="btn-system border-btn btn-mini" data-toggle="modal" data-target="#addExpense"><i class="fa fa-plus-circle"></i> Add Expence</button>
+        </div>
+        <div class="col-md-6">
+            @if (!string.IsNullOrEmpty(@ViewBag.Message))
+            {
+                if (((string)@ViewBag.Message).Contains("Successfully"))
+                {
+                    <div class="alert alert-success fadeOut">
+                        <strong> @ViewBag.Message </strong>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger fadeOut">
+                        <strong> @ViewBag.Message </strong>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-md-3" style="text-align:right">
+                    <h3 style="color:red">@string.Format("R {0}", String.Format("{0:n}", Model.Sum(inv => inv.Total))) </h3>
+                </div>
+            }
+        </div>
+        <div class="col-md-3">
+            <button class="btn-system btn-small" id="expenceBack"><i class="fa fa-fast-backward"></i> Back</button>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered" style="border:1px solid; border-color:white;">
+                <thead style="color:white;background-color:#94c523;">
+                    <tr class="info">
+                        <th>
+                            Ref Number
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Type
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Emplyee
+                        </th>
+                        <th>
+                            Total
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                    <tr style="vertical-align:middle">
+                        <td>
+                            <strong>@item.PurchaseNumber </strong>
+                        </td>
+                        <td>
+                            <strong>@item.DateSent.ToString("yyyy MMMM dd") </strong>
+                        </td>
+                        <td>
+                            <strong>@item.Type</strong>
+                        </td>
+                        <td>
+                            <strong>@item.Description</strong>
+                        </td>
+                        <td>
+                            <strong>@item.Employee</strong>
+                        </td>
+                        <td>
+                            <strong>@string.Format("R {0}", String.Format("{0:n}", item.Total)) </strong>
+                        </td>
+                        <td>
+                            <i class="fa fa-file-pdf-o" style="color:red"></i>
+                            <strong>
+                                @Html.ActionLink("View", "GetFile", new
+                                {
+                                    FileName = item.Location
+                                }, new
+                                {
+                                    @fontsize = "16",
+                                    @target = "_blank"
+                                })
+                                <a class="open-editExpenditureModal" style="margin-left: 10%" data-id="@item.Id" data-toggle="modal" href="#" data-target="#editExpenditure"><i class="fa fa-edit" style="color:orange;"></i></a>
+
+                                <a class="open-DeleteModal" style="margin-left: 10%" data-id="@item.Id" data-toggle="modal" href="#" data-target="#deleteExpenditure"><i class="fa fa-trash-o" style="color:red;"></i></a>
+                            </strong>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addExpense" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Add Expense</h3>
+            </div>
+            @using (Html.BeginForm("AddExpense", "Expense", FormMethod.Post, new
+            {
+                enctype = "multipart/form-data"
+            }))
+            {
+                <div class="modal-body">
+                    <div class="form-group">
+                        @{ Html.RenderPartial("_AddExpence", new TussoTechWebsite.Model.Expense
+                         {
+                             DateSent = DateTime.Now
+                         }); }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editExpenditure" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" style="align-content: center">
+                <div>
+                    <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Edit Expense</h3>
+                    <p>Please create Expense manualy and upload it</p>
+                </div>
+                @using (Html.BeginForm("EditExpense", "Expense", FormMethod.Post, new
+{
+    enctype = "multipart/form-data"
+}))
+                {
+                    <div id="dvEditExpense">
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteExpenditure" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" style="align-content: center">
+                <div>
+                    <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Are you Sure you want to Delete Expense</h3>
+                </div>
+                @using (Html.BeginForm("DeleteExpense", "Expense", FormMethod.Post))
+                {
+                    <div>
+                        <input type="text" hidden id="Expense_Id" name="expenseID" />
+                        <p>
+                            <button type="button" class="btn btn-default btn-mini" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn-system btn-mini" value="Save"><i class="fa fa-save"></i> Save</button>
+                        </p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

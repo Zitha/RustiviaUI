@@ -1,0 +1,117 @@
+﻿@model List<TussoTechWebsite.Model.Customer>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".detailButton").click(function () {
+            var id = this.id;
+            $("#dvCustomers").load('@(Url.Action("Details", "Employee", null, Request.Url.Scheme))?id=' + id);
+        });
+        window.setTimeout(function () {
+            $(".alert").fadeTo(1500, 0).slideUp(500, function () {
+                $(this).remove();
+            });
+        }, 5000);
+    });
+</script>
+
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <button id="button" data-toggle="modal" class="btn-system btn-medium" data-target="#myAddCustomer"><i class="fa fa-plus-circle"></i> Add Customer</button>
+        </div>
+        <div class="col-md-6">
+            @if (!string.IsNullOrEmpty(@ViewBag.Message))
+            {
+                if (((string)@ViewBag.Message).Contains("Successfully"))
+                {
+                    <div class="alert alert-success fadeOut">
+                        <strong> @ViewBag.Message </strong>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger fadeOut">
+                        <strong> @ViewBag.Message </strong>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered display table" style="border:1px solid; border-color:white;width: 100%;overflow: auto;overflow-x: auto">
+            <thead style="color:white;background-color:#94c523;">
+                <tr class="info">
+                    <th>
+                        Customer Name
+                    </th>
+                    <th>
+                        Contact
+                    </th>
+                    <th>
+                        Email Adress
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tr style="vertical-align:middle">
+                    <td style="word-wrap: break-word;">
+                        <strong>@item.Name </strong>
+                    </td>
+                    <td style="word-wrap: break-word;">
+                        <strong>@item.Contact</strong>
+                    </td>
+                    <td style="word-wrap: break-word;">
+                        <strong>@item.EmailAddress</strong>
+                    </td>
+                    <td style="word-wrap: break-word;">
+                        <button class="btn-system border-btn btn-mini detailButton" id="@item.Id">Details</button>
+                        <a class="open-EditCustomer" style="margin-left: 10%" data-id="@item.Id" data-toggle="modal" data-target="#myEditCustomer"><i class="fa fa-edit" style="color:orange;"></i></a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="myAddCustomer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Add New Customer</h3>
+            </div>
+            @using (Html.BeginForm("CreateCustomer", "Employee", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <div class="form-group">
+                        @{ Html.RenderPartial("_CreateCustomer", new TussoTechWebsite.Model.Customer()); }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myEditCustomer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Edit Customer</h3>
+            </div>
+            @using (Html.BeginForm("EditCustomer", "Employee", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <div id="dveditCustomer">
+                        
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

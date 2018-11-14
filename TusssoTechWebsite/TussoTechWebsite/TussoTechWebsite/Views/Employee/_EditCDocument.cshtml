@@ -1,0 +1,46 @@
+﻿@model TussoTechWebsite.Model.CompanyDocument
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <div class="form-group" hidden>
+            @Html.TextBoxFor(model => model.Id, new
+            {
+                @class = "form-control",
+                @type = "text",
+                @hidden = "@hidden"
+            })
+            @Html.ValidationMessageFor(model => model.Id)
+        </div>
+        <div class="form-group">d
+            @Html.TextBoxFor(model => model.Name, new
+            {
+                @class = "form-control",
+                @type = "text",
+                @placeholder = "Document Name",
+                @required = "required"
+            })
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+        <div class="form-group">
+            @Html.DropDownList("Type", (SelectList)ViewBag.DocumentTypes, string.Empty, new
+       {
+           @class = "form-control"
+       })
+            @Html.ValidationMessageFor(model => model.Type)
+        </div>
+        <div class="form-group">
+            <input type="text" value='@string.Format("{0}", @Model.Location.Split('\\').Last())' class="form-control" style="color: #5E5B54; width:300px;font-weight: bold; margin: 5px; padding-left: 2px" readonly="readonly" />
+            @Html.TextBox("FileLocation", "", new
+       {
+           @type = "file",
+           @id = "FileLocation"
+       })
+        </div>
+        <p>
+            <button type="button" class="btn btn-default btn-mini" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn-system btn-mini" value="Save"><i class="fa fa-save"></i> Save</button>
+        </p>
+    </fieldset>
+}

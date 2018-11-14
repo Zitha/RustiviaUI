@@ -1,0 +1,267 @@
+﻿@using TussoTechWebsite.Models
+@model TussoTechWebsite.Model.Company
+<style>
+    pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+        color: #fff;
+        background-color: #94c523;
+    }
+
+    .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+        color: #fff;
+        background-color: #94c523;
+    }
+</style>
+<div>
+    <div class="row">
+        <div class="col-md-6">
+            <h2 style="color:#94c523;"> @Model.Name Rources</h2>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-2">
+            <div class="bs-component">
+                <ul class="nav nav-pills nav-stacked" id="myTab" style="margin-top: 3px">
+                    <li class="active">
+                        <a href="#prop" data-toggle="tab">
+                            <strong> Proposals</strong>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tnder" data-toggle="tab">
+                            <strong> Tender Documents</strong>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="row">
+                <div class="tab-content" style="border:1px solid;border-color:#94c523">
+                    <div id="prop" class="tab-pane fade active in">
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button class="btn-system border-btn btn-mini" data-toggle="modal" data-target="#addProposal"><i class="fa fa-folder-open"></i> Add Proposal</button>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <table class="table table-bordered" style="border:1px solid; border-color:white;">
+                                <thead style="color:white;background-color:#94c523;">
+                                    <tr class="info">
+                                        <th>
+                                            Proposal Description
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                @foreach (var item in Model.Resources)
+                                {
+                                    if (item.Type == DataClass.ResourceTypes.Proposal.ToString())
+                                    {
+                                        <tr style="vertical-align:middle;">
+                                            <td style="width: 80%">
+                                                <strong>@item.Description </strong>
+                                            </td>
+                                            <td>
+
+                                                @if (item.Location.IndexOf(".pdf", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                                {
+                                                    <i class="fa fa-file-pdf-o fa-2x" style="color:red"></i>
+                                                    <strong>
+                                                        @Html.ActionLink("View", "GetFile", new
+                                                                {
+                                                                    FileName = item.Location
+                                                                }, new
+                                                                {
+                                                                    @fontsize = "16"
+                                                                })
+                                                    </strong>
+                                                }
+                                                else if (item.Location.IndexOf(".doc", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                                {
+                                                    <i class="fa fa-file-word-o fa-2x" style="color:blue"></i>
+                                                    <strong>
+                                                        @Html.ActionLink("Download", "GetFile", new
+                                                                {
+                                                                    FileName = item.Location
+                                                                }, new
+                                                                {
+                                                                    @fontsize = "16"
+                                                                })
+                                                    </strong>
+                                                }
+                                                else if (item.Location.IndexOf(".xls", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                                {
+                                                    <i class="fa fa-file-excel-o fa-2x" style="color:green"></i>
+                                                    <strong>
+                                                        @Html.ActionLink("Download", "GetFile", new
+                                                                {
+                                                                    FileName = item.Location
+                                                                }, new
+                                                                {
+                                                                    @fontsize = "16"
+                                                                })
+                                                    </strong>
+                                                }
+
+                                                else
+                                                {
+                                                    <i class="fa fa-file-zip-o fa-2x" style="color:orange"></i>
+                                                    <strong>
+                                                        @Html.ActionLink("Download", "GetFile", new
+                                                                {
+                                                                    FileName = item.Location
+                                                                }, new
+                                                                {
+                                                                    @fontsize = "16"
+                                                                })
+                                                    </strong>
+                                                }
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="tnder" class="tab-pane fade ">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button class="btn-system border-btn btn-mini" data-toggle="modal" data-target="#addTenderDocuments"><i class="fa fa-folder-open"></i> Add Tender Documents</button>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <table class="table table-bordered" style="border:1px solid; border-color:white;">
+                                <thead style="color:white;background-color:#94c523;">
+                                    <tr class="info">
+                                        <th>
+                                            Tender Description
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                @foreach (var item in Model.Resources)
+                                {
+                                    if (item.Type == DataClass.ResourceTypes.Tender.ToString())
+                                    {
+                                        <tr style="vertical-align:middle;">
+                                            <td style="width: 80%">
+                                                <strong>@item.Description </strong>
+                                            </td>
+                                            <td>
+
+                                                @if (item.Location.IndexOf(".pdf", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                                {
+                                                    <i class="fa fa-file-pdf-o fa-2x" style="color: red"></i>
+                                                    <strong>
+                                                        @Html.ActionLink("View", "GetFile", new
+                                                            {
+                                                                FileName = item.Location
+                                                            }, new
+                                                            {
+                                                                @fontsize = "16"
+                                                            })
+                                                    </strong>
+                                                }
+                                                else if (item.Location.IndexOf(".doc", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                                {
+
+                                                    <i class="fa fa-file-word-o fa-2x" style="color: blue"></i>
+                                                    <strong>
+                                                        @Html.ActionLink("Download", "GetFile", new
+                                                            {
+                                                                FileName = item.Location
+                                                            }, new
+                                                            {
+                                                                @fontsize = "16"
+                                                            })
+                                                    </strong>
+                                                }
+                                                else if (item.Location.IndexOf(".xls", StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                                {
+                                                    <i class="fa fa-file-excel-o fa-2x" style="color: green"></i>
+                                                    <strong>
+                                                        @Html.ActionLink("Download", "GetFile", new
+                                                            {
+                                                                FileName = item.Location
+                                                            }, new
+                                                            {
+                                                                @fontsize = "16"
+                                                            })
+                                                    </strong>
+                                                }
+
+                                                else
+                                                {
+                                                    <i class="fa fa-file-zip-o fa-2x" style="color: orange"></i>
+                                                    <strong>
+                                                        @Html.ActionLink("Download", "GetFile", new
+                                                            {
+                                                                FileName = item.Location
+                                                            }, new
+                                                            {
+                                                                @fontsize = "16"
+                                                            })
+                                                    </strong>
+                                                }
+
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="addTenderDocuments" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Add Tender Info</h3>
+            </div>
+            @using (Html.BeginForm("AddTenderResource", "Employee", FormMethod.Post, new
+            {
+                enctype = "multipart/form-data"
+            }))
+            {
+                <div class="modal-body">
+                    <div class="form-group">
+                        @{ Html.RenderPartial("_AddTenderResource", new TussoTechWebsite.Model.Resource()); }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addProposal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Proposal Info</h3>
+            </div>
+            @using (Html.BeginForm("AddProposalResource", "Employee", FormMethod.Post, new
+                {
+                    enctype = "multipart/form-data"
+                }))
+            {
+                <div class="modal-body">
+                    <div class="form-group">
+                        @{ Html.RenderPartial("_AddProposalResource", new TussoTechWebsite.Model.Resource()); }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

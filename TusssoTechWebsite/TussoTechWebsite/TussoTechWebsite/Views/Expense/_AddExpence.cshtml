@@ -1,0 +1,75 @@
+﻿@model TussoTechWebsite.Model.Expense
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+    <fieldset>
+        <div class="form-group" hidden>
+            @Html.TextBoxFor(model => model.PurchaseNumber, new
+            {
+                @class = "form-control",
+                @type = "text",
+                @placeholder = "Ref Number"
+            })
+            @Html.ValidationMessageFor(model => model.PurchaseNumber)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.DateSent, new
+            {
+                @class = "form-control",
+                @type = "text",
+                @placeholder = "DateSent",
+                @required = "required"
+            })
+            @Html.ValidationMessageFor(model => model.DateSent)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Type, new
+            {
+                @class = "form-control",
+                @type = "text",
+                @placeholder = "Type",
+                @required = "required"
+            })
+            @Html.ValidationMessageFor(model => model.Type)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Description, new
+            {
+                @class = "form-control",
+                @type = "text",
+                @placeholder = "Description",
+                @required = "required"
+            })
+            @Html.ValidationMessageFor(model => model.Description)
+        </div>
+        <div class="form-group">
+            @Html.TextBoxFor(model => model.Total, new
+            {
+                @class = "form-control",
+                @type = "text",
+                @placeholder = "Description",
+                @required = "required"
+            })
+            @Html.ValidationMessageFor(model => model.Total)
+        </div>
+        <div class="form-group">
+            @Html.DropDownList("Employee", (SelectList)ViewBag.Employees, string.Empty, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Type)
+        </div>
+        @*<div class="form-group">
+            @Html.TextBox("FileLocation", "", new
+            {
+                @type = "file",
+                @id = "FileLocation",
+                //@required = "required"
+                //@style = "width:450px"
+            })
+            @Html.ValidationMessageFor(model => model.Location)
+        </div>*@
+        <p>
+            <button type="button" class="btn btn-default btn-mini" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn-system btn-mini" value="Save"><i class="fa fa-save"></i> Save</button>
+        </p>
+    </fieldset>
+}

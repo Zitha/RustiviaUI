@@ -1,0 +1,127 @@
+﻿@model List<TussoTechWebsite.Model.BankStatement>
+<script>
+    $(document).ready(function () {
+        $("#statementBack").click(function () {
+            $("#dvCompany").load('@(Url.Action("Company", "Employee", null, Request.Url.Scheme))');
+        });
+    });
+</script>
+
+<div>
+    <div class="row">
+        <div class="col-md-3">
+            <button class="btn-system border-btn btn-mini" data-toggle="modal" data-target="#addStatement"><i class="fa fa-plus-circle"></i> Add Bank Statement</button>
+        </div>
+        <div class="col-md-6">
+            @if (!string.IsNullOrEmpty(@ViewBag.Message))
+            {
+                if (((string)@ViewBag.Message).Contains("Successfully"))
+                {
+                    <div class="alert alert-success fadeOut">
+                        <strong> @ViewBag.Message </strong>
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-danger fadeOut">
+                        <strong> @ViewBag.Message </strong>
+                    </div>
+                }
+            }
+        </div>
+        <div class="col-md-3">
+            <button class="btn-system btn-small" id="statementBack"><i class="fa fa-fast-backward"></i> Back</button>
+
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered" style="border:1px solid; border-color:white;">
+                <thead style="color:white;background-color:#94c523;">
+                    <tr class="info">
+                        <th>
+                            Month
+                        </th>
+                        <th>
+                            Bank Balance
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                @foreach (var item in Model)
+                {
+                    <tr style="vertical-align:middle">
+                        <td>
+                            <strong>@item.DateSent.ToString("Y") </strong>
+                        </td>
+                        <td>
+                            <strong>@string.Format("R {0}", String.Format("{0:n}", item.AccountAmount)) </strong>
+                        </td>
+                        <td>
+                            <i class="fa fa-file-pdf-o" style="color:red"></i>
+                            <strong>
+                                @Html.ActionLink("View", "GetFile", new
+                                {
+                                    FileName = item.Location
+                                }, new
+                                {
+                                    @fontsize = "16",
+                                    @target = "_blank"
+                                    
+                                })
+                            </strong>
+                            <a class="open-EditStatement" style="margin-left: 10%" data-id="@item.Id" data-toggle="modal" data-target="#editStatement"><i class="fa fa-edit" style="color:orange;"></i></a>
+                        </td>
+                    </tr>
+                }
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addStatement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">s
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Add Bank Statement</h3>
+            </div>
+            @using (Html.BeginForm("AddBankStatement", "Employee", FormMethod.Post, new
+            {
+                enctype = "multipart/form-data"
+            }))
+            {
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        @{ Html.RenderPartial("_AddBankStatement", new TussoTechWebsite.Model.BankStatement { DateSent = DateTime.Now }); }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editStatement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h3 class="modal-title" id="myModalLabel" style="color:#94c523">Edit  Bank Statement</h3>
+            </div>
+            @using (Html.BeginForm("EditBankStatement", "Employee", FormMethod.Post, new
+            {
+                enctype = "multipart/form-data"
+            }))
+            {
+                <div class="modal-body">
+                    <div id="divEditBankStatement">
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
